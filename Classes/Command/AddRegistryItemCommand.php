@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Dirnbauer\Innesto\Command;
 
 use Dirnbauer\Innesto\Registry\ElementScaffolder;
+use Dirnbauer\Innesto\Registry\FinishingPromptBuilder;
 use Dirnbauer\Innesto\Registry\RegistryClient;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -13,6 +14,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Process\ExecutableFinder;
+use Symfony\Component\Process\Process;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 #[AsCommand(
@@ -24,6 +27,7 @@ final class AddRegistryItemCommand extends Command
     public function __construct(
         private readonly RegistryClient $registryClient,
         private readonly ElementScaffolder $scaffolder,
+        private readonly FinishingPromptBuilder $promptBuilder,
     ) {
         parent::__construct();
     }
@@ -47,6 +51,12 @@ final class AddRegistryItemCommand extends Command
                 't',
                 InputOption::VALUE_REQUIRED,
                 'Target ContentElements directory; defaults to EXT:innesto/ContentBlocks/ContentElements'
+            )
+            ->addOption(
+                'ai',
+                null,
+                InputOption::VALUE_NONE,
+                'Run the AI finishing pass via the claude CLI (set INNESTO_CLAUDE_BIN to override the binary)'
             );
     }
 
@@ -76,13 +86,57 @@ final class AddRegistryItemCommand extends Command
         }
 
         $io->success(sprintf('Element "innesto/%s" scaffolded.', $elementKey));
-        $io->text([
-            'Next steps:',
-            '  1. Translate sources/*.tsx markup to templates/frontend.html (Fluid 5).',
-            '  2. Model component props as fields in config.yaml.',
-            '  3. Port styles in assets/frontend.css onto the Desiderio tokens.',
-            '  4. vendor/bin/typo3 extension:setup && cache:flush',
-        ]);
+
+        $elementDir = rtrim($target, '/') . '/' . $elementKey;
+        $prompt = $this->promptBuilder->build($item, $elementKey, $elementDir);
+        file_put_contents($elementDir . '/AI_PROMPT.md', $prompt);
+        $io->text('AI finishing prompt written to ' . $elementKey . '/AI_PROMPT.md');
+
+        if ($input->getOption('ai')) {
+            $exitCode = $this->runFinishingPass($io, $elementDir, $prompt);
+            if ($exitCode !== Command::SUCCESS) {
+                return $exitCode;
+            }
+        } else {
+            $io->text([
+                'Next steps (or rerun with --ai):',
+                '  1. Run the finishing pass: claude -p "$(cat AI_PROMPT.md)" --permission-mode acceptEdits',
+                '  2. Review the result, then: vendor/bin/typo3 extension:setup && cache:flush',
+            ]);
+        }
+        return Command::SUCCESS;
+    }
+
+    private function runFinishingPass(SymfonyStyle $io, string $elementDir, string $prompt): int
+    {
+        $binary = getenv('INNESTO_CLAUDE_BIN') ?: (new ExecutableFinder())->find('claude');
+        if ($binary === null) {
+            $io->warning([
+                'claude CLI not found in PATH (in ddev it usually lives on the host, not in the container).',
+                'Run the pass manually from the element directory:',
+                '  cd ' . $elementDir,
+                '  claude -p "$(cat AI_PROMPT.md)" --permission-mode acceptEdits',
+            ]);
+            return Command::FAILURE;
+        }
+
+        $io->section('Running AI finishing pass (claude CLI) — this can take a few minutes');
+        $process = new Process(
+            [$binary, '-p', $prompt, '--permission-mode', 'acceptEdits'],
+            $elementDir,
+            null,
+            null,
+            600.0
+        );
+        $process->run(static function (string $type, string $buffer) use ($io): void {
+            $io->write($buffer);
+        });
+
+        if (!$process->isSuccessful()) {
+            $io->error('Finishing pass failed (exit ' . $process->getExitCode() . '). The scaffold is intact; rerun manually with AI_PROMPT.md.');
+            return Command::FAILURE;
+        }
+        $io->success('Finishing pass complete. Review the element, then run extension:setup && cache:flush.');
         return Command::SUCCESS;
     }
 }
