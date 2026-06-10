@@ -1,0 +1,37 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:cb="http://typo3.org/ns/TYPO3/CMS/ContentBlocks/ViewHelpers"
+      xmlns:d="http://typo3.org/ns/Webconsulting/Desiderio/Components/ComponentCollection"
+      data-namespace-typo3-fluid="true">
+
+<f:asset.css identifier="innesto-marquee" href="{cb:assetPath()}/frontend.css"/>
+
+<d:layout.section spacing="md" class="innesto-marquee-section">
+    <d:layout.container>
+        <f:if condition="{data.header}">
+            <header class="innesto-marquee__intro">
+                <h2 class="innesto-marquee__headline">{data -> f:render.text(field: 'header')}</h2>
+            </header>
+        </f:if>
+
+        <div
+            class="innesto-marquee innesto-marquee--{data.speed -> f:or(alternative: 'normal')}{f:if(condition: data.reverse, then: ' innesto-marquee--reverse')}{f:if(condition: data.pause_on_hover, then: ' innesto-marquee--pause')}"
+            role="group"
+            aria-label="{data.header -> f:or(alternative: 'Marquee')}"
+        >
+            <ul class="innesto-marquee__group">
+                <f:for each="{data.marquee_items}" as="entry">
+                    <li class="innesto-marquee__pill"><span class="innesto-marquee__dot" aria-hidden="true"></span>{entry.label}</li>
+                </f:for>
+            </ul>
+            <f:for each="{0: 1, 1: 2, 2: 3}" as="copy">
+                <ul class="innesto-marquee__group" aria-hidden="true">
+                    <f:for each="{data.marquee_items}" as="entry">
+                        <li class="innesto-marquee__pill"><span class="innesto-marquee__dot" aria-hidden="true"></span>{entry.label}</li>
+                    </f:for>
+                </ul>
+            </f:for>
+        </div>
+    </d:layout.container>
+</d:layout.section>
+
+</html>

@@ -1,0 +1,72 @@
+# Innesto
+
+*innesto (it.) — graft.* A TYPO3 v14 experiment that grafts components from
+[shadcn/ui registries](https://registry.directory/) onto the
+[Desiderio](https://github.com/dirnbauer/desiderio) design system as Content
+Blocks elements.
+
+## What it does
+
+1. **Companion extension.** Innesto depends on Desiderio; its site set pulls
+   in the whole Desiderio set, so every grafted element automatically uses the
+   active shadcn theme preset, semantic tokens, and Fluid 5 component atoms.
+2. **Own content elements.** Elements live in
+   `ContentBlocks/ContentElements/` and are auto-discovered by TYPO3 Content
+   Blocks. The shipped `innesto/marquee` element is a finished graft of the
+   [Magic UI marquee](https://magicui.design/docs/components/marquee).
+3. **Registry glue code.** A console command fetches any registry item — every
+   registry cataloged on [registry.directory](https://registry.directory/)
+   speaks the same `registry-item` JSON schema — and scaffolds a Content
+   Blocks element from it:
+
+   ```bash
+   vendor/bin/typo3 innesto:add magicui/marquee
+   vendor/bin/typo3 innesto:add shadcn/button
+   vendor/bin/typo3 innesto:add https://magicui.design/r/globe.json --key globe
+   ```
+
+## What the pipeline converts automatically — and what it can't
+
+| Registry item part | Conversion |
+| --- | --- |
+| `cssVars` (theme/light/dark tokens) | ✅ automatic — emitted as CSS custom properties; Desiderio uses the same shadcn variable names, so they map 1:1 |
+| `css` (keyframes, rules) | ✅ automatic — serialized into the element's `assets/frontend.css` |
+| Tailwind `@theme` animation entries | ✅ automatic — custom property + matching utility class (the Desiderio Tailwind build does not scan grafted elements) |
+| React/TSX markup | ⚠️ scaffolded — the source is preserved under `sources/`, the Fluid 5 template is generated as a stub with TODO markers; structural markup translates quickly, hooks/state need Alpine.js or a manual pass |
+| Component props | ⚠️ manual — model them as Content Blocks fields in `config.yaml` |
+
+That last row is the honest limit: React components are programs, not
+documents, so a fully mechanical React→Fluid conversion is not possible.
+The glue code does everything deterministic and leaves a clearly marked
+finishing pass.
+
+## Install
+
+```bash
+composer config repositories.innesto vcs https://github.com/dirnbauer/innesto
+composer require dirnbauer/innesto:@dev
+vendor/bin/typo3 extension:setup
+```
+
+Then add the set to your site's `config.yaml`:
+
+```yaml
+dependencies:
+  - dirnbauer/innesto
+```
+
+## Element anatomy
+
+```
+ContentBlocks/ContentElements/<key>/
+├── config.yaml                  # fields modeled from the component props
+├── templates/frontend.html      # Fluid 5, uses Desiderio d: atoms + tokens
+├── templates/backend-preview.fluid.html
+├── assets/frontend.css          # converted css/cssVars, semantic tokens only
+├── assets/icon.svg
+├── language/labels.xlf
+└── sources/<original>.tsx       # upstream source, kept for provenance
+```
+
+Upstream component sources keep their original licenses (Magic UI marquee:
+MIT). The extension itself is GPL-2.0-or-later, like TYPO3.

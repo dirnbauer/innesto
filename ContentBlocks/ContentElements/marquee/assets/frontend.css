@@ -1,0 +1,58 @@
+/* Grafted from registry item "marquee" (Magic UI, MIT). Keyframes ported from
+   the item's css block; tokens map onto the Desiderio shadcn variables. */
+@keyframes innesto-marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(calc(-100% - var(--gap))); }
+}
+
+.innesto-marquee__intro { text-align: center; margin-block-end: var(--d-spacing-lg, 1.5rem); }
+
+.innesto-marquee {
+    --duration: 40s;
+    --gap: 1rem;
+    display: flex;
+    gap: var(--gap);
+    overflow: hidden;
+    padding: 0.5rem 0;
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+.innesto-marquee--slow { --duration: 60s; }
+.innesto-marquee--fast { --duration: 22s; }
+
+.innesto-marquee__group {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: space-around;
+    gap: var(--gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    animation: innesto-marquee var(--duration) linear infinite;
+}
+.innesto-marquee--reverse .innesto-marquee__group { animation-direction: reverse; }
+.innesto-marquee--pause:hover .innesto-marquee__group { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+    .innesto-marquee__group { animation-play-state: paused; }
+}
+
+.innesto-marquee__pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: calc(var(--radius, 0.625rem) + 4px);
+    background: var(--card);
+    color: var(--card-foreground);
+    font-size: var(--d-text-sm, 0.875rem);
+    white-space: nowrap;
+    box-shadow: var(--shadow-sm);
+}
+.innesto-marquee__dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 9999px;
+    background: var(--primary);
+}

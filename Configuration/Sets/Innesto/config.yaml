@@ -1,0 +1,4 @@
+name: dirnbauer/innesto
+label: 'Innesto'
+dependencies:
+  - webconsulting/desiderio

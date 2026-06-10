@@ -1,0 +1,29 @@
+{
+    "name": "dirnbauer/innesto",
+    "type": "typo3-cms-extension",
+    "description": "Innesto — grafts shadcn/ui registry components onto TYPO3 as Desiderio-styled Content Blocks",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Kurt Dirnbauer"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "friendsoftypo3/content-blocks": "^2.2",
+        "typo3/cms-core": "^14.3",
+        "webconsulting/desiderio": "*"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Dirnbauer\\Innesto\\": "Classes/"
+        }
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "innesto"
+        }
+    }
+}

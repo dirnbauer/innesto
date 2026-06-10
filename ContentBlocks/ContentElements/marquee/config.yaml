@@ -1,0 +1,55 @@
+name: innesto/marquee
+typeName: innesto_marquee
+title: 'Marquee'
+description: 'Scrolling ticker of short text pills — grafted from the Magic UI marquee registry component.'
+group: default
+prefixFields: false
+basics:
+  - TYPO3/Appearance
+fields:
+  -
+    identifier: header
+    useExistingField: true
+    label: 'Heading'
+  -
+    identifier: marquee_items
+    type: Collection
+    table: innesto_marquee_items
+    prefixField: true
+    label: 'Items'
+    minItems: 3
+    fields:
+      -
+        identifier: label
+        type: Textarea
+        rows: 1
+        label: 'Label'
+        required: true
+  -
+    identifier: speed
+    type: Select
+    renderType: selectSingle
+    label: 'Scroll Speed'
+    items:
+      -
+        label: 'Slow'
+        value: slow
+      -
+        label: 'Normal'
+        value: normal
+      -
+        label: 'Fast'
+        value: fast
+    default: normal
+  -
+    identifier: reverse
+    type: Checkbox
+    renderType: checkboxToggle
+    label: 'Reverse direction'
+    default: 0
+  -
+    identifier: pause_on_hover
+    type: Checkbox
+    renderType: checkboxToggle
+    label: 'Pause on hover'
+    default: 1
