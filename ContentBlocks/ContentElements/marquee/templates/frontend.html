@@ -20,13 +20,13 @@
         >
             <ul class="innesto-marquee__group">
                 <f:for each="{data.marquee_items}" as="entry">
-                    <li class="innesto-marquee__pill"><span class="innesto-marquee__dot" aria-hidden="true"></span>{entry.label}</li>
+                    <li class="innesto-marquee__pill"><span class="innesto-marquee__dot" aria-hidden="true"></span>{entry.title}</li>
                 </f:for>
             </ul>
             <f:for each="{0: 1, 1: 2, 2: 3}" as="copy">
                 <ul class="innesto-marquee__group" aria-hidden="true">
                     <f:for each="{data.marquee_items}" as="entry">
-                        <li class="innesto-marquee__pill"><span class="innesto-marquee__dot" aria-hidden="true"></span>{entry.label}</li>
+                        <li class="innesto-marquee__pill"><span class="innesto-marquee__dot" aria-hidden="true"></span>{entry.title}</li>
                     </f:for>
                 </ul>
             </f:for>

@@ -20,10 +20,10 @@ fields:
     minItems: 3
     fields:
       -
-        identifier: label
+        identifier: title
         type: Textarea
         rows: 1
-        label: 'Label'
+        label: 'Item text'
         required: true
   -
     identifier: speed
