@@ -7,6 +7,7 @@ namespace Dirnbauer\Innesto\Command;
 use Dirnbauer\Innesto\Registry\ElementScaffolder;
 use Dirnbauer\Innesto\Registry\FinishingPromptBuilder;
 use Dirnbauer\Innesto\Registry\RegistryClient;
+use Dirnbauer\Innesto\Registry\SetRegistrar;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -28,6 +29,7 @@ final class AddRegistryItemCommand extends Command
         private readonly RegistryClient $registryClient,
         private readonly ElementScaffolder $scaffolder,
         private readonly FinishingPromptBuilder $promptBuilder,
+        private readonly SetRegistrar $setRegistrar,
     ) {
         parent::__construct();
     }
@@ -86,6 +88,18 @@ final class AddRegistryItemCommand extends Command
         }
 
         $io->success(sprintf('Element "innesto/%s" scaffolded.', $elementKey));
+
+        $blockName = 'innesto/' . $elementKey;
+        if ($input->getOption('target') === null) {
+            $setConfigPath = ExtensionManagementUtility::extPath('innesto') . 'Configuration/Sets/Innesto/config.yaml';
+            if ($this->setRegistrar->register($setConfigPath, $blockName)) {
+                $io->text(sprintf('Registered "%s" in the Innesto site set (Configuration/Sets/Innesto/config.yaml).', $blockName));
+            } else {
+                $io->warning(sprintf('Could not register "%s" in Configuration/Sets/Innesto/config.yaml — add it to optionalDependencies manually, otherwise the element stays hidden in the New Content Element wizard.', $blockName));
+            }
+        } else {
+            $io->warning(sprintf('Custom target: add "%s" to the optionalDependencies of your site set, otherwise the element stays hidden in the New Content Element wizard on sites that restrict content blocks per set (Desiderio does).', $blockName));
+        }
 
         $elementDir = rtrim($target, '/') . '/' . $elementKey;
         $prompt = $this->promptBuilder->build($item, $elementKey, $elementDir);

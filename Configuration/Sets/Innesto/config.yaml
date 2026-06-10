@@ -2,3 +2,8 @@ name: dirnbauer/innesto
 label: 'Innesto'
 dependencies:
   - webconsulting/desiderio
+# Content Blocks exposes every content block as a virtual site set named after
+# the block. Sites that restrict elements per set (Desiderio does) only show
+# blocks listed here — innesto:add appends new grafts automatically.
+optionalDependencies:
+  - innesto/marquee
