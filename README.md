@@ -23,7 +23,12 @@ Blocks elements.
    vendor/bin/typo3 innesto:add magicui/marquee
    vendor/bin/typo3 innesto:add shadcn/button
    vendor/bin/typo3 innesto:add https://magicui.design/r/globe.json --key globe
+   vendor/bin/typo3 innesto:add magicui/orbiting-circles --ai   # + AI finishing pass
    ```
+
+📖 **[The complete manual — adding content elements from the shadcn registry](Documentation/AddingContentElements.md)**
+walks through a full graft step by step, with backend and frontend screenshots
+of the worked example.
 
 ## What the pipeline converts automatically — and what it can't
 
@@ -32,8 +37,9 @@ Blocks elements.
 | `cssVars` (theme/light/dark tokens) | ✅ automatic — emitted as CSS custom properties; Desiderio uses the same shadcn variable names, so they map 1:1 |
 | `css` (keyframes, rules) | ✅ automatic — serialized into the element's `assets/frontend.css` |
 | Tailwind `@theme` animation entries | ✅ automatic — custom property + matching utility class (the Desiderio Tailwind build does not scan grafted elements) |
-| React/TSX markup | ⚠️ scaffolded — the source is preserved under `sources/`, the Fluid 5 template is generated as a stub with TODO markers; structural markup translates quickly, hooks/state need Alpine.js or a manual pass |
-| Component props | ⚠️ manual — model them as Content Blocks fields in `config.yaml` |
+| Site-set registration (New Content Element wizard visibility) | ✅ automatic — the block is appended to the Innesto set's `optionalDependencies` |
+| React/TSX markup | ⚠️ scaffolded — the source is preserved under `sources/`, the Fluid 5 template is generated as a stub with TODO markers; structural markup translates quickly, hooks/state need Alpine.js or a manual pass (or the `--ai` finishing pass) |
+| Component props | ⚠️ manual — model them as Content Blocks fields in `config.yaml` (covered by the `--ai` finishing pass) |
 
 That last row is the honest limit: React components are programs, not
 documents, so a fully mechanical React→Fluid conversion is not possible.
@@ -59,6 +65,7 @@ dependencies:
 
 ```
 ContentBlocks/ContentElements/<key>/
+├── AI_PROMPT.md                 # reproducible prompt for the finishing pass
 ├── config.yaml                  # fields modeled from the component props
 ├── templates/frontend.html      # Fluid 5, uses Desiderio d: atoms + tokens
 ├── templates/backend-preview.fluid.html
