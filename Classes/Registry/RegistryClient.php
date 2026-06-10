@@ -18,7 +18,7 @@ final class RegistryClient
      * map; anything starting with http(s) is used verbatim.
      */
     private const REGISTRIES = [
-        'shadcn' => 'https://ui.shadcn.com/r/%s.json',
+        'shadcn' => 'https://ui.shadcn.com/r/styles/new-york-v4/%s.json',
         'magicui' => 'https://magicui.design/r/%s.json',
     ];
 
