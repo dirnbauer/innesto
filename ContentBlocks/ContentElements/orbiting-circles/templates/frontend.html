@@ -1,0 +1,35 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:cb="http://typo3.org/ns/TYPO3/CMS/ContentBlocks/ViewHelpers"
+      xmlns:d="http://typo3.org/ns/Webconsulting/Desiderio/Components/ComponentCollection"
+      data-namespace-typo3-fluid="true">
+
+<f:asset.css identifier="innesto-orbiting-circles" href="{cb:assetPath()}/frontend.css"/>
+
+<d:layout.section spacing="md" class="innesto-orbiting-circles-section">
+    <d:layout.container>
+        <f:if condition="{data.header}">
+            <header class="innesto-orbiting-circles__intro">
+                <h2 class="innesto-orbiting-circles__headline">{data -> f:render.text(field: 'header')}</h2>
+            </header>
+        </f:if>
+
+        <div
+            class="innesto-orbiting-circles innesto-orbiting-circles--radius-{data.radius -> f:or(alternative: 'medium')} innesto-orbiting-circles--size-{data.circle_size -> f:or(alternative: 'medium')} innesto-orbiting-circles--speed-{data.speed -> f:or(alternative: 'normal')}{f:if(condition: data.reverse, then: ' innesto-orbiting-circles--reverse')}"
+            role="group"
+            aria-label="{data.header -> f:or(alternative: 'Orbiting circles')}"
+        >
+            <div class="innesto-orbiting-circles__stage" style="--total: {f:count(subject: data.orbiting_circles_items)};">
+                <f:if condition="{data.show_path}">
+                    <div class="innesto-orbiting-circles__path" aria-hidden="true"></div>
+                </f:if>
+                <f:for each="{data.orbiting_circles_items}" as="entry" iteration="iterator">
+                    <div class="innesto-orbiting-circles__item" style="--index: {iterator.index};">
+                        <span class="innesto-orbiting-circles__item-text">{entry.title}</span>
+                    </div>
+                </f:for>
+            </div>
+        </div>
+    </d:layout.container>
+</d:layout.section>
+
+</html>

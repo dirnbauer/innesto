@@ -1,0 +1,89 @@
+/* Grafted from registry item "orbiting-circles" (Magic UI, MIT). Keyframes ported
+   from the item's css block; tokens map onto the Desiderio shadcn variables.
+   Per-item placement comes from the inline custom properties --total/--index
+   emitted by the template, mirroring the upstream React style object. */
+@keyframes innesto-orbit {
+    from { transform: rotate(calc(var(--angle) * 1deg)) translateY(calc(var(--radius) * 1px)) rotate(calc(var(--angle) * -1deg)); }
+    to { transform: rotate(calc(var(--angle) * 1deg + 360deg)) translateY(calc(var(--radius) * 1px)) rotate(calc(var(--angle) * -1deg - 360deg)); }
+}
+
+.innesto-orbiting-circles__intro { text-align: center; margin-block-end: var(--d-spacing-lg, 1.5rem); }
+
+.innesto-orbiting-circles {
+    --radius: 160;
+    --icon-size: 44px;
+    --duration: 20;
+}
+.innesto-orbiting-circles--radius-small { --radius: 100; }
+.innesto-orbiting-circles--radius-large { --radius: 220; }
+.innesto-orbiting-circles--size-small { --icon-size: 30px; }
+.innesto-orbiting-circles--size-large { --icon-size: 60px; }
+.innesto-orbiting-circles--speed-slow { --duration: 30; }
+.innesto-orbiting-circles--speed-fast { --duration: 10; }
+
+.innesto-orbiting-circles__stage {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: calc(var(--radius) * 2px + var(--icon-size) + 2rem);
+    overflow: hidden;
+}
+
+.innesto-orbiting-circles__path {
+    position: absolute;
+    top: calc(50% - var(--radius) * 1px);
+    left: calc(50% - var(--radius) * 1px);
+    width: calc(var(--radius) * 2px);
+    height: calc(var(--radius) * 2px);
+    border: 1px solid var(--border);
+    border-radius: 9999px;
+    pointer-events: none;
+}
+
+.innesto-orbiting-circles__item {
+    --angle: calc(360 / var(--total, 1) * var(--index, 0));
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    /* `translate` composes before `transform`, so centering the anchor never
+       disturbs the orbit rotation chain. Width is fluid: the circles hold
+       editor text, not fixed-size icons, so they grow into pills. */
+    translate: -50% -50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: max-content;
+    min-width: var(--icon-size);
+    height: var(--icon-size);
+    padding-inline: 0.875rem;
+    border: 1px solid var(--border);
+    border-radius: 9999px;
+    background: var(--card);
+    color: var(--card-foreground);
+    box-shadow: var(--shadow-sm);
+    font-size: var(--d-text-sm, 0.875rem);
+    overflow: hidden;
+    will-change: transform;
+    transform: rotate(calc(var(--angle) * 1deg)) translateY(calc(var(--radius) * 1px)) rotate(calc(var(--angle) * -1deg));
+    animation: innesto-orbit calc(var(--duration) * 1s) linear infinite;
+}
+.innesto-orbiting-circles--reverse .innesto-orbiting-circles__item { animation-direction: reverse; }
+
+.innesto-orbiting-circles__item-text {
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+    .innesto-orbiting-circles { --radius: 120; }
+    .innesto-orbiting-circles--radius-small { --radius: 100; }
+}
+
+/* Paused items hold the from-frame transform, so the circles stay distributed
+   along the path instead of collapsing into the center. */
+@media (prefers-reduced-motion: reduce) {
+    .innesto-orbiting-circles__item { animation-play-state: paused; }
+}

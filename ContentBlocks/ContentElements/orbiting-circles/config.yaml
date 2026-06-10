@@ -1,0 +1,87 @@
+name: innesto/orbiting-circles
+typeName: innesto_orbitingcircles
+title: 'Orbiting Circles'
+description: 'Circles of short text orbiting along a circular path — grafted from the Magic UI orbiting-circles registry component.'
+group: default
+prefixFields: false
+basics:
+  - TYPO3/Appearance
+fields:
+  -
+    identifier: header
+    useExistingField: true
+    label: 'Heading'
+  -
+    identifier: orbiting_circles_items
+    type: Collection
+    table: innesto_orbiting_circles_items
+    prefixField: true
+    label: 'Circles'
+    minItems: 2
+    fields:
+      -
+        identifier: title
+        type: Textarea
+        rows: 1
+        label: 'Circle text'
+        required: true
+  -
+    identifier: radius
+    type: Select
+    renderType: selectSingle
+    label: 'Orbit radius'
+    items:
+      -
+        label: 'Small'
+        value: small
+      -
+        label: 'Medium'
+        value: medium
+      -
+        label: 'Large'
+        value: large
+    default: medium
+  -
+    identifier: circle_size
+    type: Select
+    renderType: selectSingle
+    label: 'Circle size'
+    items:
+      -
+        label: 'Small'
+        value: small
+      -
+        label: 'Medium'
+        value: medium
+      -
+        label: 'Large'
+        value: large
+    default: medium
+  -
+    identifier: speed
+    type: Select
+    renderType: selectSingle
+    label: 'Orbit Speed'
+    items:
+      -
+        label: 'Slow'
+        value: slow
+      -
+        label: 'Normal'
+        value: normal
+      -
+        label: 'Fast'
+        value: fast
+    default: normal
+  -
+    identifier: reverse
+    type: Checkbox
+    renderType: checkboxToggle
+    label: 'Reverse direction'
+    default: 0
+  -
+    identifier: show_path
+    type: Checkbox
+    renderType: checkboxToggle
+    label: 'Show orbit path'
+    default: 1
