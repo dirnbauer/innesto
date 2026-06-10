@@ -18,7 +18,7 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Dirnbauer\\Innesto\\": "Classes/"
+            "Webconsulting\\Innesto\\": "Classes/"
         }
     },
     "extra": {

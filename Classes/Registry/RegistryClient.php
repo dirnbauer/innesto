@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Dirnbauer\Innesto\Registry;
+namespace Webconsulting\Innesto\Registry;
 
 use TYPO3\CMS\Core\Http\RequestFactory;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Dirnbauer\Innesto\Registry;
+namespace Webconsulting\Innesto\Registry;
 
 /**
  * Writes a Content Blocks element skeleton for a fetched registry item:

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Dirnbauer\Innesto\Registry;
+namespace Webconsulting\Innesto\Registry;
 
 /**
  * Converts the `css` and `cssVars` blocks of a shadcn registry item into a

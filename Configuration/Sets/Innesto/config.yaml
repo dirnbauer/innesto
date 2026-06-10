@@ -7,3 +7,4 @@ dependencies:
 # blocks listed here — innesto:add appends new grafts automatically.
 optionalDependencies:
   - innesto/marquee
+  - innesto/orbiting-circles

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Dirnbauer\Innesto\Registry;
+namespace Webconsulting\Innesto\Registry;
 
 /**
  * Builds the prompt for the AI finishing pass — the one step of a graft that

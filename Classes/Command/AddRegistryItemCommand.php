@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Dirnbauer\Innesto\Command;
+namespace Webconsulting\Innesto\Command;
 
-use Dirnbauer\Innesto\Registry\ElementScaffolder;
-use Dirnbauer\Innesto\Registry\FinishingPromptBuilder;
-use Dirnbauer\Innesto\Registry\RegistryClient;
-use Dirnbauer\Innesto\Registry\SetRegistrar;
+use Webconsulting\Innesto\Registry\ElementScaffolder;
+use Webconsulting\Innesto\Registry\FinishingPromptBuilder;
+use Webconsulting\Innesto\Registry\RegistryClient;
+use Webconsulting\Innesto\Registry\SetRegistrar;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
