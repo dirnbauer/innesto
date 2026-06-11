@@ -8,3 +8,4 @@ dependencies:
 optionalDependencies:
   - innesto/marquee
   - innesto/orbiting-circles
+  - innesto/case-studies

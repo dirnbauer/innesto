@@ -1,0 +1,81 @@
+name: innesto/case-studies
+typeName: innesto_casestudies
+title: 'Case Studies'
+description: 'Case studies pairing a customer quote, portrait and company logo with key performance metrics — grafted from the shadcnblocks case-studies2 registry component.'
+group: default
+prefixFields: false
+basics:
+  - TYPO3/Appearance
+fields:
+  -
+    identifier: eyebrow
+    type: Textarea
+    rows: 1
+    label: 'Eyebrow text'
+    description: 'Short line above the heading, e.g. "4500+ Satisfied Customers"'
+  -
+    identifier: header
+    useExistingField: true
+    label: 'Heading'
+  -
+    identifier: case_studies_items
+    type: Collection
+    table: innesto_case_studies_items
+    prefixField: true
+    label: 'Case studies'
+    minItems: 1
+    fields:
+      -
+        identifier: image
+        type: File
+        label: 'Portrait image'
+        allowed: common-image-types
+        maxitems: 1
+      -
+        identifier: quote
+        type: Textarea
+        rows: 3
+        label: 'Quote'
+        required: true
+      -
+        identifier: author_name
+        type: Textarea
+        rows: 1
+        label: 'Name'
+        required: true
+      -
+        identifier: author_role
+        type: Textarea
+        rows: 1
+        label: 'Role'
+      -
+        identifier: logo
+        type: File
+        label: 'Company logo'
+        allowed: common-image-types
+        maxitems: 1
+      -
+        identifier: metrics
+        type: Collection
+        table: innesto_case_studies_metrics
+        label: 'Metrics'
+        maxItems: 3
+        fields:
+          -
+            identifier: value
+            type: Textarea
+            rows: 1
+            label: 'Value'
+            description: 'e.g. 98%, 3.8x'
+            required: true
+          -
+            identifier: title
+            type: Textarea
+            rows: 1
+            label: 'Metric title'
+            required: true
+          -
+            identifier: description
+            type: Textarea
+            rows: 1
+            label: 'Metric description'

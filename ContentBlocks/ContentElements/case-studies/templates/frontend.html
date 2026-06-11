@@ -1,0 +1,69 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:cb="http://typo3.org/ns/TYPO3/CMS/ContentBlocks/ViewHelpers"
+      xmlns:d="http://typo3.org/ns/Webconsulting/Desiderio/Components/ComponentCollection"
+      data-namespace-typo3-fluid="true">
+
+<f:asset.css identifier="innesto-case-studies" href="{cb:assetPath()}/frontend.css"/>
+
+<d:layout.section spacing="md" class="innesto-case-studies-section">
+    <d:layout.container>
+        <f:if condition="{data.eyebrow} || {data.header}">
+            <header class="innesto-case-studies__intro">
+                <f:if condition="{data.eyebrow}">
+                    <p class="innesto-case-studies__eyebrow">{data -> f:render.text(field: 'eyebrow')}</p>
+                </f:if>
+                <f:if condition="{data.header}">
+                    <h2 class="innesto-case-studies__headline">{data -> f:render.text(field: 'header')}</h2>
+                </f:if>
+            </header>
+        </f:if>
+
+        <div class="innesto-case-studies">
+            <f:for each="{data.case_studies_items}" as="study" iteration="iterator">
+                <f:if condition="!{iterator.isFirst}">
+                    <hr class="innesto-case-studies__separator" aria-hidden="true"/>
+                </f:if>
+                <article class="innesto-case-studies__study">
+                    <div class="innesto-case-studies__case">
+                        <f:if condition="{study.image}">
+                            <f:for each="{study.image}" as="fileReference">
+                                <f:image image="{fileReference}" maxWidth="640" alt="{f:if(condition: fileReference.alternative, then: fileReference.alternative, else: study.author_name)}" class="innesto-case-studies__image" loading="lazy" decoding="async"/>
+                            </f:for>
+                        </f:if>
+                        <div class="innesto-case-studies__body">
+                            <q class="innesto-case-studies__quote">{study.quote}</q>
+                            <div class="innesto-case-studies__attribution">
+                                <div class="innesto-case-studies__author">
+                                    <p class="innesto-case-studies__author-name">{study.author_name}</p>
+                                    <f:if condition="{study.author_role}">
+                                        <p class="innesto-case-studies__author-role">{study.author_role}</p>
+                                    </f:if>
+                                </div>
+                                <f:if condition="{study.logo}">
+                                    <f:for each="{study.logo}" as="fileReference">
+                                        <f:image image="{fileReference}" maxWidth="280" alt="{f:if(condition: fileReference.alternative, then: fileReference.alternative, else: 'Company logo')}" class="innesto-case-studies__logo" loading="lazy" decoding="async"/>
+                                    </f:for>
+                                </f:if>
+                            </div>
+                        </div>
+                    </div>
+                    <f:if condition="{study.metrics}">
+                        <div class="innesto-case-studies__metrics">
+                            <f:for each="{study.metrics}" as="metric">
+                                <div class="innesto-case-studies__metric">
+                                    <p class="innesto-case-studies__metric-value">{metric.value}</p>
+                                    <p class="innesto-case-studies__metric-title">{metric.title}</p>
+                                    <f:if condition="{metric.description}">
+                                        <p class="innesto-case-studies__metric-description">{metric.description}</p>
+                                    </f:if>
+                                </div>
+                            </f:for>
+                        </div>
+                    </f:if>
+                </article>
+            </f:for>
+        </div>
+    </d:layout.container>
+</d:layout.section>
+
+</html>

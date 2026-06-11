@@ -1,0 +1,134 @@
+/* Grafted from registry item "case-studies2" (Case Studies 2 - Case studies with quotes and metrics). Tokens map onto the Desiderio shadcn variables. */
+
+.innesto-case-studies__intro {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
+}
+.innesto-case-studies__eyebrow {
+    margin: 0;
+    font-weight: 500;
+    color: var(--foreground);
+}
+.innesto-case-studies__headline {
+    margin: 0;
+    font-size: clamp(2.25rem, 1.75rem + 2vw, 3rem);
+    font-weight: 500;
+    line-height: 1.15;
+    color: var(--foreground);
+}
+.innesto-case-studies__intro + .innesto-case-studies {
+    margin-top: 5rem;
+}
+
+.innesto-case-studies__separator {
+    margin: 5rem 0;
+    border: 0;
+    border-top: 1px solid var(--border);
+}
+
+.innesto-case-studies__study {
+    display: grid;
+    gap: 4rem;
+}
+@media (min-width: 64rem) {
+    .innesto-case-studies__study {
+        grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+        gap: 6rem;
+    }
+}
+
+.innesto-case-studies__case {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+@media (min-width: 40rem) {
+    .innesto-case-studies__case {
+        flex-direction: row;
+    }
+}
+@media (min-width: 64rem) {
+    .innesto-case-studies__case {
+        border-right: 1px solid var(--border);
+        padding-right: 4rem;
+    }
+}
+
+.innesto-case-studies__image {
+    aspect-ratio: 29 / 35;
+    width: 100%;
+    max-width: 15rem;
+    border-radius: calc(var(--radius, 0.625rem) + 0.375rem);
+    object-fit: cover;
+}
+
+.innesto-case-studies__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2.5rem;
+}
+.innesto-case-studies__quote {
+    margin: 0;
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: var(--foreground);
+}
+.innesto-case-studies__attribution {
+    display: flex;
+    align-items: flex-end;
+    gap: 1.5rem;
+}
+.innesto-case-studies__author {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+.innesto-case-studies__author-name {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--foreground);
+}
+.innesto-case-studies__author-role {
+    margin: 0;
+    color: var(--muted-foreground);
+}
+.innesto-case-studies__logo {
+    max-height: 2.5rem;
+    width: auto;
+}
+
+.innesto-case-studies__metrics {
+    display: flex;
+    gap: 2.5rem;
+    align-self: center;
+}
+@media (min-width: 64rem) {
+    .innesto-case-studies__metrics {
+        flex-direction: column;
+    }
+}
+.innesto-case-studies__metric {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.innesto-case-studies__metric-value {
+    margin: 0;
+    font-size: clamp(2.25rem, 1.75rem + 2vw, 3rem);
+    font-weight: 500;
+    line-height: 1.1;
+    color: var(--foreground);
+}
+.innesto-case-studies__metric-title {
+    margin: 0;
+    font-weight: 600;
+    color: var(--foreground);
+}
+.innesto-case-studies__metric-description {
+    margin: 0;
+    color: var(--muted-foreground);
+}
