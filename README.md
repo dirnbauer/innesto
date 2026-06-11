@@ -85,7 +85,10 @@ claude -p "$(cat AI_PROMPT.md)" --permission-mode acceptEdits
 # 3. Create the new tables and flush caches:
 vendor/bin/typo3 extension:setup && vendor/bin/typo3 cache:flush
 
-# 4. Add the element in the New Content Element wizard — done.
+# 4. Optional: put one demo record of every element on a page to inspect it:
+vendor/bin/typo3 innesto:seed <page-uid>
+
+# 5. Add the element in the New Content Element wizard — done.
 ```
 
 The [manual](Documentation/AddingContentElements.md) walks through both worked

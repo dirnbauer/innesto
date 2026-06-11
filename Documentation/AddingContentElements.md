@@ -302,6 +302,25 @@ vendor/bin/typo3 cache:flush
 `extension:setup` is required whenever `config.yaml` gains fields backed by
 new columns or Collection tables.
 
+### Seed a demo record
+
+```bash
+vendor/bin/typo3 innesto:seed <page-uid>                   # all elements
+vendor/bin/typo3 innesto:seed <page-uid> -e case-studies   # one element
+```
+
+`innesto:seed` puts one demo record of every Innesto element onto the page so
+the graft can be inspected in the page module and on the frontend immediately.
+It is idempotent — existing records of an element's CType on that page are
+skipped (`--force` deletes and reseeds them). Values come from the element's
+`fixture.json` when present (the same flat `identifier => value` format
+Desiderio uses, Collections as arrays of item objects), otherwise they are
+derived from `config.yaml`: Collections get two child rows (data-point series
+six), Selects their default, Numbers plausible percentages. Records are
+created through DataHandler, so inline children, counter columns, and the
+reference index stay consistent. `File` fields are left empty — add images
+manually or ship a fixture once FAL seeding lands.
+
 ## Step 5 — Use it in the backend
 
 The element now appears in the **New Content Element wizard** under
