@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en">
+  <file id="innesto">
+    <unit id="contentElementGroup.ai">
+      <segment>
+        <source>AI Components</source>
+      </segment>
+    </unit>
+    <unit id="contentElementGroup.commandMenu">
+      <segment>
+        <source>Command Menu</source>
+      </segment>
+    </unit>
+    <unit id="contentElementGroup.dialogs">
+      <segment>
+        <source>Dialogs</source>
+      </segment>
+    </unit>
+    <unit id="contentElementGroup.fileUpload">
+      <segment>
+        <source>File Upload</source>
+      </segment>
+    </unit>
+    <unit id="contentElementGroup.formLayout">
+      <segment>
+        <source>Form Layout</source>
+      </segment>
+    </unit>
+    <unit id="contentElementGroup.gridList">
+      <segment>
+        <source>Grid List</source>
+      </segment>
+    </unit>
+    <unit id="contentElementGroup.login">
+      <segment>
+        <source>Login &amp; Signup</source>
+      </segment>
+    </unit>
+    <unit id="contentElementGroup.onboarding">
+      <segment>
+        <source>Onboarding</source>
+      </segment>
+    </unit>
+    <unit id="contentElementGroup.sidebar">
+      <segment>
+        <source>Sidebar</source>
+      </segment>
+    </unit>
+    <unit id="contentElementGroup.stats">
+      <segment>
+        <source>Stats</source>
+      </segment>
+    </unit>
+    <unit id="contentElementGroup.tables">
+      <segment>
+        <source>Tables</source>
+      </segment>
+    </unit>
+  </file>
+</xliff>
