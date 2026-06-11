@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en">
+  <file id="stats-usage-dashboard">
+    <unit id="title">
+      <segment>
+        <source>Stats Usage Dashboard</source>
+      </segment>
+    </unit>
+    <unit id="description">
+      <segment>
+        <source>Usage dashboard card listing metered resources, each row pairing a donut progress ring with current value and limit — grafted from the blocks.so stats-12 registry component.</source>
+      </segment>
+    </unit>
+  </file>
+</xliff>

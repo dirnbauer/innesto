@@ -1,0 +1,84 @@
+name: innesto/stats-usage-dashboard
+typeName: innesto_statsusagedashboard
+title: 'Stats Usage Dashboard'
+description: 'Usage dashboard card listing metered resources, each row pairing a donut progress ring with current value and limit — grafted from the blocks.so stats-12 registry component.'
+group: stats
+prefixFields: false
+basics:
+  - TYPO3/Appearance
+fields:
+  -
+    identifier: eyebrow
+    type: Textarea
+    rows: 1
+    label: 'Eyebrow text'
+    description: 'Short line above the heading'
+  -
+    identifier: header
+    useExistingField: true
+    label: 'Heading'
+  -
+    identifier: period_label
+    type: Textarea
+    rows: 1
+    prefixField: true
+    label: 'Period label'
+    description: 'Reporting period shown as the card title, e.g. "Last 30 days"'
+  -
+    identifier: updated_label
+    type: Textarea
+    rows: 1
+    prefixField: true
+    label: 'Updated label'
+    description: 'Freshness note below the period, e.g. "Updated just now"'
+  -
+    identifier: cta_text
+    type: Textarea
+    rows: 1
+    prefixField: true
+    label: 'Button text'
+    description: 'e.g. Upgrade — the button is only shown when text and link are set'
+  -
+    identifier: cta_link
+    type: Link
+    prefixField: true
+    label: 'Button link'
+  -
+    identifier: stats_usage_dashboard_items
+    type: Collection
+    table: innesto_stats_usage_dashboard_items
+    prefixField: true
+    label: 'Usage rows'
+    minItems: 1
+    fields:
+      -
+        identifier: title
+        type: Textarea
+        rows: 1
+        label: 'Resource name'
+        description: 'e.g. ISR Reads, Edge Requests'
+        required: true
+      -
+        identifier: current_value
+        type: Textarea
+        rows: 1
+        label: 'Current usage'
+        description: 'e.g. 358K, 3.07 GB'
+        required: true
+      -
+        identifier: limit_value
+        type: Textarea
+        rows: 1
+        label: 'Limit'
+        description: 'Included quota, e.g. 1M, 10 GB'
+        required: true
+      -
+        identifier: percent
+        type: Number
+        format: decimal
+        label: 'Percent used'
+        description: 'Fill level of the donut ring (0–100)'
+        default: 0
+        range:
+          lower: 0
+          upper: 100

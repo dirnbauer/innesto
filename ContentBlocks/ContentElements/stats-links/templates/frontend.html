@@ -1,0 +1,41 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:cb="http://typo3.org/ns/TYPO3/CMS/ContentBlocks/ViewHelpers"
+      xmlns:d="http://typo3.org/ns/Webconsulting/Desiderio/Components/ComponentCollection"
+      data-namespace-typo3-fluid="true">
+
+<f:asset.css identifier="innesto-stats-links" href="{cb:assetPath()}/frontend.css"/>
+
+<d:layout.section spacing="md" class="innesto-stats-links-section">
+    <d:layout.container>
+        <f:if condition="{data.header}">
+            <h2 class="innesto-stats-links__headline">{data -> f:render.text(field: 'header')}</h2>
+        </f:if>
+
+        <dl class="innesto-stats-links">
+            <f:for each="{data.stats_links_items}" as="entry">
+                <div class="innesto-stats-links__card">
+                    <dt class="innesto-stats-links__head">
+                        <span class="innesto-stats-links__name">{entry.title}</span>
+                        <f:if condition="{entry.change}">
+                            <span class="innesto-stats-links__change {f:if(condition: '{entry.trend} == \'negative\'', then: 'innesto-stats-links__change--negative', else: 'innesto-stats-links__change--positive')}">{entry.change}</span>
+                        </f:if>
+                    </dt>
+                    <dd class="innesto-stats-links__value">{entry.value}</dd>
+                    <f:if condition="{entry.link}">
+                        <dd class="innesto-stats-links__footer">
+                            <f:link.typolink parameter="{entry.link}" class="innesto-stats-links__link">
+                                <f:if condition="{entry.link_text}">
+                                    <f:then>{entry.link_text}</f:then>
+                                    <f:else>View more</f:else>
+                                </f:if>
+                                <span class="innesto-stats-links__arrow" aria-hidden="true">→</span>
+                            </f:link.typolink>
+                        </dd>
+                    </f:if>
+                </div>
+            </f:for>
+        </dl>
+    </d:layout.container>
+</d:layout.section>
+
+</html>

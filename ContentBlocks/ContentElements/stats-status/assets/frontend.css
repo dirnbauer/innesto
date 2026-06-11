@@ -1,0 +1,166 @@
+/* Grafted from registry item "stats-06" (Stats with Status). Tokens map onto the Desiderio shadcn variables. */
+
+.innesto-stats-status__intro {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
+}
+.innesto-stats-status__eyebrow {
+    margin: 0;
+    font-weight: 500;
+    color: var(--foreground);
+}
+.innesto-stats-status__headline {
+    margin: 0;
+    font-size: clamp(2.25rem, 1.75rem + 2vw, 3rem);
+    font-weight: 500;
+    line-height: 1.15;
+    color: var(--foreground);
+}
+.innesto-stats-status__intro + .innesto-stats-status {
+    margin-top: 4rem;
+}
+
+.innesto-stats-status {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+@media (min-width: 40rem) {
+    .innesto-stats-status {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+@media (min-width: 64rem) {
+    .innesto-stats-status {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+.innesto-stats-status__card {
+    position: relative;
+    padding: 1.5rem;
+    background: var(--card);
+    color: var(--card-foreground);
+    border: 1px solid var(--border);
+    border-radius: calc(var(--radius, 0.625rem) + 0.125rem);
+    box-shadow: var(--shadow-sm);
+}
+.innesto-stats-status__card--within {
+    --innesto-status-color: var(--chart-2);
+}
+.innesto-stats-status__card--observe {
+    --innesto-status-color: var(--chart-4);
+}
+.innesto-stats-status__card--critical {
+    --innesto-status-color: var(--destructive);
+}
+
+.innesto-stats-status__name {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--muted-foreground);
+}
+.innesto-stats-status__value {
+    margin: 0;
+    font-size: 1.875rem;
+    font-weight: 600;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+    color: var(--foreground);
+}
+
+.innesto-stats-status__panel {
+    margin: 1.5rem 0 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem;
+    border-radius: calc(var(--radius, 0.625rem) - 0.25rem);
+    background: color-mix(in srgb, var(--muted) 60%, transparent);
+    transition: background-color 0.15s ease;
+}
+.innesto-stats-status__card:hover .innesto-stats-status__panel {
+    background: var(--muted);
+}
+
+.innesto-stats-status__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: calc(var(--radius, 0.625rem) - 0.375rem);
+    background: var(--innesto-status-color, var(--muted-foreground));
+    color: var(--card);
+}
+
+.innesto-stats-status__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    min-width: 0;
+}
+.innesto-stats-status__detail {
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.innesto-stats-status__link {
+    color: inherit;
+    text-decoration: none;
+}
+/* Stretch the link over the whole card, as upstream */
+.innesto-stats-status__link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+}
+.innesto-stats-status__link:focus-visible {
+    outline: none;
+}
+.innesto-stats-status__link:focus-visible::after {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+    border-radius: calc(var(--radius, 0.625rem) + 0.125rem);
+}
+
+.innesto-stats-status__state {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--foreground);
+}
+.innesto-stats-status__dot {
+    flex-shrink: 0;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 9999px;
+    background: var(--innesto-status-color, var(--muted-foreground));
+}
+
+.innesto-stats-status__chevron {
+    margin-left: auto;
+    flex-shrink: 0;
+    color: var(--muted-foreground);
+    opacity: 0.6;
+    transition: opacity 0.15s ease;
+}
+.innesto-stats-status__card:hover .innesto-stats-status__chevron {
+    opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .innesto-stats-status__panel,
+    .innesto-stats-status__chevron {
+        transition: none;
+    }
+}

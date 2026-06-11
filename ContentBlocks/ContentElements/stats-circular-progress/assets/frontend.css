@@ -1,0 +1,138 @@
+/* Grafted from registry item "stats-07" (Stats with Circular Progress). Tokens map onto the Desiderio shadcn variables. */
+
+.innesto-stats-circular-progress__intro {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+.innesto-stats-circular-progress__eyebrow {
+    margin: 0;
+    font-weight: 500;
+    color: var(--foreground);
+}
+.innesto-stats-circular-progress__headline {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 1.4;
+    text-wrap: balance;
+    color: var(--foreground);
+}
+.innesto-stats-circular-progress__lead {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.7;
+    text-wrap: pretty;
+    color: var(--muted-foreground);
+}
+.innesto-stats-circular-progress__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--primary);
+    text-decoration: none;
+}
+.innesto-stats-circular-progress__link:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+.innesto-stats-circular-progress__link-icon {
+    width: 1rem;
+    height: 1rem;
+    flex: none;
+}
+.innesto-stats-circular-progress__intro + .innesto-stats-circular-progress {
+    margin-top: 1.5rem;
+}
+
+.innesto-stats-circular-progress {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin: 0;
+    width: 100%;
+}
+@media (min-width: 40rem) {
+    .innesto-stats-circular-progress {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+@media (min-width: 64rem) {
+    .innesto-stats-circular-progress {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+.innesto-stats-circular-progress__card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--card);
+    color: var(--card-foreground);
+    border: 1px solid var(--border);
+    border-radius: calc(var(--radius, 0.625rem) + 0.125rem);
+    box-shadow: var(--shadow-sm);
+}
+
+.innesto-stats-circular-progress__ring {
+    position: relative;
+    flex: none;
+    width: 5rem;
+    height: 5rem;
+}
+.innesto-stats-circular-progress__chart {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.innesto-stats-circular-progress__track {
+    fill: none;
+    stroke: var(--muted);
+    stroke-width: 6;
+}
+.innesto-stats-circular-progress__fill {
+    fill: none;
+    stroke: var(--primary);
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-dasharray: 100;
+    stroke-dashoffset: calc(100 - var(--value, 0));
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    transition: stroke-dashoffset 0.4s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+    .innesto-stats-circular-progress__fill {
+        transition: none;
+    }
+}
+.innesto-stats-circular-progress__percent {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    color: var(--foreground);
+}
+
+.innesto-stats-circular-progress__body {
+    min-width: 0;
+}
+.innesto-stats-circular-progress__title {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    font-weight: 500;
+    color: var(--foreground);
+}
+.innesto-stats-circular-progress__description {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted-foreground);
+}

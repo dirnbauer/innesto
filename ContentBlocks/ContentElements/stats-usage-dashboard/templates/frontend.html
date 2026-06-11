@@ -1,0 +1,57 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:cb="http://typo3.org/ns/TYPO3/CMS/ContentBlocks/ViewHelpers"
+      xmlns:d="http://typo3.org/ns/Webconsulting/Desiderio/Components/ComponentCollection"
+      data-namespace-typo3-fluid="true">
+
+<f:asset.css identifier="innesto-stats-usage-dashboard" href="{cb:assetPath()}/frontend.css"/>
+
+<d:layout.section spacing="md" class="innesto-stats-usage-dashboard-section">
+    <d:layout.container>
+        <f:if condition="{data.eyebrow} || {data.header}">
+            <header class="innesto-stats-usage-dashboard__intro">
+                <f:if condition="{data.eyebrow}">
+                    <p class="innesto-stats-usage-dashboard__eyebrow">{data -> f:render.text(field: 'eyebrow')}</p>
+                </f:if>
+                <f:if condition="{data.header}">
+                    <h2 class="innesto-stats-usage-dashboard__headline">{data -> f:render.text(field: 'header')}</h2>
+                </f:if>
+            </header>
+        </f:if>
+
+        <article class="innesto-stats-usage-dashboard">
+            <f:if condition="{data.period_label} || {data.updated_label} || ({data.cta_text} && {data.cta_link})">
+                <header class="innesto-stats-usage-dashboard__header">
+                    <div class="innesto-stats-usage-dashboard__heading">
+                        <f:if condition="{data.period_label}">
+                            <h3 class="innesto-stats-usage-dashboard__period">{data.period_label}</h3>
+                        </f:if>
+                        <f:if condition="{data.updated_label}">
+                            <p class="innesto-stats-usage-dashboard__updated">{data.updated_label}</p>
+                        </f:if>
+                    </div>
+                    <f:if condition="{data.cta_text} && {data.cta_link}">
+                        <a class="innesto-stats-usage-dashboard__cta" href="{data.cta_link.url}" target="{data.cta_link.target}">{data.cta_text}</a>
+                    </f:if>
+                </header>
+            </f:if>
+
+            <f:if condition="{data.stats_usage_dashboard_items}">
+                <ul class="innesto-stats-usage-dashboard__rows">
+                    <f:for each="{data.stats_usage_dashboard_items}" as="entry" iteration="iterator">
+                        <li class="innesto-stats-usage-dashboard__row">
+                            <svg class="innesto-stats-usage-dashboard__donut" viewBox="0 0 24 24" aria-hidden="true" focusable="false" style="--value: {entry.percent};">
+                                <circle class="innesto-stats-usage-dashboard__donut-track" cx="12" cy="12" r="8" pathLength="100"/>
+                                <circle class="innesto-stats-usage-dashboard__donut-fill" cx="12" cy="12" r="8" pathLength="100"/>
+                            </svg>
+                            <span class="innesto-stats-usage-dashboard__name">{entry.title}</span>
+                            <span class="innesto-stats-usage-dashboard__usage">{entry.current_value} / <span class="innesto-stats-usage-dashboard__usage-limit">{entry.limit_value}</span></span>
+                            <span class="innesto-stats-usage-dashboard__sr">{entry.percent}&#37; used</span>
+                        </li>
+                    </f:for>
+                </ul>
+            </f:if>
+        </article>
+    </d:layout.container>
+</d:layout.section>
+
+</html>

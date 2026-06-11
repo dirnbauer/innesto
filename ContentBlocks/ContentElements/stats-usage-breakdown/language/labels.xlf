@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en">
+  <file id="stats-usage-breakdown">
+    <unit id="title">
+      <segment>
+        <source>Stats with Usage Breakdown</source>
+      </segment>
+    </unit>
+    <unit id="description">
+      <segment>
+        <source>A usage summary card with a total, a stacked breakdown bar and a color-coded legend — grafted from the blocks.so stats-14 registry component.</source>
+      </segment>
+    </unit>
+  </file>
+</xliff>

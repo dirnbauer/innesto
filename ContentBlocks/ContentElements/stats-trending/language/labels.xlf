@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en">
+  <file id="stats-trending">
+    <unit id="title">
+      <segment>
+        <source>Stats with Trending</source>
+      </segment>
+    </unit>
+    <unit id="description">
+      <segment>
+        <source>A segmented row of key-figure tiles, each pairing a metric value with a trending up or down change indicator — grafted from the blocks.so stats-01 registry component.</source>
+      </segment>
+    </unit>
+  </file>
+</xliff>

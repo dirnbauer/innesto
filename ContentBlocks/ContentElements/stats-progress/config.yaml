@@ -1,0 +1,57 @@
+name: innesto/stats-progress
+typeName: innesto_statsprogress
+title: 'Stats with Progress'
+description: 'Key metric cards pairing a value with a usage progress bar, percentage and limit caption — grafted from the blocks.so stats-09 registry component.'
+group: stats
+prefixFields: false
+basics:
+  - TYPO3/Appearance
+fields:
+  -
+    identifier: eyebrow
+    type: Textarea
+    rows: 1
+    label: 'Eyebrow text'
+    description: 'Short line above the heading'
+  -
+    identifier: header
+    useExistingField: true
+    label: 'Heading'
+  -
+    identifier: stats_progress_items
+    type: Collection
+    table: innesto_stats_progress_items
+    prefixField: true
+    label: 'Stats'
+    minItems: 1
+    fields:
+      -
+        identifier: title
+        type: Textarea
+        rows: 1
+        label: 'Title'
+        description: 'e.g. Requests, Credits, Storage'
+        required: true
+      -
+        identifier: value
+        type: Textarea
+        rows: 1
+        label: 'Value'
+        description: 'Current value, e.g. 996, $672, 1.85'
+        required: true
+      -
+        identifier: percent
+        type: Number
+        format: decimal
+        label: 'Percent'
+        description: 'Fill level of the progress bar (0–100)'
+        default: 0
+        range:
+          lower: 0
+          upper: 100
+      -
+        identifier: limit
+        type: Textarea
+        rows: 1
+        label: 'Limit'
+        description: 'Upper bound shown as "value of limit", e.g. 10,000 or 10GB'

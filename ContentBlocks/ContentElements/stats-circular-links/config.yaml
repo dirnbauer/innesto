@@ -1,0 +1,73 @@
+name: innesto/stats-circular-links
+typeName: innesto_statscircularlinks
+title: 'Stats with Circular Progress and Links'
+description: 'Stat cards pairing a circular progress ring with current/target figures and a footer link — grafted from the blocks.so stats-08 registry component.'
+group: stats
+prefixFields: false
+basics:
+  - TYPO3/Appearance
+fields:
+  -
+    identifier: header
+    useExistingField: true
+    label: 'Heading'
+  -
+    identifier: items
+    type: Collection
+    table: innesto_stats_circular_links_items
+    prefixField: true
+    label: 'Stats'
+    minItems: 1
+    fields:
+      -
+        identifier: title
+        type: Textarea
+        rows: 1
+        label: 'Caption'
+        description: 'Line below the figures, e.g. "Budget HR"'
+        required: true
+      -
+        identifier: value
+        type: Number
+        label: 'Progress (%)'
+        description: 'Ring fill and percentage label, 0–100'
+        default: 0
+        range:
+          lower: 0
+          upper: 100
+        required: true
+      -
+        identifier: current
+        type: Textarea
+        rows: 1
+        label: 'Current value'
+        description: 'e.g. "$250"'
+      -
+        identifier: total
+        type: Textarea
+        rows: 1
+        label: 'Target value'
+        description: 'e.g. "$1,000"'
+      -
+        identifier: color
+        type: Select
+        renderType: selectSingle
+        label: 'Ring color'
+        default: chart-1
+        items:
+          - { label: 'Chart 1', value: chart-1 }
+          - { label: 'Chart 2', value: chart-2 }
+          - { label: 'Chart 3', value: chart-3 }
+          - { label: 'Chart 4', value: chart-4 }
+          - { label: 'Chart 5', value: chart-5 }
+      -
+        identifier: link
+        type: Link
+        label: 'Link'
+        description: 'Footer link target — the footer is hidden when empty'
+      -
+        identifier: link_text
+        type: Textarea
+        rows: 1
+        label: 'Link text'
+        description: 'Defaults to "View more"'

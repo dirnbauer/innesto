@@ -1,0 +1,121 @@
+/* Grafted from registry item "stats-10" (Stats with Area Chart). Tokens map onto the Desiderio shadcn variables. */
+
+.innesto-stats-area-chart__intro {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
+}
+.innesto-stats-area-chart__eyebrow {
+    margin: 0;
+    font-weight: 500;
+    color: var(--foreground);
+}
+.innesto-stats-area-chart__headline {
+    margin: 0;
+    font-size: clamp(2.25rem, 1.75rem + 2vw, 3rem);
+    font-weight: 500;
+    line-height: 1.15;
+    color: var(--foreground);
+}
+.innesto-stats-area-chart__intro + .innesto-stats-area-chart {
+    margin-top: 3rem;
+}
+
+.innesto-stats-area-chart {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin: 0;
+}
+@media (min-width: 40rem) {
+    .innesto-stats-area-chart {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (min-width: 64rem) {
+    .innesto-stats-area-chart {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.innesto-stats-area-chart__card {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1rem 0;
+    background: var(--card);
+    color: var(--card-foreground);
+    border: 1px solid var(--border);
+    border-radius: calc(var(--radius, 0.625rem) + 0.125rem);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.innesto-stats-area-chart__name {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--foreground);
+}
+.innesto-stats-area-chart__ticker {
+    font-weight: 400;
+    color: var(--muted-foreground);
+}
+
+.innesto-stats-area-chart__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+}
+.innesto-stats-area-chart__value {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+.innesto-stats-area-chart__value--positive {
+    color: var(--chart-2);
+}
+.innesto-stats-area-chart__value--negative {
+    color: var(--destructive);
+}
+
+.innesto-stats-area-chart__change {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin: 0;
+    font-size: 0.875rem;
+}
+.innesto-stats-area-chart__change-absolute {
+    font-weight: 500;
+    color: var(--foreground);
+}
+.innesto-stats-area-chart__change-relative--positive {
+    color: var(--chart-2);
+}
+.innesto-stats-area-chart__change-relative--negative {
+    color: var(--destructive);
+}
+
+.innesto-stats-area-chart__chart {
+    margin-top: 0.5rem;
+    height: 4rem;
+    overflow: hidden;
+}
+.innesto-stats-area-chart__svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.innesto-stats-area-chart__line {
+    fill: none;
+    stroke: var(--chart-1);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+.innesto-stats-area-chart__area {
+    fill: var(--chart-1);
+    stroke: none;
+}

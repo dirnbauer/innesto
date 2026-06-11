@@ -1,0 +1,73 @@
+/* Grafted from registry item "stats-15" (Stats with Value Breakdown). Tokens map onto the Desiderio shadcn variables. */
+
+.innesto-stats-value-breakdown {
+    width: 100%;
+    max-width: 18rem;
+}
+
+.innesto-stats-value-breakdown__heading {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+    color: var(--foreground);
+    text-wrap: balance;
+}
+
+.innesto-stats-value-breakdown__list {
+    margin: 0.5rem 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+}
+
+.innesto-stats-value-breakdown__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 0;
+}
+.innesto-stats-value-breakdown__row + .innesto-stats-value-breakdown__row {
+    border-top: 1px solid var(--border);
+}
+
+.innesto-stats-value-breakdown__label {
+    color: var(--muted-foreground);
+}
+
+.innesto-stats-value-breakdown__figures {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.innesto-stats-value-breakdown__value {
+    text-align: right;
+    font-weight: 500;
+    color: var(--foreground);
+}
+
+.innesto-stats-value-breakdown__divider {
+    width: 1px;
+    height: 1.25rem;
+    background: var(--border);
+}
+
+.innesto-stats-value-breakdown__badge {
+    width: 3.75rem;
+    padding: 0.25rem 0.375rem;
+    border-radius: calc(var(--radius, 0.625rem) - 0.375rem);
+    text-align: center;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    font-weight: 600;
+    color: var(--chart-2);
+    background: color-mix(in srgb, var(--chart-2) 12%, transparent);
+}
+.innesto-stats-value-breakdown__badge--negative {
+    color: var(--destructive);
+    background: color-mix(in srgb, var(--destructive) 12%, transparent);
+}

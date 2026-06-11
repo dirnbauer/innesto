@@ -1,0 +1,54 @@
+name: innesto/stats-value-breakdown
+typeName: innesto_statsvaluebreakdown
+title: 'Stats with Value Breakdown'
+description: 'A compact value breakdown list pairing labelled amounts with change badges — grafted from the blocks.so stats-15 registry component.'
+group: stats
+prefixFields: false
+basics:
+  - TYPO3/Appearance
+fields:
+  -
+    identifier: header
+    useExistingField: true
+    label: 'Heading'
+  -
+    identifier: stats_value_breakdown_entries
+    type: Collection
+    table: innesto_stats_value_breakdown_entries
+    prefixField: true
+    label: 'Breakdown entries'
+    minItems: 1
+    fields:
+      -
+        identifier: title
+        type: Textarea
+        rows: 1
+        label: 'Label'
+        description: 'e.g. After 1 year'
+        required: true
+      -
+        identifier: value
+        type: Textarea
+        rows: 1
+        label: 'Value'
+        description: 'e.g. $2,400'
+        required: true
+      -
+        identifier: percentage
+        type: Textarea
+        rows: 1
+        label: 'Change'
+        description: 'e.g. +8.2% — leave empty to hide the badge'
+      -
+        identifier: trend
+        type: Select
+        renderType: selectSingle
+        label: 'Trend'
+        default: positive
+        items:
+          -
+            label: 'Positive'
+            value: positive
+          -
+            label: 'Negative'
+            value: negative

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" class="icon-root">
+  <title>Stats with status icon</title>
+  <style>.icon-root{color:var(--icon-color-primary,currentColor)}.accent{stroke:var(--icon-color-accent,currentColor);fill:none}</style>
+  <circle cx="3.2" cy="4" r="1.1"/>
+  <path d="M6.5 4h7"/>
+  <circle cx="3.2" cy="8" r="1.1" class="accent"/>
+  <path d="M6.5 8h7"/>
+  <circle cx="3.2" cy="12" r="1.1"/>
+  <path d="M6.5 12h7"/>
+</svg>

@@ -1,0 +1,68 @@
+name: innesto/stats-status
+typeName: innesto_statsstatus
+title: 'Stats with Status'
+description: 'A responsive grid of stat cards pairing a key figure with goal progress and a color-coded status indicator — grafted from the blocks.so stats-06 registry component.'
+group: stats
+prefixFields: false
+basics:
+  - TYPO3/Appearance
+fields:
+  -
+    identifier: eyebrow
+    type: Textarea
+    rows: 1
+    label: 'Eyebrow text'
+    description: 'Optional short line above the heading'
+  -
+    identifier: header
+    useExistingField: true
+    label: 'Heading'
+  -
+    identifier: stats_status_items
+    type: Collection
+    table: innesto_stats_status_items
+    prefixField: true
+    label: 'Stats'
+    minItems: 1
+    fields:
+      -
+        identifier: title
+        type: Textarea
+        rows: 1
+        label: 'Name'
+        description: 'e.g. Europe, North America'
+        required: true
+      -
+        identifier: value
+        type: Textarea
+        rows: 1
+        label: 'Value'
+        description: 'e.g. $10,023'
+        required: true
+      -
+        identifier: detail
+        type: Textarea
+        rows: 1
+        label: 'Goal progress'
+        description: 'Short progress note, e.g. 3/5 goals'
+      -
+        identifier: status
+        type: Select
+        renderType: selectSingle
+        label: 'Status'
+        default: within
+        items:
+          -
+            label: 'Within target'
+            value: within
+          -
+            label: 'Observe'
+            value: observe
+          -
+            label: 'Critical'
+            value: critical
+      -
+        identifier: link
+        type: Link
+        label: 'Link'
+        description: 'Optional link; the goal progress text becomes a link covering the whole card'

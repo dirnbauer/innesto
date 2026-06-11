@@ -1,0 +1,39 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:cb="http://typo3.org/ns/TYPO3/CMS/ContentBlocks/ViewHelpers"
+      xmlns:d="http://typo3.org/ns/Webconsulting/Desiderio/Components/ComponentCollection"
+      data-namespace-typo3-fluid="true">
+
+<f:asset.css identifier="innesto-stats-cards" href="{cb:assetPath()}/frontend.css"/>
+
+<d:layout.section spacing="md" class="innesto-stats-cards-section">
+    <d:layout.container>
+        <f:if condition="{data.eyebrow} || {data.header}">
+            <header class="innesto-stats-cards__intro">
+                <f:if condition="{data.eyebrow}">
+                    <p class="innesto-stats-cards__eyebrow">{data -> f:render.text(field: 'eyebrow')}</p>
+                </f:if>
+                <f:if condition="{data.header}">
+                    <h2 class="innesto-stats-cards__headline">{data -> f:render.text(field: 'header')}</h2>
+                </f:if>
+            </header>
+        </f:if>
+
+        <f:if condition="{data.stats_cards_items}">
+            <dl class="innesto-stats-cards">
+                <f:for each="{data.stats_cards_items}" as="entry" iteration="iterator">
+                    <div class="innesto-stats-cards__card">
+                        <dt class="innesto-stats-cards__name">{entry.title}</dt>
+                        <dd class="innesto-stats-cards__figure">
+                            <span class="innesto-stats-cards__value">{entry.value}</span>
+                            <f:if condition="{entry.change}">
+                                <span class="innesto-stats-cards__change {f:if(condition: '{entry.change_type} == \'negative\'', then: 'innesto-stats-cards__change--negative', else: 'innesto-stats-cards__change--positive')}">{entry.change}</span>
+                            </f:if>
+                        </dd>
+                    </div>
+                </f:for>
+            </dl>
+        </f:if>
+    </d:layout.container>
+</d:layout.section>
+
+</html>

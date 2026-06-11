@@ -9,3 +9,18 @@ optionalDependencies:
   - innesto/marquee
   - innesto/orbiting-circles
   - innesto/case-studies
+  - innesto/stats-trending
+  - innesto/stats-borders
+  - innesto/stats-cards
+  - innesto/stats-badges
+  - innesto/stats-links
+  - innesto/stats-status
+  - innesto/stats-circular-progress
+  - innesto/stats-circular-links
+  - innesto/stats-progress
+  - innesto/stats-area-chart
+  - innesto/stats-dashboard
+  - innesto/stats-usage-dashboard
+  - innesto/stats-segmented-progress
+  - innesto/stats-usage-breakdown
+  - innesto/stats-value-breakdown

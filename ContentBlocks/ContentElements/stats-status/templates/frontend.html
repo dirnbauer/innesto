@@ -1,0 +1,70 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:cb="http://typo3.org/ns/TYPO3/CMS/ContentBlocks/ViewHelpers"
+      xmlns:d="http://typo3.org/ns/Webconsulting/Desiderio/Components/ComponentCollection"
+      data-namespace-typo3-fluid="true">
+
+<f:asset.css identifier="innesto-stats-status" href="{cb:assetPath()}/frontend.css"/>
+
+<d:layout.section spacing="md" class="innesto-stats-status-section">
+    <d:layout.container>
+        <f:if condition="{data.eyebrow} || {data.header}">
+            <header class="innesto-stats-status__intro">
+                <f:if condition="{data.eyebrow}">
+                    <p class="innesto-stats-status__eyebrow">{data -> f:render.text(field: 'eyebrow')}</p>
+                </f:if>
+                <f:if condition="{data.header}">
+                    <h2 class="innesto-stats-status__headline">{data -> f:render.text(field: 'header')}</h2>
+                </f:if>
+            </header>
+        </f:if>
+
+        <f:if condition="{data.stats_status_items}">
+            <dl class="innesto-stats-status">
+                <f:for each="{data.stats_status_items}" as="entry" iteration="iterator">
+                    <div class="innesto-stats-status__card innesto-stats-status__card--{entry.status}">
+                        <dt class="innesto-stats-status__name">{entry.title}</dt>
+                        <dd class="innesto-stats-status__value">{entry.value}</dd>
+                        <dd class="innesto-stats-status__panel">
+                            <span class="innesto-stats-status__icon" aria-hidden="true">
+                                <f:switch expression="{entry.status}">
+                                    <f:case value="observe">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1.8 8s2.4-4.3 6.2-4.3S14.2 8 14.2 8s-2.4 4.3-6.2 4.3S1.8 8 1.8 8Z"/><circle cx="8" cy="8" r="1.9"/></svg>
+                                    </f:case>
+                                    <f:case value="critical">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2.6 14.4 13.4H1.6L8 2.6Z"/><path d="M8 6.8v2.7"/><path d="M8 11.8v.01"/></svg>
+                                    </f:case>
+                                    <f:defaultCase>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3.5 8.5 3 3 6-6.5"/></svg>
+                                    </f:defaultCase>
+                                </f:switch>
+                            </span>
+                            <span class="innesto-stats-status__meta">
+                                <f:if condition="{entry.detail}">
+                                    <span class="innesto-stats-status__detail">
+                                        <f:if condition="{entry.link}">
+                                            <f:then>
+                                                <f:link.typolink parameter="{entry.link}" class="innesto-stats-status__link">{entry.detail}</f:link.typolink>
+                                            </f:then>
+                                            <f:else>{entry.detail}</f:else>
+                                        </f:if>
+                                    </span>
+                                </f:if>
+                                <span class="innesto-stats-status__state">
+                                    <span class="innesto-stats-status__dot" aria-hidden="true"></span>
+                                    <f:switch expression="{entry.status}">
+                                        <f:case value="observe">Observe</f:case>
+                                        <f:case value="critical">Critical</f:case>
+                                        <f:defaultCase>Within target</f:defaultCase>
+                                    </f:switch>
+                                </span>
+                            </span>
+                            <svg class="innesto-stats-status__chevron" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7.5 5 5 5-5 5"/></svg>
+                        </dd>
+                    </div>
+                </f:for>
+            </dl>
+        </f:if>
+    </d:layout.container>
+</d:layout.section>
+
+</html>

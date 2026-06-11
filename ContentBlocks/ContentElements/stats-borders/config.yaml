@@ -1,0 +1,66 @@
+name: innesto/stats-borders
+typeName: innesto_statsborders
+title: 'Stats with Borders'
+description: 'Key metrics in border-divided cells, each pairing the current value with a previous-period comparison and a color-coded trend badge — grafted from the blocks.so stats-02 registry component.'
+group: stats
+prefixFields: false
+basics:
+  - TYPO3/Appearance
+fields:
+  -
+    identifier: eyebrow
+    type: Textarea
+    rows: 1
+    label: 'Eyebrow text'
+    description: 'Optional short line above the heading'
+  -
+    identifier: header
+    useExistingField: true
+    label: 'Heading'
+  -
+    identifier: stats_borders_items
+    type: Collection
+    table: innesto_stats_borders_items
+    prefixField: true
+    label: 'Stats'
+    minItems: 1
+    fields:
+      -
+        identifier: title
+        type: Textarea
+        rows: 1
+        label: 'Metric name'
+        description: 'e.g. Active Users, Conversion Rate'
+        required: true
+      -
+        identifier: value
+        type: Textarea
+        rows: 1
+        label: 'Current value'
+        description: 'e.g. 128,456 or 3m 42s'
+        required: true
+      -
+        identifier: previous
+        type: Textarea
+        rows: 1
+        label: 'Comparison text'
+        description: 'Small text after the value, e.g. "from 115,789"'
+      -
+        identifier: difference
+        type: Textarea
+        rows: 1
+        label: 'Change'
+        description: 'Badge text, e.g. 10.9%'
+      -
+        identifier: trend
+        type: Select
+        renderType: selectSingle
+        label: 'Trend direction'
+        default: up
+        items:
+          -
+            label: 'Trending up'
+            value: up
+          -
+            label: 'Trending down'
+            value: down

@@ -1,0 +1,120 @@
+/* Grafted from registry item "stats-11" (Stats Dashboard with Progress Bars). Tokens map onto the Desiderio shadcn variables. */
+
+.innesto-stats-dashboard__intro {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
+}
+.innesto-stats-dashboard__eyebrow {
+    margin: 0;
+    font-weight: 500;
+    color: var(--foreground);
+}
+.innesto-stats-dashboard__headline {
+    margin: 0;
+    font-size: clamp(2.25rem, 1.75rem + 2vw, 3rem);
+    font-weight: 500;
+    line-height: 1.15;
+    color: var(--foreground);
+}
+.innesto-stats-dashboard__intro + .innesto-stats-dashboard {
+    margin-top: 3rem;
+}
+
+.innesto-stats-dashboard {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    margin: 0;
+    width: 100%;
+}
+@media (min-width: 48rem) {
+    .innesto-stats-dashboard {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+@media (min-width: 64rem) {
+    .innesto-stats-dashboard {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+.innesto-stats-dashboard__metric {
+    padding: 1.5rem 1rem;
+    background: var(--card);
+    color: var(--card-foreground);
+    border: 1px solid var(--border);
+    border-radius: calc(var(--radius, 0.625rem) + 0.125rem);
+    box-shadow: var(--shadow-sm);
+}
+
+.innesto-stats-dashboard__title {
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+}
+
+.innesto-stats-dashboard__reading {
+    margin: 0.5rem 0 0;
+    display: flex;
+    align-items: baseline;
+    gap: 0.25rem;
+}
+.innesto-stats-dashboard__value {
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: var(--foreground);
+}
+.innesto-stats-dashboard__target {
+    font-size: 0.75rem;
+    line-height: 1;
+    color: var(--muted-foreground);
+}
+
+.innesto-stats-dashboard__bar {
+    margin: 0.75rem 0 0;
+}
+.innesto-stats-dashboard__track {
+    height: 0.25rem;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--muted);
+}
+.innesto-stats-dashboard__fill {
+    height: 100%;
+    width: calc(min(var(--value, 0), 100) * 1%);
+    border-radius: inherit;
+    background: var(--chart-1);
+    transition: width 0.2s ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+    .innesto-stats-dashboard__fill {
+        transition: none;
+    }
+}
+.innesto-stats-dashboard__metric--positive .innesto-stats-dashboard__fill {
+    background: var(--chart-2);
+}
+.innesto-stats-dashboard__metric--warning .innesto-stats-dashboard__fill {
+    background: var(--destructive);
+}
+
+.innesto-stats-dashboard__subtext {
+    margin: 0.5rem 0 0;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    color: var(--muted-foreground);
+}
+.innesto-stats-dashboard__metric--positive .innesto-stats-dashboard__subtext {
+    color: var(--chart-2);
+}
+.innesto-stats-dashboard__metric--warning .innesto-stats-dashboard__subtext {
+    color: var(--destructive);
+}

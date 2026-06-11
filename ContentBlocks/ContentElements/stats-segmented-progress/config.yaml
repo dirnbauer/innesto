@@ -1,0 +1,107 @@
+name: innesto/stats-segmented-progress
+typeName: innesto_statssegmentedprogress
+title: 'Stats with Segmented Progress'
+description: 'A usage summary with a single segmented progress bar splitting capacity into colored shares plus a swatch legend — grafted from the blocks.so stats-13 registry component.'
+group: stats
+prefixFields: false
+basics:
+  - TYPO3/Appearance
+fields:
+  -
+    identifier: eyebrow
+    type: Textarea
+    rows: 1
+    label: 'Eyebrow text'
+    description: 'Short line above the heading'
+  -
+    identifier: header
+    useExistingField: true
+    label: 'Heading'
+  -
+    identifier: summary_text
+    type: Textarea
+    rows: 1
+    prefixField: true
+    label: 'Summary text'
+    description: 'Lead-in before the used value, e.g. "Using Storage"'
+  -
+    identifier: used_value
+    type: Textarea
+    rows: 1
+    prefixField: true
+    label: 'Used value'
+    description: 'Highlighted amount, e.g. "8,300 MB"'
+  -
+    identifier: total_text
+    type: Textarea
+    rows: 1
+    prefixField: true
+    label: 'Total text'
+    description: 'Shown after the used value, e.g. "of 15 GB"'
+  -
+    identifier: segments
+    type: Collection
+    table: innesto_stats_segmented_progress_segments
+    prefixField: true
+    label: 'Segments'
+    minItems: 1
+    fields:
+      -
+        identifier: title
+        type: Textarea
+        rows: 1
+        label: 'Title'
+        description: 'e.g. Documents, Photos, Videos'
+        required: true
+      -
+        identifier: amount
+        type: Textarea
+        rows: 1
+        label: 'Amount'
+        description: 'Value shown in the legend, e.g. "2,400 MB"'
+      -
+        identifier: percent
+        type: Number
+        format: decimal
+        label: 'Percent'
+        description: 'Share of the whole bar this segment fills (0–100)'
+        default: 0
+        range:
+          lower: 0
+          upper: 100
+      -
+        identifier: color
+        type: Select
+        renderType: selectSingle
+        label: 'Color'
+        default: chart-1
+        items:
+          -
+            label: 'Chart color 1'
+            value: chart-1
+          -
+            label: 'Chart color 2'
+            value: chart-2
+          -
+            label: 'Chart color 3'
+            value: chart-3
+          -
+            label: 'Chart color 4'
+            value: chart-4
+          -
+            label: 'Chart color 5'
+            value: chart-5
+  -
+    identifier: free_title
+    type: Textarea
+    rows: 1
+    prefixField: true
+    label: 'Free label'
+    description: 'Legend entry for the remaining capacity, e.g. "Free" — leave empty to hide'
+  -
+    identifier: free_amount
+    type: Textarea
+    rows: 1
+    prefixField: true
+    label: 'Free amount'
+    description: 'Remaining value shown next to the free label, e.g. "6,700 MB"'

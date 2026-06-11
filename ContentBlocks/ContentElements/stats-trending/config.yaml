@@ -1,0 +1,60 @@
+name: innesto/stats-trending
+typeName: innesto_statstrending
+title: 'Stats with Trending'
+description: 'A segmented row of key-figure tiles, each pairing a metric value with a trending up or down change indicator — grafted from the blocks.so stats-01 registry component.'
+group: stats
+prefixFields: false
+basics:
+  - TYPO3/Appearance
+fields:
+  -
+    identifier: eyebrow
+    type: Textarea
+    rows: 1
+    label: 'Eyebrow text'
+    description: 'Optional short line above the heading'
+  -
+    identifier: header
+    useExistingField: true
+    label: 'Heading'
+  -
+    identifier: stats_trending_items
+    type: Collection
+    table: innesto_stats_trending_items
+    prefixField: true
+    label: 'Stats'
+    minItems: 1
+    fields:
+      -
+        identifier: title
+        type: Textarea
+        rows: 1
+        label: 'Name'
+        description: 'e.g. Profit, Late payments'
+        required: true
+      -
+        identifier: value
+        type: Textarea
+        rows: 1
+        label: 'Value'
+        description: 'e.g. $287,654.00'
+        required: true
+      -
+        identifier: delta
+        type: Textarea
+        rows: 1
+        label: 'Change'
+        description: 'e.g. +8.32% or -12.64%'
+      -
+        identifier: trend
+        type: Select
+        renderType: selectSingle
+        label: 'Trend direction'
+        default: up
+        items:
+          -
+            label: 'Trending up'
+            value: up
+          -
+            label: 'Trending down'
+            value: down

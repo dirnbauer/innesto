@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en">
+  <file id="stats-cards">
+    <unit id="title">
+      <segment>
+        <source>Stats with Card Layout</source>
+      </segment>
+    </unit>
+    <unit id="description">
+      <segment>
+        <source>A responsive grid of stat cards, each pairing a metric value with a positive or negative change indicator — grafted from the blocks.so stats-03 registry component.</source>
+      </segment>
+    </unit>
+  </file>
+</xliff>

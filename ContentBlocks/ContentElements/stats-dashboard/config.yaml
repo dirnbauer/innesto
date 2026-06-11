@@ -1,0 +1,80 @@
+name: innesto/stats-dashboard
+typeName: innesto_statsdashboard
+title: 'Stats Dashboard with Progress Bars'
+description: 'Usage metric cards pairing a value and optional target with a tonal progress bar and status subtext — grafted from the blocks.so stats-11 registry component.'
+group: stats
+prefixFields: false
+basics:
+  - TYPO3/Appearance
+fields:
+  -
+    identifier: eyebrow
+    type: Textarea
+    rows: 1
+    label: 'Eyebrow text'
+    description: 'Short line above the heading'
+  -
+    identifier: header
+    useExistingField: true
+    label: 'Heading'
+  -
+    identifier: stats_dashboard_metrics
+    type: Collection
+    table: innesto_stats_dashboard_metrics
+    prefixField: true
+    label: 'Metrics'
+    minItems: 1
+    fields:
+      -
+        identifier: title
+        type: Textarea
+        rows: 1
+        label: 'Title'
+        description: 'e.g. Commands, Bandwidth, Storage, Cost'
+        required: true
+      -
+        identifier: value
+        type: Textarea
+        rows: 1
+        label: 'Value'
+        description: 'Current value, e.g. 13.8M, 141 GB, $73.42'
+        required: true
+      -
+        identifier: target
+        type: Textarea
+        rows: 1
+        label: 'Target'
+        description: 'Upper bound shown after the value, e.g. 150 GB, $150 Budget or Unlimited'
+      -
+        identifier: percent
+        type: Number
+        format: decimal
+        label: 'Percent'
+        description: 'Fill level of the progress bar (0–100)'
+        default: 0
+        range:
+          lower: 0
+          upper: 100
+      -
+        identifier: subtext
+        type: Textarea
+        rows: 1
+        label: 'Subtext'
+        description: 'Status or warning line under the bar, e.g. "It''s all right."'
+      -
+        identifier: tone
+        type: Select
+        renderType: selectSingle
+        label: 'Tone'
+        description: 'Colors the progress bar and the subtext'
+        default: neutral
+        items:
+          -
+            label: 'Neutral'
+            value: neutral
+          -
+            label: 'Positive'
+            value: positive
+          -
+            label: 'Warning'
+            value: warning

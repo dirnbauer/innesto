@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en">
+  <file id="stats-value-breakdown">
+    <unit id="title">
+      <segment>
+        <source>Stats with Value Breakdown</source>
+      </segment>
+    </unit>
+    <unit id="description">
+      <segment>
+        <source>A compact value breakdown list pairing labelled amounts with change badges — grafted from the blocks.so stats-15 registry component.</source>
+      </segment>
+    </unit>
+  </file>
+</xliff>

@@ -1,0 +1,41 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:cb="http://typo3.org/ns/TYPO3/CMS/ContentBlocks/ViewHelpers"
+      xmlns:d="http://typo3.org/ns/Webconsulting/Desiderio/Components/ComponentCollection"
+      data-namespace-typo3-fluid="true">
+
+<f:asset.css identifier="innesto-stats-value-breakdown" href="{cb:assetPath()}/frontend.css"/>
+
+<d:layout.section spacing="md" class="innesto-stats-value-breakdown-section">
+    <d:layout.container>
+        <div class="innesto-stats-value-breakdown">
+            <f:if condition="{data.header}">
+                <h2 class="innesto-stats-value-breakdown__heading">{data -> f:render.text(field: 'header')}</h2>
+            </f:if>
+            <f:if condition="{data.stats_value_breakdown_entries}">
+                <ul class="innesto-stats-value-breakdown__list" role="list">
+                    <f:for each="{data.stats_value_breakdown_entries}" as="entry" iteration="iterator">
+                        <li class="innesto-stats-value-breakdown__row">
+                            <span class="innesto-stats-value-breakdown__label">{entry.title}</span>
+                            <span class="innesto-stats-value-breakdown__figures">
+                                <span class="innesto-stats-value-breakdown__value">{entry.value}</span>
+                                <f:if condition="{entry.percentage}">
+                                    <span class="innesto-stats-value-breakdown__divider" aria-hidden="true"></span>
+                                    <f:if condition="{entry.trend} == 'negative'">
+                                        <f:then>
+                                            <span class="innesto-stats-value-breakdown__badge innesto-stats-value-breakdown__badge--negative">{entry.percentage}</span>
+                                        </f:then>
+                                        <f:else>
+                                            <span class="innesto-stats-value-breakdown__badge">{entry.percentage}</span>
+                                        </f:else>
+                                    </f:if>
+                                </f:if>
+                            </span>
+                        </li>
+                    </f:for>
+                </ul>
+            </f:if>
+        </div>
+    </d:layout.container>
+</d:layout.section>
+
+</html>

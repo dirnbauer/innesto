@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en">
+  <file id="stats-borders">
+    <unit id="title">
+      <segment>
+        <source>Stats with Borders</source>
+      </segment>
+    </unit>
+    <unit id="description">
+      <segment>
+        <source>Key metrics in border-divided cells, each pairing the current value with a previous-period comparison and a color-coded trend badge — grafted from the blocks.so stats-02 registry component.</source>
+      </segment>
+    </unit>
+  </file>
+</xliff>

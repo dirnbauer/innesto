@@ -1,0 +1,50 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:cb="http://typo3.org/ns/TYPO3/CMS/ContentBlocks/ViewHelpers"
+      xmlns:d="http://typo3.org/ns/Webconsulting/Desiderio/Components/ComponentCollection"
+      data-namespace-typo3-fluid="true">
+
+<f:asset.css identifier="innesto-stats-circular-links" href="{cb:assetPath()}/frontend.css"/>
+
+<d:layout.section spacing="md" class="innesto-stats-circular-links-section">
+    <d:layout.container>
+        <f:if condition="{data.header}">
+            <h2 class="innesto-stats-circular-links__headline">{data -> f:render.text(field: 'header')}</h2>
+        </f:if>
+
+        <div class="innesto-stats-circular-links">
+            <f:for each="{data.items}" as="entry">
+                <article class="innesto-stats-circular-links__card">
+                    <div class="innesto-stats-circular-links__content">
+                        <div class="innesto-stats-circular-links__ring innesto-stats-circular-links__ring--{entry.color -> f:or(alternative: 'chart-1')}" style="--value: {entry.value -> f:or(alternative: 0)};">
+                            <svg class="innesto-stats-circular-links__ring-svg" viewBox="0 0 80 80" aria-hidden="true" focusable="false">
+                                <circle class="innesto-stats-circular-links__ring-track" cx="40" cy="40" r="35" pathLength="100"/>
+                                <circle class="innesto-stats-circular-links__ring-fill" cx="40" cy="40" r="35" pathLength="100"/>
+                            </svg>
+                            <span class="innesto-stats-circular-links__ring-value">{entry.value -> f:or(alternative: 0)}%</span>
+                        </div>
+                        <div class="innesto-stats-circular-links__figures">
+                            <f:if condition="{entry.current} && {entry.total}">
+                                <f:then>
+                                    <p class="innesto-stats-circular-links__value">{entry.current} / {entry.total}</p>
+                                </f:then>
+                                <f:else>
+                                    <f:if condition="{entry.current} || {entry.total}">
+                                        <p class="innesto-stats-circular-links__value">{entry.current}{entry.total}</p>
+                                    </f:if>
+                                </f:else>
+                            </f:if>
+                            <p class="innesto-stats-circular-links__caption">{entry.title}</p>
+                        </div>
+                    </div>
+                    <f:if condition="{entry.link}">
+                        <footer class="innesto-stats-circular-links__footer">
+                            <f:link.typolink parameter="{entry.link}" class="innesto-stats-circular-links__link">{entry.link_text -> f:or(alternative: 'View more')} <span aria-hidden="true">→</span></f:link.typolink>
+                        </footer>
+                    </f:if>
+                </article>
+            </f:for>
+        </div>
+    </d:layout.container>
+</d:layout.section>
+
+</html>

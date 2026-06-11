@@ -1,0 +1,173 @@
+/* Grafted from registry item "stats-12" (Stats Usage Dashboard). Tokens map onto the Desiderio shadcn variables. */
+
+.innesto-stats-usage-dashboard__intro {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 2.5rem;
+}
+.innesto-stats-usage-dashboard__eyebrow {
+    margin: 0;
+    font-weight: 500;
+    color: var(--muted-foreground);
+}
+.innesto-stats-usage-dashboard__headline {
+    margin: 0;
+    font-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem);
+    font-weight: 500;
+    line-height: 1.15;
+    color: var(--foreground);
+}
+
+/* Card (upstream: Card w-full max-w-md gap-3 py-5 shadow-2xs) */
+.innesto-stats-usage-dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+    max-width: 28rem;
+    padding: 1.25rem 0;
+    background: var(--card);
+    color: var(--card-foreground);
+    border: 1px solid var(--border);
+    border-radius: calc(var(--radius, 0.625rem) + 0.125rem);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Card header */
+.innesto-stats-usage-dashboard__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0 1.25rem;
+}
+.innesto-stats-usage-dashboard__heading {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+.innesto-stats-usage-dashboard__period {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.25rem;
+    color: var(--card-foreground);
+    text-wrap: balance;
+}
+.innesto-stats-usage-dashboard__updated {
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1rem;
+    color: var(--muted-foreground);
+    text-wrap: pretty;
+}
+.innesto-stats-usage-dashboard__cta {
+    display: inline-flex;
+    align-items: center;
+    flex: none;
+    height: 1.5rem;
+    padding: 0 0.625rem;
+    background: var(--primary);
+    color: var(--primary-foreground);
+    border-radius: calc(var(--radius, 0.625rem) - 0.25rem);
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+}
+.innesto-stats-usage-dashboard__cta:hover,
+.innesto-stats-usage-dashboard__cta:focus-visible {
+    background: color-mix(in srgb, var(--primary) 90%, transparent);
+    color: var(--primary-foreground);
+}
+
+/* Usage rows */
+.innesto-stats-usage-dashboard__rows {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0 0.75rem;
+    list-style: none;
+}
+.innesto-stats-usage-dashboard__row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.15s ease;
+}
+.innesto-stats-usage-dashboard__row:nth-child(even) {
+    background: color-mix(in srgb, var(--muted) 20%, transparent);
+}
+.innesto-stats-usage-dashboard__row:hover {
+    background: color-mix(in srgb, var(--muted) 50%, transparent);
+}
+
+/* Donut progress ring (pure SVG, fill driven by --value 0-100) */
+.innesto-stats-usage-dashboard__donut {
+    width: 1.5rem;
+    height: 1.5rem;
+    flex: none;
+}
+.innesto-stats-usage-dashboard__donut-track,
+.innesto-stats-usage-dashboard__donut-fill {
+    fill: none;
+    stroke-width: 4;
+}
+.innesto-stats-usage-dashboard__donut-track {
+    stroke: var(--muted);
+}
+.innesto-stats-usage-dashboard__donut-fill {
+    stroke: var(--primary);
+    stroke-dasharray: 100;
+    stroke-dashoffset: calc(100 - clamp(0, var(--value, 0), 100));
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+}
+
+.innesto-stats-usage-dashboard__name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    font-size: 0.875rem;
+    line-height: 1rem;
+    color: var(--card-foreground);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.innesto-stats-usage-dashboard__usage {
+    font-size: 0.75rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.04em;
+    color: var(--muted-foreground);
+    white-space: nowrap;
+}
+.innesto-stats-usage-dashboard__usage-limit {
+    color: var(--foreground);
+}
+
+/* Screen-reader-only percentage */
+.innesto-stats-usage-dashboard__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .innesto-stats-usage-dashboard__cta,
+    .innesto-stats-usage-dashboard__row {
+        transition: none;
+    }
+}

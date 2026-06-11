@@ -1,0 +1,118 @@
+name: innesto/stats-usage-breakdown
+typeName: innesto_statsusagebreakdown
+title: 'Stats with Usage Breakdown'
+description: 'A usage summary card with a total, a stacked breakdown bar and a color-coded legend — grafted from the blocks.so stats-14 registry component.'
+group: stats
+prefixFields: false
+basics:
+  - TYPO3/Appearance
+fields:
+  -
+    identifier: eyebrow
+    type: Textarea
+    rows: 1
+    label: 'Eyebrow text'
+    description: 'Short line above the heading'
+  -
+    identifier: header
+    useExistingField: true
+    label: 'Heading'
+  -
+    identifier: card_title
+    type: Textarea
+    rows: 1
+    prefixField: true
+    label: 'Card title'
+    description: 'e.g. Usage'
+  -
+    identifier: badge_text
+    type: Textarea
+    rows: 1
+    prefixField: true
+    label: 'Badge text'
+    description: 'Change indicator next to the card title, e.g. +12.5%'
+  -
+    identifier: badge_tone
+    type: Select
+    renderType: selectSingle
+    prefixField: true
+    label: 'Badge tone'
+    default: up
+    items:
+      -
+        label: 'Up (positive)'
+        value: up
+      -
+        label: 'Down (negative)'
+        value: down
+  -
+    identifier: total_value
+    type: Textarea
+    rows: 1
+    prefixField: true
+    label: 'Total value'
+    description: 'e.g. $860'
+  -
+    identifier: total_caption
+    type: Textarea
+    rows: 1
+    prefixField: true
+    label: 'Total caption'
+    description: 'e.g. this month'
+  -
+    identifier: breakdown_title
+    type: Textarea
+    rows: 1
+    prefixField: true
+    label: 'Breakdown title'
+    description: 'e.g. Resource breakdown'
+  -
+    identifier: stats_usage_breakdown_items
+    type: Collection
+    table: innesto_stats_usage_breakdown_items
+    prefixField: true
+    label: 'Breakdown parts'
+    minItems: 1
+    fields:
+      -
+        identifier: title
+        type: Textarea
+        rows: 1
+        label: 'Part title'
+        description: 'e.g. Compute'
+        required: true
+      -
+        identifier: value
+        type: Textarea
+        rows: 1
+        label: 'Amount'
+        description: 'e.g. $450'
+      -
+        identifier: percent
+        type: Number
+        format: decimal
+        label: 'Percent'
+        description: 'Share of the total (0–100), drives the bar segment width'
+        required: true
+        range:
+          lower: 0
+          upper: 100
+  -
+    identifier: footnote
+    type: Textarea
+    rows: 1
+    prefixField: true
+    label: 'Footnote'
+    description: 'Small text below the legend, e.g. Configure limits in'
+  -
+    identifier: footnote_link
+    type: Link
+    prefixField: true
+    label: 'Footnote link'
+  -
+    identifier: footnote_link_text
+    type: Textarea
+    rows: 1
+    prefixField: true
+    label: 'Footnote link text'
+    description: 'e.g. resource settings.'

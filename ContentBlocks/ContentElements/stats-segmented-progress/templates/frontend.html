@@ -1,0 +1,70 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:cb="http://typo3.org/ns/TYPO3/CMS/ContentBlocks/ViewHelpers"
+      xmlns:d="http://typo3.org/ns/Webconsulting/Desiderio/Components/ComponentCollection"
+      data-namespace-typo3-fluid="true">
+
+<f:asset.css identifier="innesto-stats-segmented-progress" href="{cb:assetPath()}/frontend.css"/>
+
+<d:layout.section spacing="md" class="innesto-stats-segmented-progress-section">
+    <d:layout.container>
+        <f:if condition="{data.eyebrow} || {data.header}">
+            <header class="innesto-stats-segmented-progress__intro">
+                <f:if condition="{data.eyebrow}">
+                    <p class="innesto-stats-segmented-progress__eyebrow">{data -> f:render.text(field: 'eyebrow')}</p>
+                </f:if>
+                <f:if condition="{data.header}">
+                    <h2 class="innesto-stats-segmented-progress__headline">{data -> f:render.text(field: 'header')}</h2>
+                </f:if>
+            </header>
+        </f:if>
+
+        <div class="innesto-stats-segmented-progress">
+            <f:if condition="{data.summary_text} || {data.used_value} || {data.total_text}">
+                <p class="innesto-stats-segmented-progress__summary">
+                    <f:if condition="{data.summary_text}">{data.summary_text}</f:if>
+                    <f:if condition="{data.used_value}">
+                        <strong class="innesto-stats-segmented-progress__used">{data.used_value}</strong>
+                    </f:if>
+                    <f:if condition="{data.total_text}">{data.total_text}</f:if>
+                </p>
+            </f:if>
+
+            <f:if condition="{data.segments}">
+                <div class="innesto-stats-segmented-progress__bar">
+                    <f:for each="{data.segments}" as="entry">
+                        <div class="innesto-stats-segmented-progress__segment innesto-stats-segmented-progress__segment--{entry.color}"
+                             style="--value: {entry.percent};"
+                             role="progressbar"
+                             aria-valuemin="0"
+                             aria-valuemax="100"
+                             aria-valuenow="{entry.percent}"
+                             aria-label="{entry.title}"></div>
+                    </f:for>
+                </div>
+
+                <ul class="innesto-stats-segmented-progress__legend">
+                    <f:for each="{data.segments}" as="entry">
+                        <li class="innesto-stats-segmented-progress__legend-item">
+                            <span class="innesto-stats-segmented-progress__swatch innesto-stats-segmented-progress__swatch--{entry.color}" aria-hidden="true"></span>
+                            <span class="innesto-stats-segmented-progress__legend-title">{entry.title}</span>
+                            <f:if condition="{entry.amount}">
+                                <span class="innesto-stats-segmented-progress__legend-amount">{entry.amount}</span>
+                            </f:if>
+                        </li>
+                    </f:for>
+                    <f:if condition="{data.free_title}">
+                        <li class="innesto-stats-segmented-progress__legend-item">
+                            <span class="innesto-stats-segmented-progress__swatch innesto-stats-segmented-progress__swatch--free" aria-hidden="true"></span>
+                            <span class="innesto-stats-segmented-progress__legend-title">{data.free_title}</span>
+                            <f:if condition="{data.free_amount}">
+                                <span class="innesto-stats-segmented-progress__legend-amount">{data.free_amount}</span>
+                            </f:if>
+                        </li>
+                    </f:if>
+                </ul>
+            </f:if>
+        </div>
+    </d:layout.container>
+</d:layout.section>
+
+</html>

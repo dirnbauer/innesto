@@ -1,0 +1,60 @@
+name: innesto/stats-cards
+typeName: innesto_statscards
+title: 'Stats with Card Layout'
+description: 'A responsive grid of stat cards, each pairing a metric value with a positive or negative change indicator — grafted from the blocks.so stats-03 registry component.'
+group: stats
+prefixFields: false
+basics:
+  - TYPO3/Appearance
+fields:
+  -
+    identifier: eyebrow
+    type: Textarea
+    rows: 1
+    label: 'Eyebrow text'
+    description: 'Optional short line above the heading'
+  -
+    identifier: header
+    useExistingField: true
+    label: 'Heading'
+  -
+    identifier: stats_cards_items
+    type: Collection
+    table: innesto_stats_cards_items
+    prefixField: true
+    label: 'Stat cards'
+    minItems: 1
+    fields:
+      -
+        identifier: title
+        type: Textarea
+        rows: 1
+        label: 'Name'
+        description: 'e.g. Unique visitors, Bounce rate'
+        required: true
+      -
+        identifier: value
+        type: Textarea
+        rows: 1
+        label: 'Value'
+        description: 'e.g. 10,450 or 56.1%'
+        required: true
+      -
+        identifier: change
+        type: Textarea
+        rows: 1
+        label: 'Change'
+        description: 'e.g. +1.8% or -12.5%'
+      -
+        identifier: change_type
+        type: Select
+        renderType: selectSingle
+        label: 'Change trend'
+        default: positive
+        items:
+          -
+            label: 'Positive'
+            value: positive
+          -
+            label: 'Negative'
+            value: negative

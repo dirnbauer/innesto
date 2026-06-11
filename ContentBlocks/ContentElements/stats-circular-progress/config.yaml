@@ -1,0 +1,70 @@
+name: innesto/stats-circular-progress
+typeName: innesto_statscircularprogress
+title: 'Stats with Circular Progress'
+description: 'Stat cards pairing a circular progress ring and percentage with a title and usage caption, introduced by an optional lead text and link — grafted from the blocks.so stats-07 registry component.'
+group: stats
+prefixFields: false
+basics:
+  - TYPO3/Appearance
+fields:
+  -
+    identifier: eyebrow
+    type: Textarea
+    rows: 1
+    label: 'Eyebrow text'
+    description: 'Short line above the heading'
+  -
+    identifier: header
+    useExistingField: true
+    label: 'Heading'
+  -
+    identifier: intro
+    type: Textarea
+    rows: 2
+    prefixField: true
+    label: 'Intro text'
+    description: 'Short lead sentence below the heading, e.g. "You are currently on the starter plan."'
+  -
+    identifier: link
+    type: Link
+    prefixField: true
+    label: 'Link'
+    description: 'Optional link appended to the intro text'
+  -
+    identifier: link_text
+    type: Textarea
+    rows: 1
+    prefixField: true
+    label: 'Link text'
+    description: 'Visible text for the link, e.g. "View other plans"'
+  -
+    identifier: stats_circular_progress_items
+    type: Collection
+    table: innesto_stats_circular_progress_items
+    prefixField: true
+    label: 'Stats'
+    minItems: 1
+    fields:
+      -
+        identifier: percent
+        type: Number
+        format: decimal
+        label: 'Percent'
+        description: 'Fill level of the progress ring (0–100)'
+        default: 0
+        range:
+          lower: 0
+          upper: 100
+      -
+        identifier: title
+        type: Textarea
+        rows: 1
+        label: 'Title'
+        description: 'e.g. Workspaces, Dashboards, Storage'
+        required: true
+      -
+        identifier: description
+        type: Textarea
+        rows: 1
+        label: 'Description'
+        description: 'Usage caption shown below the title, e.g. "1 of 5 used"'

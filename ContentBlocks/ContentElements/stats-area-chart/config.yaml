@@ -1,0 +1,85 @@
+name: innesto/stats-area-chart
+typeName: innesto_statsareachart
+title: 'Stats with Area Chart'
+description: 'Stat tiles pairing a value, absolute change and percentage delta with a compact area sparkline drawn from editor-entered data points — grafted from the blocks.so stats-10 registry component.'
+group: stats
+prefixFields: false
+basics:
+  - TYPO3/Appearance
+fields:
+  -
+    identifier: eyebrow
+    type: Textarea
+    rows: 1
+    label: 'Eyebrow text'
+    description: 'Short line above the heading'
+  -
+    identifier: header
+    useExistingField: true
+    label: 'Heading'
+  -
+    identifier: stats
+    type: Collection
+    table: innesto_stats_area_chart_stats
+    prefixField: true
+    label: 'Stats'
+    minItems: 1
+    fields:
+      -
+        identifier: title
+        type: Textarea
+        rows: 1
+        label: 'Title'
+        description: 'e.g. Alpha Corp'
+        required: true
+      -
+        identifier: ticker
+        type: Textarea
+        rows: 1
+        label: 'Ticker symbol'
+        description: 'Short code shown after the title, e.g. ACP'
+      -
+        identifier: value
+        type: Textarea
+        rows: 1
+        label: 'Value'
+        description: 'e.g. $168.59'
+        required: true
+      -
+        identifier: change
+        type: Textarea
+        rows: 1
+        label: 'Change'
+        description: 'Absolute change, e.g. +15.86'
+      -
+        identifier: percentage_change
+        type: Textarea
+        rows: 1
+        label: 'Percentage change'
+        description: 'Relative change, e.g. +10.4%'
+      -
+        identifier: trend
+        type: Select
+        renderType: selectSingle
+        label: 'Trend'
+        default: positive
+        items:
+          -
+            label: 'Positive'
+            value: positive
+          -
+            label: 'Negative'
+            value: negative
+      -
+        identifier: points
+        type: Collection
+        table: innesto_stats_area_chart_points
+        label: 'Data points'
+        description: 'Values plotted left to right as the area sparkline'
+        fields:
+          -
+            identifier: value
+            type: Number
+            format: decimal
+            label: 'Value'
+            required: true

@@ -1,0 +1,78 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:cb="http://typo3.org/ns/TYPO3/CMS/ContentBlocks/ViewHelpers"
+      xmlns:d="http://typo3.org/ns/Webconsulting/Desiderio/Components/ComponentCollection"
+      data-namespace-typo3-fluid="true">
+
+<f:asset.css identifier="innesto-stats-usage-breakdown" href="{cb:assetPath()}/frontend.css"/>
+
+<d:layout.section spacing="md" class="innesto-stats-usage-breakdown-section">
+    <d:layout.container>
+        <f:if condition="{data.eyebrow} || {data.header}">
+            <header class="innesto-stats-usage-breakdown__intro">
+                <f:if condition="{data.eyebrow}">
+                    <p class="innesto-stats-usage-breakdown__eyebrow">{data -> f:render.text(field: 'eyebrow')}</p>
+                </f:if>
+                <f:if condition="{data.header}">
+                    <h2 class="innesto-stats-usage-breakdown__headline">{data -> f:render.text(field: 'header')}</h2>
+                </f:if>
+            </header>
+        </f:if>
+
+        <div class="innesto-stats-usage-breakdown">
+            <div class="innesto-stats-usage-breakdown__card">
+                <f:if condition="{data.card_title} || {data.badge_text}">
+                    <div class="innesto-stats-usage-breakdown__card-head">
+                        <f:if condition="{data.card_title}">
+                            <h3 class="innesto-stats-usage-breakdown__card-title">{data.card_title}</h3>
+                        </f:if>
+                        <f:if condition="{data.badge_text}">
+                            <span class="innesto-stats-usage-breakdown__badge {f:if(condition: '{data.badge_tone} == \'down\'', then: 'innesto-stats-usage-breakdown__badge--down', else: 'innesto-stats-usage-breakdown__badge--up')}">{data.badge_text}</span>
+                        </f:if>
+                    </div>
+                </f:if>
+
+                <f:if condition="{data.total_value}">
+                    <p class="innesto-stats-usage-breakdown__total">
+                        <span class="innesto-stats-usage-breakdown__total-value">{data.total_value}</span>
+                        <f:if condition="{data.total_caption}">
+                            <span class="innesto-stats-usage-breakdown__total-caption">{data.total_caption}</span>
+                        </f:if>
+                    </p>
+                </f:if>
+
+                <f:if condition="{data.stats_usage_breakdown_items}">
+                    <div class="innesto-stats-usage-breakdown__breakdown">
+                        <f:if condition="{data.breakdown_title}">
+                            <p class="innesto-stats-usage-breakdown__breakdown-title">{data.breakdown_title}</p>
+                        </f:if>
+                        <div class="innesto-stats-usage-breakdown__bar" aria-hidden="true">
+                            <f:for each="{data.stats_usage_breakdown_items}" as="entry">
+                                <span class="innesto-stats-usage-breakdown__segment" style="--value: {entry.percent};"></span>
+                            </f:for>
+                        </div>
+                        <ul class="innesto-stats-usage-breakdown__legend" role="list">
+                            <f:for each="{data.stats_usage_breakdown_items}" as="entry">
+                                <li class="innesto-stats-usage-breakdown__legend-item">
+                                    <span class="innesto-stats-usage-breakdown__swatch" aria-hidden="true"></span>
+                                    <span class="innesto-stats-usage-breakdown__legend-title">{entry.title}</span>
+                                    <span class="innesto-stats-usage-breakdown__legend-detail">(<f:if condition="{entry.value}">{entry.value} / </f:if>{entry.percent}%)</span>
+                                </li>
+                            </f:for>
+                        </ul>
+                    </div>
+                </f:if>
+
+                <f:if condition="{data.footnote} || {data.footnote_link_text}">
+                    <p class="innesto-stats-usage-breakdown__footnote">
+                        <f:if condition="{data.footnote}">{data.footnote}</f:if>
+                        <f:if condition="{data.footnote_link} && {data.footnote_link_text}">
+                            <f:link.typolink parameter="{data.footnote_link}" class="innesto-stats-usage-breakdown__footnote-link">{data.footnote_link_text}</f:link.typolink>
+                        </f:if>
+                    </p>
+                </f:if>
+            </div>
+        </div>
+    </d:layout.container>
+</d:layout.section>
+
+</html>

@@ -1,0 +1,60 @@
+name: innesto/stats-badges
+typeName: innesto_statsbadges
+title: 'Stats with Badges'
+description: 'Key metric cards pairing a value with a trend badge that signals increase or decrease — grafted from the blocks.so stats-04 registry component.'
+group: stats
+prefixFields: false
+basics:
+  - TYPO3/Appearance
+fields:
+  -
+    identifier: eyebrow
+    type: Textarea
+    rows: 1
+    label: 'Eyebrow text'
+    description: 'Short line above the heading'
+  -
+    identifier: header
+    useExistingField: true
+    label: 'Heading'
+  -
+    identifier: stats_badges_items
+    type: Collection
+    table: innesto_stats_badges_items
+    prefixField: true
+    label: 'Stats'
+    minItems: 1
+    fields:
+      -
+        identifier: title
+        type: Textarea
+        rows: 1
+        label: 'Stat title'
+        description: 'e.g. Daily active users'
+        required: true
+      -
+        identifier: value
+        type: Textarea
+        rows: 1
+        label: 'Value'
+        description: 'e.g. 3,450 or 5.2min'
+        required: true
+      -
+        identifier: badge_text
+        type: Textarea
+        rows: 1
+        label: 'Badge text'
+        description: 'Change indicator, e.g. +12.1%'
+      -
+        identifier: badge_tone
+        type: Select
+        renderType: selectSingle
+        label: 'Badge tone'
+        default: up
+        items:
+          -
+            label: 'Up (positive)'
+            value: up
+          -
+            label: 'Down (negative)'
+            value: down

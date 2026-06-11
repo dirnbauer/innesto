@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" class="icon-root">
+  <title>Stats with segmented progress icon</title>
+  <style>.icon-root{color:var(--icon-color-primary,currentColor)}.accent{stroke:var(--icon-color-accent,currentColor);fill:none}</style>
+  <path d="M1.5 8h2.1" class="accent"/>
+  <path d="M4.2 8h2.1" class="accent"/>
+  <path d="M6.9 8h2.1" class="accent"/>
+  <path d="M9.6 8h2.1"/>
+  <path d="M12.3 8h2.2"/>
+</svg>

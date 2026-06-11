@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" class="icon-root">
+  <title>Stats with usage breakdown icon</title>
+  <style>.icon-root{color:var(--icon-color-primary,currentColor)}.accent{stroke:var(--icon-color-accent,currentColor);fill:none}</style>
+  <path d="M2 8h5"/>
+  <path d="M8.25 8h3" class="accent"/>
+  <path d="M12.5 8h1.5"/>
+</svg>

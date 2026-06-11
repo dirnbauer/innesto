@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en">
+  <file id="stats-circular-progress">
+    <unit id="title">
+      <segment>
+        <source>Stats with Circular Progress</source>
+      </segment>
+    </unit>
+    <unit id="description">
+      <segment>
+        <source>Stat cards pairing a circular progress ring and percentage with a title and usage caption, introduced by an optional lead text and link — grafted from the blocks.so stats-07 registry component.</source>
+      </segment>
+    </unit>
+  </file>
+</xliff>

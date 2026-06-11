@@ -1,0 +1,52 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:cb="http://typo3.org/ns/TYPO3/CMS/ContentBlocks/ViewHelpers"
+      xmlns:d="http://typo3.org/ns/Webconsulting/Desiderio/Components/ComponentCollection"
+      data-namespace-typo3-fluid="true">
+
+<f:asset.css identifier="innesto-stats-area-chart" href="{cb:assetPath()}/frontend.css"/>
+<f:asset.script identifier="innesto-stats-area-chart" src="{cb:assetPath()}/frontend.js"/>
+
+<d:layout.section spacing="md" class="innesto-stats-area-chart-section">
+    <d:layout.container>
+        <f:if condition="{data.eyebrow} || {data.header}">
+            <header class="innesto-stats-area-chart__intro">
+                <f:if condition="{data.eyebrow}">
+                    <p class="innesto-stats-area-chart__eyebrow">{data -> f:render.text(field: 'eyebrow')}</p>
+                </f:if>
+                <f:if condition="{data.header}">
+                    <h2 class="innesto-stats-area-chart__headline">{data -> f:render.text(field: 'header')}</h2>
+                </f:if>
+            </header>
+        </f:if>
+
+        <dl class="innesto-stats-area-chart">
+            <f:for each="{data.stats}" as="entry">
+                <f:if condition="{entry.trend} == 'negative'">
+                    <f:then><f:variable name="trendModifier" value="negative"/></f:then>
+                    <f:else><f:variable name="trendModifier" value="positive"/></f:else>
+                </f:if>
+                <div class="innesto-stats-area-chart__card">
+                    <dt class="innesto-stats-area-chart__name">{entry.title}<f:if condition="{entry.ticker}"> <span class="innesto-stats-area-chart__ticker">({entry.ticker})</span></f:if></dt>
+                    <div class="innesto-stats-area-chart__row">
+                        <dd class="innesto-stats-area-chart__value innesto-stats-area-chart__value--{trendModifier}">{entry.value}</dd>
+                        <f:if condition="{entry.change} || {entry.percentage_change}">
+                            <dd class="innesto-stats-area-chart__change">
+                                <f:if condition="{entry.change}">
+                                    <span class="innesto-stats-area-chart__change-absolute">{entry.change}</span>
+                                </f:if>
+                                <f:if condition="{entry.percentage_change}">
+                                    <span class="innesto-stats-area-chart__change-relative innesto-stats-area-chart__change-relative--{trendModifier}">({entry.percentage_change})</span>
+                                </f:if>
+                            </dd>
+                        </f:if>
+                    </div>
+                    <f:if condition="{entry.points}">
+                        <div class="innesto-stats-area-chart__chart" aria-hidden="true" data-values="[<f:for each="{entry.points}" as="point" iteration="pointIterator">{point.value}<f:if condition="!{pointIterator.isLast}">,</f:if></f:for>]"></div>
+                    </f:if>
+                </div>
+            </f:for>
+        </dl>
+    </d:layout.container>
+</d:layout.section>
+
+</html>

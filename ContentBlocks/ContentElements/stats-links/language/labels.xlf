@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en">
+  <file id="stats-links">
+    <unit id="title">
+      <segment>
+        <source>Stats with Links</source>
+      </segment>
+    </unit>
+    <unit id="description">
+      <segment>
+        <source>Key metric cards showing a stat name, value and trend change with a footer link on every card — grafted from the blocks.so stats-05 registry component.</source>
+      </segment>
+    </unit>
+  </file>
+</xliff>

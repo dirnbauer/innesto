@@ -1,0 +1,64 @@
+name: innesto/stats-links
+typeName: innesto_statslinks
+title: 'Stats with Links'
+description: 'Key metric cards showing a stat name, value and trend change with a footer link on every card — grafted from the blocks.so stats-05 registry component.'
+group: stats
+prefixFields: false
+basics:
+  - TYPO3/Appearance
+fields:
+  -
+    identifier: header
+    useExistingField: true
+    label: 'Heading'
+  -
+    identifier: stats_links_items
+    type: Collection
+    table: innesto_stats_links_items
+    prefixField: true
+    label: 'Stats'
+    minItems: 1
+    fields:
+      -
+        identifier: title
+        type: Textarea
+        rows: 1
+        label: 'Stat name'
+        description: 'e.g. "Monthly recurring revenue"'
+        required: true
+      -
+        identifier: value
+        type: Textarea
+        rows: 1
+        label: 'Value'
+        description: 'e.g. "$34.1K", "500.1K"'
+        required: true
+      -
+        identifier: change
+        type: Textarea
+        rows: 1
+        label: 'Change'
+        description: 'e.g. "+6.1%", "-1.2%"'
+      -
+        identifier: trend
+        type: Select
+        renderType: selectSingle
+        label: 'Trend'
+        default: positive
+        items:
+          -
+            label: 'Positive'
+            value: positive
+          -
+            label: 'Negative'
+            value: negative
+      -
+        identifier: link
+        type: Link
+        label: 'Link'
+      -
+        identifier: link_text
+        type: Textarea
+        rows: 1
+        label: 'Link text'
+        description: 'Visible link label, e.g. "View more"'

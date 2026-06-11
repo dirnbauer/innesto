@@ -1,0 +1,114 @@
+/* Grafted from registry item "stats-13" (Stats with Segmented Progress). Tokens map onto the Desiderio shadcn variables. */
+
+.innesto-stats-segmented-progress__intro {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
+}
+.innesto-stats-segmented-progress__eyebrow {
+    margin: 0;
+    font-weight: 500;
+    color: var(--foreground);
+}
+.innesto-stats-segmented-progress__headline {
+    margin: 0;
+    font-size: clamp(2.25rem, 1.75rem + 2vw, 3rem);
+    font-weight: 500;
+    line-height: 1.15;
+    color: var(--foreground);
+}
+.innesto-stats-segmented-progress__intro + .innesto-stats-segmented-progress {
+    margin-top: 3rem;
+}
+
+/* Card contract (upstream: Card max-w-4xl shadow-sm) */
+.innesto-stats-segmented-progress {
+    max-width: 56rem;
+    margin-inline: auto;
+    padding: 1.5rem;
+    background: var(--card);
+    color: var(--card-foreground);
+    border: 1px solid var(--border);
+    border-radius: calc(var(--radius, 0.625rem) + 0.125rem);
+    box-shadow: var(--shadow-sm);
+}
+
+.innesto-stats-segmented-progress__summary {
+    margin: 0 0 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--muted-foreground);
+    text-wrap: pretty;
+}
+.innesto-stats-segmented-progress__used {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--foreground);
+}
+
+/*
+ * Segmented bar: a flex row of cells whose widths derive from the percent
+ * field; a repeating-linear-gradient mask breaks the whole bar (colored
+ * shares and muted free space alike) into small dash cells.
+ */
+.innesto-stats-segmented-progress__bar {
+    display: flex;
+    height: 0.625rem;
+    width: 100%;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    border-radius: calc(var(--radius, 0.625rem) * 2);
+    background: var(--muted);
+    -webkit-mask-image: repeating-linear-gradient(90deg, currentColor 0, currentColor 0.625rem, transparent 0.625rem, transparent 0.8125rem);
+    mask-image: repeating-linear-gradient(90deg, currentColor 0, currentColor 0.625rem, transparent 0.625rem, transparent 0.8125rem);
+}
+.innesto-stats-segmented-progress__segment {
+    height: 100%;
+    min-width: 0;
+    width: calc(var(--value, 0) * 1%);
+}
+.innesto-stats-segmented-progress__segment--chart-1 { background: var(--chart-1); }
+.innesto-stats-segmented-progress__segment--chart-2 { background: var(--chart-2); }
+.innesto-stats-segmented-progress__segment--chart-3 { background: var(--chart-3); }
+.innesto-stats-segmented-progress__segment--chart-4 { background: var(--chart-4); }
+.innesto-stats-segmented-progress__segment--chart-5 { background: var(--chart-5); }
+
+.innesto-stats-segmented-progress__legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 2rem;
+    row-gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.innesto-stats-segmented-progress__legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.innesto-stats-segmented-progress__swatch {
+    width: 0.75rem;
+    height: 0.75rem;
+    flex-shrink: 0;
+    border-radius: 0.25rem;
+    background: var(--muted);
+}
+.innesto-stats-segmented-progress__swatch--chart-1 { background: var(--chart-1); }
+.innesto-stats-segmented-progress__swatch--chart-2 { background: var(--chart-2); }
+.innesto-stats-segmented-progress__swatch--chart-3 { background: var(--chart-3); }
+.innesto-stats-segmented-progress__swatch--chart-4 { background: var(--chart-4); }
+.innesto-stats-segmented-progress__swatch--chart-5 { background: var(--chart-5); }
+.innesto-stats-segmented-progress__swatch--free { background: var(--muted); }
+
+.innesto-stats-segmented-progress__legend-title,
+.innesto-stats-segmented-progress__legend-amount {
+    font-size: 0.875rem;
+    line-height: 1.4;
+    color: var(--muted-foreground);
+}
+.innesto-stats-segmented-progress__legend-amount {
+    font-variant-numeric: tabular-nums;
+}
