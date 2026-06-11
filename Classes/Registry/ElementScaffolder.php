@@ -78,12 +78,16 @@ final class ElementScaffolder
         $typeName = 'innesto_' . str_replace('-', '', $elementKey);
         $title = (string)($item['title'] ?? ucwords(str_replace('-', ' ', $elementKey)));
         $description = (string)($item['description'] ?? 'Grafted from a shadcn registry item.');
+        // The registry item's first category becomes the wizard group; the
+        // blocks.so categories are pre-registered in Configuration/TCA/Overrides.
+        // An unregistered group still works — TYPO3 shows the key as label.
+        $group = strtolower(preg_replace('/[^a-z0-9-]+/i', '-', (string)(($item['categories'] ?? [])[0] ?? 'default')) ?? 'default');
         return <<<YAML
 name: innesto/$elementKey
 typeName: $typeName
 title: '$title'
 description: '{$this->escapeYaml($description)}'
-group: default
+group: $group
 prefixFields: false
 basics:
   - TYPO3/Appearance

@@ -20,6 +20,8 @@ final class RegistryClient
     private const REGISTRIES = [
         'shadcn' => 'https://ui.shadcn.com/r/styles/new-york-v4/%s.json',
         'magicui' => 'https://magicui.design/r/%s.json',
+        'shadcnblocks' => 'https://shadcnblocks.com/r/%s',
+        'blocks' => 'https://blocks.so/r/%s.json',
     ];
 
     public function __construct(private readonly RequestFactory $requestFactory)
@@ -53,6 +55,8 @@ final class RegistryClient
         if (str_starts_with($reference, 'http://') || str_starts_with($reference, 'https://')) {
             return $reference;
         }
+        // Accept the shadcn CLI namespace form: "@magicui/marquee" → "magicui/marquee".
+        $reference = ltrim($reference, '@');
         if (str_contains($reference, '/')) {
             [$registry, $item] = explode('/', $reference, 2);
             $template = self::REGISTRIES[$registry] ?? null;
