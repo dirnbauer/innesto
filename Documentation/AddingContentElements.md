@@ -45,10 +45,14 @@ site and note the item name. `innesto:add` accepts two forms:
 
 | Form | Example |
 | --- | --- |
-| Shorthand `<registry>/<item>` for known registries | `magicui/marquee`, `shadcn/button` |
+| Shorthand `<registry>/<item>` for known registries | `magicui/marquee`, `shadcn/button`, `shadcnblocks/case-studies2`, `blocks/stats-01` |
 | Full item-JSON URL for everything else | `https://magicui.design/r/globe.json` |
 
-The shorthand map currently knows `shadcn` and `magicui`
+A leading `@` is accepted too, so the namespace form from the shadcn CLI docs
+(`@shadcnblocks/case-studies2`) works verbatim.
+
+The shorthand map currently knows `shadcn`, `magicui`, `shadcnblocks`, and
+`blocks` (blocks.so)
 ([`RegistryClient`](../Classes/Registry/RegistryClient.php)). For any other
 registry, pass the URL of the item JSON — it is usually linked as "Open in v0"
 / "registry item" on the component page, or simply `<registry>/r/<item>.json`.
@@ -329,6 +333,69 @@ Desiderio preset in the site settings and the graft repaints with it:
 
 ![The finished marquee element rendering on the frontend](Images/frontend-marquee.png)
 
+## Worked example 2: a shadcnblocks block (`innesto/case-studies`)
+
+The marquee above is *motion with little structure*. The shipped
+`innesto/case-studies` element is the opposite — a structured, document-shaped
+block — and shows the patterns that kind of graft needs. It was produced from
+[`case-studies2` on shadcnblocks.com](https://www.shadcnblocks.com/block/case-studies2):
+customer quotes with portrait, role, company logo, and per-study metrics.
+
+### Fetch and rename
+
+```bash
+vendor/bin/typo3 innesto:add @shadcnblocks/case-studies2 --key case-studies
+```
+
+Two things to note:
+
+- `shadcnblocks` is a known shorthand, and a leading `@` is accepted, so the
+  namespace form used in the shadcn CLI docs works verbatim.
+- Registries ship numbered variants (`case-studies1`, `case-studies2`, …).
+  `--key` drops the digit so the element key, CSS prefix, and editor-facing
+  name stay clean (`innesto/case-studies`, `.innesto-case-studies`). The
+  upstream name is preserved in `sources/case-studies2.tsx` for provenance.
+
+The command warns about `registryDependencies: utils, separator` — both are
+intentionally *not* resolved: `cn()` is a React-only class helper, and the
+`<Separator>` component becomes a plain `<hr>` with a `border-top` in the
+finishing pass. Most `registryDependencies` of presentational blocks dissolve
+like this; fetch a dependency only when it carries actual content.
+
+### The finishing pass for structured blocks
+
+The React source repeats a "study" twice with hard-coded demo content. The
+finishing pass turns that repetition into editor data:
+
+| Upstream pattern | Content Blocks modeling |
+| --- | --- |
+| Repeated `<div className="grid …">` study blocks | `Collection` field (`case_studies_items`, `table: innesto_case_studies_items`) |
+| The two metric `<div>`s inside each study | **nested** `Collection` (`metrics`, `table: innesto_case_studies_metrics`) |
+| `<img>` portrait / company logo | `File` fields (`allowed: common-image-types`, `maxitems: 1`) |
+| Hard-coded strings (quote, name, role, "98%") | `Textarea` fields, `rows: 1` for short text |
+| `<Separator className="my-20" />` between studies | `<f:if condition="!{iterator.isFirst}"><hr …/></f:if>` |
+| `4500+ Satisfied Customers` eyebrow line | plain `eyebrow` field — same shape Desiderio already uses, so the column is shared |
+
+Nested Collections are the one thing to be careful with: give **every**
+`Collection` an explicit `table:` key (`innesto_case_studies_items`,
+`innesto_case_studies_metrics`). Without it, Content Blocks derives the table
+name from the bare identifier, and generic identifiers like `metrics` or
+`items` silently share one table with any other element that picks the same
+name. And never name a child field `label` — reserved, use `title`.
+
+### Activate and seed
+
+```bash
+vendor/bin/typo3 extension:setup    # creates both collection tables
+vendor/bin/typo3 cache:flush
+```
+
+In the edit form the studies are an IRRE collection with the metrics nested
+one level deeper; the frontend renders the 2:1 bordered split from the
+upstream design, restyled entirely through the semantic tokens — no value in
+[`assets/frontend.css`](../ContentBlocks/ContentElements/case-studies/assets/frontend.css)
+is a raw color.
+
 ## Grafting into your own sitepackage
 
 By default elements land in `EXT:innesto/ContentBlocks/ContentElements`. To
@@ -358,6 +425,7 @@ site that restricts content blocks per set (any Desiderio site does).
 | `cssVars` (theme/light/dark tokens) | ✅ automatic — Desiderio uses the same shadcn variable names, 1:1 |
 | `css` (keyframes, rules) | ✅ automatic — serialized into `assets/frontend.css` |
 | Tailwind `@theme` animation entries | ✅ automatic — custom property + matching utility class |
+| Registry `categories` → wizard group | ✅ automatic — the item's first category becomes the Content Blocks `group`; the blocks.so categories ship pre-registered as wizard groups ([`Configuration/TCA/Overrides/tt_content.php`](../Configuration/TCA/Overrides/tt_content.php)) |
 | Site-set registration | ✅ automatic (default target) |
 | React/TSX markup | ⚠️ finishing pass — structural markup translates quickly; hooks/state need Alpine.js or CSS |
 | Component props | ⚠️ finishing pass — modeled as Content Blocks fields |
