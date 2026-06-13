@@ -126,8 +126,22 @@ final class SeedDemoRecordsCommand extends Command
             return Command::FAILURE;
         }
 
+        $foreignContent = $this->countForeignContent($pageUid);
+        if ($foreignContent > 0) {
+            $io->warning(sprintf(
+                'Page %d already holds %d non-Innesto content element(s). Demo records are appended below them, '
+                . 'but a dedicated sysfolder keeps your real content clean.',
+                $pageUid,
+                $foreignContent
+            ));
+        }
+
         $elementsDirectory = ExtensionManagementUtility::extPath('innesto') . 'ContentBlocks/ContentElements';
         $created = $skipped = $deleted = 0;
+        // Append demo records after the page's existing content so they never
+        // jump above real elements; chaining each new record after the previous
+        // one keeps DataHandler from reusing (colliding) sorting values.
+        $predecessor = $this->lastElementUid($pageUid);
 
         foreach (glob($elementsDirectory . '/*/config.yaml') ?: [] as $configFile) {
             $elementKey = basename(dirname($configFile));
@@ -153,7 +167,8 @@ final class SeedDemoRecordsCommand extends Command
                 ? (array)json_decode((string)file_get_contents($fixtureFile), true)
                 : [];
 
-            $newId = $this->addRecord($config, $fixture, $pageUid, $typeName);
+            $newId = $this->addRecord($config, $fixture, $pageUid, $typeName, $predecessor);
+            $predecessor = $newId;
             $io->text(sprintf(' · %-28s queued (%s)', $elementKey, $newId));
             $created++;
         }
@@ -186,12 +201,16 @@ final class SeedDemoRecordsCommand extends Command
     /**
      * @param array<string, mixed> $config
      * @param array<string, mixed> $fixture
+     * @param int|string $predecessor real uid or NEW id to position after; 0 = top of page
      */
-    private function addRecord(array $config, array $fixture, int $pageUid, string $typeName): string
+    private function addRecord(array $config, array $fixture, int $pageUid, string $typeName, int|string $predecessor = 0): string
     {
         $newId = StringUtility::getUniqueId('NEW');
+        // DataHandler positioning: positive pid = top of page; negative target
+        // (real uid or NEW id) = insert immediately after that record.
+        $target = $predecessor === 0 ? $pageUid : '-' . $predecessor;
         $record = [
-            'pid' => $pageUid,
+            'pid' => $target,
             'CType' => $typeName,
             'colPos' => 0,
             'header' => (string)($fixture['header'] ?? $config['title']),
@@ -288,6 +307,38 @@ final class SeedDemoRecordsCommand extends Command
             )
             ->executeQuery()->fetchFirstColumn();
         return array_map(intval(...), $rows);
+    }
+
+    /**
+     * Highest-sorting live content element in colPos 0 on the page, or 0 when
+     * the page is empty — the anchor demo records are appended after.
+     */
+    private function lastElementUid(int $pageUid): int
+    {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tt_content');
+        $uid = $queryBuilder->select('uid')->from('tt_content')
+            ->where(
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pageUid, \TYPO3\CMS\Core\Database\Connection::PARAM_INT)),
+                $queryBuilder->expr()->eq('colPos', $queryBuilder->createNamedParameter(0, \TYPO3\CMS\Core\Database\Connection::PARAM_INT))
+            )
+            ->orderBy('sorting', 'DESC')->setMaxResults(1)
+            ->executeQuery()->fetchOne();
+        return (int)$uid;
+    }
+
+    /**
+     * Number of live content elements on the page that are not Innesto demos —
+     * used to warn before mixing demo records into a page's real content.
+     */
+    private function countForeignContent(int $pageUid): int
+    {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tt_content');
+        return (int)$queryBuilder->count('uid')->from('tt_content')
+            ->where(
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pageUid, \TYPO3\CMS\Core\Database\Connection::PARAM_INT)),
+                $queryBuilder->expr()->notLike('CType', $queryBuilder->createNamedParameter('innesto\_%'))
+            )
+            ->executeQuery()->fetchOne();
     }
 
     /**

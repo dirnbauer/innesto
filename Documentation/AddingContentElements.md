@@ -318,8 +318,11 @@ Desiderio uses, Collections as arrays of item objects), otherwise they are
 derived from `config.yaml`: Collections get two child rows (data-point series
 six), Selects their default, Numbers plausible percentages. Records are
 created through DataHandler, so inline children, counter columns, and the
-reference index stay consistent. `File` fields are left empty — add images
-manually or ship a fixture once FAL seeding lands.
+reference index stay consistent. Demo records are **appended after** a page's
+existing content (never above it), and the command warns when the target page
+already holds non-Innesto elements — seed onto a dedicated sysfolder to keep
+real pages clean. `File` fields are left empty — add images manually or ship a
+fixture once FAL seeding lands.
 
 ## Step 5 — Use it in the backend
 
