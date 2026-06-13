@@ -56,7 +56,7 @@ final class SeedDemoRecordsCommand extends Command
         'detail' => '3/5 goals',
         'limit' => '996 of 10,000',
         'link_text' => 'View more',
-        'target' => '/ 150 GB',
+        'target' => '150 GB',
         'subtext' => 'On track',
         'current' => '$250',
         'total' => '$1,000',
