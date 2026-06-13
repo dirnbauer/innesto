@@ -1,5 +1,7 @@
 # Innesto
 
+[![CI](https://github.com/dirnbauer/innesto/actions/workflows/ci.yml/badge.svg)](https://github.com/dirnbauer/innesto/actions/workflows/ci.yml)
+
 *innesto (it.) — graft.* A TYPO3 v14 experiment that grafts components from
 [shadcn/ui registries](https://registry.directory/) onto the
 [Desiderio](https://github.com/dirnbauer/desiderio) design system as Content
@@ -111,3 +113,23 @@ ContentBlocks/ContentElements/<key>/
 
 Upstream component sources keep their original licenses (Magic UI marquee:
 MIT). The extension itself is GPL-2.0-or-later, like TYPO3.
+
+## Development
+
+Every graft is held to a contract — parseable config, uniquely-prefixed
+Collection tables, no reserved child identifiers, each configured field
+rendered, token-only styling (no raw colours), no inline scripts, a backend
+preview, a valid 16×16 icon, well-formed XLIFF, and site-set registration.
+The audit enforces it across all elements:
+
+```bash
+composer audit:content-elements
+# or directly (ext-yaml or a symfony/yaml autoloader via AUDIT_AUTOLOAD):
+php scripts/audit-content-elements.php
+```
+
+[CI](.github/workflows/ci.yml) runs `composer validate`, PHP lint, and the
+audit on PHP 8.3 and 8.4 for every push and pull request. It is install-free:
+the extension is meant to be installed into a TYPO3 project that provides
+`webconsulting/desiderio`, so the audit reads `config.yaml` via ext-yaml
+rather than resolving the runtime.
