@@ -24,3 +24,4 @@ optionalDependencies:
   - innesto/stats-segmented-progress
   - innesto/stats-usage-breakdown
   - innesto/stats-value-breakdown
+  - innesto/terminal

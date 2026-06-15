@@ -1,0 +1,39 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:cb="http://typo3.org/ns/TYPO3/CMS/ContentBlocks/ViewHelpers"
+      xmlns:d="http://typo3.org/ns/Webconsulting/Desiderio/Components/ComponentCollection"
+      data-namespace-typo3-fluid="true">
+
+<f:asset.css identifier="innesto-terminal" href="{cb:assetPath()}/frontend.css"/>
+
+<d:layout.section spacing="md" class="innesto-terminal-section">
+    <d:layout.container>
+        <f:if condition="{data.header}">
+            <header class="innesto-terminal__intro">
+                <h2 class="innesto-terminal__headline">{data -> f:render.text(field: 'header')}</h2>
+            </header>
+        </f:if>
+
+        <div
+            class="innesto-terminal innesto-terminal--speed-{data.speed -> f:or(alternative: 'normal')}{f:if(condition: data.animate, else: ' innesto-terminal--static')}"
+            role="group"
+            aria-label="{data.terminal_title -> f:or(alternative: 'Terminal')}"
+            style="--total: {f:count(subject: data.terminal_lines)};"
+        >
+            <div class="innesto-terminal__bar">
+                <span class="innesto-terminal__dots" aria-hidden="true">
+                    <span class="innesto-terminal__dot"></span>
+                    <span class="innesto-terminal__dot"></span>
+                    <span class="innesto-terminal__dot"></span>
+                </span>
+                <f:if condition="{data.terminal_title}">
+                    <span class="innesto-terminal__title">{data.terminal_title}</span>
+                </f:if>
+            </div>
+            <div class="innesto-terminal__body">
+                <div class="innesto-terminal__code"><f:for each="{data.terminal_lines}" as="entry" iteration="iterator"><span class="innesto-terminal__line innesto-terminal__line--{entry.kind -> f:or(alternative: 'output')}" style="--index: {iterator.index};"><f:if condition="{entry.kind} == 'command'"><span class="innesto-terminal__prompt" aria-hidden="true">$ </span></f:if><span class="innesto-terminal__text">{entry.text}</span></span></f:for></div>
+            </div>
+        </div>
+    </d:layout.container>
+</d:layout.section>
+
+</html>

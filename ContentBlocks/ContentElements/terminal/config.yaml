@@ -1,0 +1,73 @@
+name: innesto/terminal
+typeName: innesto_terminal
+title: 'Terminal'
+description: 'An animated terminal that types out commands and output line by line — grafted from the Magic UI terminal registry component.'
+group: default
+prefixFields: false
+basics:
+  - TYPO3/Appearance
+fields:
+  -
+    identifier: header
+    useExistingField: true
+    label: 'Heading'
+  -
+    identifier: terminal_title
+    type: Text
+    label: 'Window title'
+    description: 'Optional label shown in the terminal title bar, e.g. a path or app name.'
+  -
+    identifier: terminal_lines
+    type: Collection
+    table: innesto_terminal_lines
+    prefixField: true
+    label: 'Lines'
+    minItems: 2
+    fields:
+      -
+        identifier: kind
+        type: Select
+        renderType: selectSingle
+        label: 'Line type'
+        items:
+          -
+            label: 'Command (typed, with prompt)'
+            value: command
+          -
+            label: 'Output'
+            value: output
+          -
+            label: 'Success'
+            value: success
+          -
+            label: 'Comment / muted'
+            value: muted
+        default: command
+      -
+        identifier: text
+        type: Textarea
+        rows: 1
+        label: 'Line text'
+        required: true
+  -
+    identifier: speed
+    type: Select
+    renderType: selectSingle
+    label: 'Typing speed'
+    items:
+      -
+        label: 'Slow'
+        value: slow
+      -
+        label: 'Normal'
+        value: normal
+      -
+        label: 'Fast'
+        value: fast
+    default: normal
+  -
+    identifier: animate
+    type: Checkbox
+    renderType: checkboxToggle
+    label: 'Animate (typewriter + reveal)'
+    default: 1

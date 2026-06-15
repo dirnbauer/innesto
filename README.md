@@ -14,9 +14,12 @@ Blocks elements.
    active shadcn theme preset, semantic tokens, and Fluid 5 component atoms.
 2. **Own content elements.** Elements live in
    `ContentBlocks/ContentElements/` and are auto-discovered by TYPO3 Content
-   Blocks. Eighteen finished grafts ship with the extension: the
-   [Magic UI marquee](https://magicui.design/docs/components/marquee) and
-   orbiting-circles, the
+   Blocks. Nineteen finished grafts ship with the extension: the
+   [Magic UI marquee](https://magicui.design/docs/components/marquee),
+   orbiting-circles, and
+   [terminal](https://magicui.design/docs/components/terminal) (an animated,
+   JavaScript-free typewriter — see the
+   [Terminal note](Documentation/Elements/Terminal.md)), the
    [shadcnblocks case-studies2](https://www.shadcnblocks.com/block/case-studies2)
    block (quotes + metrics, modeled as nested Collections), and the complete
    15-element stats family from [blocks.so](https://blocks.so/) (trending,
@@ -29,6 +32,7 @@ Blocks elements.
 
    ```bash
    vendor/bin/typo3 innesto:add magicui/marquee
+   vendor/bin/typo3 innesto:add magicui/terminal
    vendor/bin/typo3 innesto:add shadcn/button
    vendor/bin/typo3 innesto:add @shadcnblocks/case-studies2 --key case-studies
    vendor/bin/typo3 innesto:add blocks/stats-09 --key stats-progress
@@ -36,9 +40,11 @@ Blocks elements.
    vendor/bin/typo3 innesto:add magicui/orbiting-circles --ai   # + AI finishing pass
    ```
 
-📖 **[The complete manual — adding content elements from the shadcn registry](Documentation/AddingContentElements.md)**
-walks through two full grafts step by step — with backend and frontend
-screenshots — from picking a component to seeing it render.
+📖 **The complete, screenshot-by-screenshot manual lives in the Desiderio
+docs: [Adding content elements from a shadcn block](https://github.com/dirnbauer/desiderio/blob/main/Documentation/Developer/AddingContentElements.rst)**
+— it walks the `terminal` graft from picking the component to seeing it render.
+This repo keeps a [CLI/command reference](Documentation/AddingContentElements.md)
+with two more worked examples (marquee, case-studies).
 
 ## What the pipeline converts automatically — and what it can't
 

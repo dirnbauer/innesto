@@ -1,5 +1,12 @@
 # Adding content elements from the shadcn registry
 
+> 📖 **The canonical, screenshot-by-screenshot walkthrough now lives in the
+> Desiderio docs:
+> [Adding content elements from a shadcn block](https://github.com/dirnbauer/desiderio/blob/main/Documentation/Developer/AddingContentElements.rst).**
+> It follows the `terminal` graft end to end. This file is the Innesto-side
+> reference: the `innesto:add` command, its options, and two more worked
+> examples (`marquee`, `case-studies`).
+
 This is the complete, step-by-step manual for grafting a component from any
 [shadcn/ui registry](https://registry.directory/) onto TYPO3 as a Desiderio
 Content Blocks element. It walks through the exact graft that produced the
