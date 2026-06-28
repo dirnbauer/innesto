@@ -78,16 +78,22 @@ final class ElementScaffolder
         $typeName = 'innesto_' . str_replace('-', '', $elementKey);
         $title = (string)($item['title'] ?? ucwords(str_replace('-', ' ', $elementKey)));
         $description = (string)($item['description'] ?? 'Grafted from a shadcn registry item.');
-        // The registry item's first category becomes the wizard group; the
-        // blocks.so categories are pre-registered in Configuration/TCA/Overrides.
-        // An unregistered group still works — TYPO3 shows the key as label.
-        $group = strtolower(preg_replace('/[^a-z0-9-]+/i', '-', (string)(($item['categories'] ?? [])[0] ?? 'default')) ?? 'default');
+        // The registry item's first category becomes the wizard group. If the
+        // registry does not expose categories, keep the element out of TYPO3's
+        // generic "default" bucket and place it in Innesto's Components group.
+        $group = strtolower(preg_replace('/[^a-z0-9-]+/i', '-', (string)(($item['categories'] ?? [])[0] ?? 'components')) ?? 'components');
+        $keywords = implode("\n", array_map(
+            fn(string $keyword): string => "  - '" . $this->escapeYaml($keyword) . "'",
+            $this->buildKeywords($item, $elementKey, $group)
+        ));
         return <<<YAML
 name: innesto/$elementKey
 typeName: $typeName
 title: '$title'
 description: '{$this->escapeYaml($description)}'
 group: $group
+keywords:
+$keywords
 prefixFields: false
 basics:
   - TYPO3/Appearance
@@ -98,6 +104,49 @@ fields:
 # TODO: model the component props from sources/ as fields (Select, Checkbox,
 # Collection, …) — see existing Desiderio elements for the conventions.
 YAML . "\n";
+    }
+
+    /**
+     * @param array<string, mixed> $item
+     * @return list<string>
+     */
+    private function buildKeywords(array $item, string $elementKey, string $group): array
+    {
+        $keywords = [
+            str_replace('-', ' ', $group),
+            str_replace('-', ' ', $elementKey),
+        ];
+
+        foreach ((array)($item['categories'] ?? []) as $category) {
+            $keywords[] = str_replace('-', ' ', (string)$category);
+        }
+
+        $sourceText = implode(' ', [
+            (string)($item['title'] ?? ''),
+            (string)($item['description'] ?? ''),
+            (string)($item['name'] ?? ''),
+        ]);
+        $stopWords = array_fill_keys([
+            'and', 'are', 'can', 'for', 'from', 'into', 'that', 'the', 'this',
+            'used', 'with', 'your',
+        ], true);
+
+        foreach (preg_split('/[^a-z0-9]+/i', strtolower($sourceText)) ?: [] as $word) {
+            if (strlen($word) < 3 || isset($stopWords[$word])) {
+                continue;
+            }
+            $keywords[] = $word;
+        }
+
+        $unique = [];
+        foreach ($keywords as $keyword) {
+            $keyword = trim(strtolower($keyword));
+            if ($keyword !== '') {
+                $unique[$keyword] = $keyword;
+            }
+        }
+
+        return array_slice(array_values($unique), 0, 8);
     }
 
     /**

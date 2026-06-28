@@ -3,6 +3,13 @@ typeName: innesto_statscircularprogress
 title: 'Stats with Circular Progress'
 description: 'Stat cards pairing a circular progress ring and percentage with a title and usage caption, introduced by an optional lead text and link — grafted from the blocks.so stats-07 registry component.'
 group: stats
+keywords:
+  - 'stats'
+  - 'metrics'
+  - 'progress'
+  - 'circular progress'
+  - 'percentage'
+  - 'usage'
 prefixFields: false
 basics:
   - TYPO3/Appearance

@@ -3,6 +3,13 @@ typeName: innesto_statsusagedashboard
 title: 'Stats Usage Dashboard'
 description: 'Usage dashboard card listing metered resources, each row pairing a donut progress ring with current value and limit — grafted from the blocks.so stats-12 registry component.'
 group: stats
+keywords:
+  - 'stats'
+  - 'usage'
+  - 'dashboard'
+  - 'resources'
+  - 'donut progress'
+  - 'limits'
 prefixFields: false
 basics:
   - TYPO3/Appearance

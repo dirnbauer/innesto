@@ -3,6 +3,13 @@ typeName: innesto_statsdashboard
 title: 'Stats Dashboard with Progress Bars'
 description: 'Usage metric cards pairing a value and optional target with a tonal progress bar and status subtext — grafted from the blocks.so stats-11 registry component.'
 group: stats
+keywords:
+  - 'stats'
+  - 'metrics'
+  - 'dashboard'
+  - 'progress bars'
+  - 'targets'
+  - 'status'
 prefixFields: false
 basics:
   - TYPO3/Appearance

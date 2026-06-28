@@ -3,6 +3,13 @@ typeName: innesto_statsprogress
 title: 'Stats with Progress'
 description: 'Key metric cards pairing a value with a usage progress bar, percentage and limit caption — grafted from the blocks.so stats-09 registry component.'
 group: stats
+keywords:
+  - 'stats'
+  - 'metrics'
+  - 'progress'
+  - 'usage'
+  - 'percentage'
+  - 'limits'
 prefixFields: false
 basics:
   - TYPO3/Appearance

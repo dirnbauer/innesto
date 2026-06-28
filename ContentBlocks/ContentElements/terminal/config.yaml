@@ -2,7 +2,14 @@ name: innesto/terminal
 typeName: innesto_terminal
 title: 'Terminal'
 description: 'An animated terminal that types out commands and output line by line — grafted from the Magic UI terminal registry component.'
-group: default
+group: magic-ui
+keywords:
+  - 'terminal'
+  - 'console'
+  - 'command line'
+  - 'code'
+  - 'typewriter'
+  - 'animated output'
 prefixFields: false
 basics:
   - TYPO3/Appearance

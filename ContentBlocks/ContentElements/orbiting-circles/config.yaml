@@ -2,7 +2,14 @@ name: innesto/orbiting-circles
 typeName: innesto_orbitingcircles
 title: 'Orbiting Circles'
 description: 'Circles of short text orbiting along a circular path — grafted from the Magic UI orbiting-circles registry component.'
-group: default
+group: magic-ui
+keywords:
+  - 'orbiting circles'
+  - 'orbit'
+  - 'circular motion'
+  - 'animated icons'
+  - 'radial'
+  - 'motion'
 prefixFields: false
 basics:
   - TYPO3/Appearance

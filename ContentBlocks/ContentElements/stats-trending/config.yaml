@@ -3,6 +3,13 @@ typeName: innesto_statstrending
 title: 'Stats with Trending'
 description: 'A segmented row of key-figure tiles, each pairing a metric value with a trending up or down change indicator — grafted from the blocks.so stats-01 registry component.'
 group: stats
+keywords:
+  - 'stats'
+  - 'metrics'
+  - 'kpi'
+  - 'trending'
+  - 'change'
+  - 'comparison'
 prefixFields: false
 basics:
   - TYPO3/Appearance

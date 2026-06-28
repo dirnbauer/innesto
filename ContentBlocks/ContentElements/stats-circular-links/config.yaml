@@ -3,6 +3,13 @@ typeName: innesto_statscircularlinks
 title: 'Stats with Circular Progress and Links'
 description: 'Stat cards pairing a circular progress ring with current/target figures and a footer link — grafted from the blocks.so stats-08 registry component.'
 group: stats
+keywords:
+  - 'stats'
+  - 'metrics'
+  - 'progress'
+  - 'circular progress'
+  - 'links'
+  - 'targets'
 prefixFields: false
 basics:
   - TYPO3/Appearance

@@ -2,7 +2,14 @@ name: innesto/case-studies
 typeName: innesto_casestudies
 title: 'Case Studies'
 description: 'Case studies pairing a customer quote, portrait and company logo with key performance metrics — grafted from the shadcnblocks case-studies2 registry component.'
-group: default
+group: case-studies
+keywords:
+  - 'case studies'
+  - 'testimonials'
+  - 'quotes'
+  - 'customer success'
+  - 'social proof'
+  - 'metrics'
 prefixFields: false
 basics:
   - TYPO3/Appearance

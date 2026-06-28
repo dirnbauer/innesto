@@ -10,7 +10,8 @@ declare(strict_types=1);
  * the README and finishing pass promise: parseable config, uniquely-prefixed
  * Collection tables, no reserved child identifiers, every configured field
  * rendered, token-only styling (no raw colours), no inline scripts, a backend
- * preview, a valid 16x16 icon, well-formed XLIFF, and site-set registration.
+ * preview, a valid 16x16 icon, well-formed XLIFF, semantic wizard metadata,
+ * and site-set registration.
  *
  * Dependency-light on purpose so CI can run it without resolving the TYPO3 /
  * Desiderio runtime: YAML is read via ext-yaml when present, otherwise via
@@ -46,7 +47,8 @@ $parseYaml = (static function () use ($root): callable {
     exit(2);
 })();
 
-// Registered wizard groups (blocks.so families) + always-valid 'default'.
+// Registered wizard groups plus core fallbacks. Innesto elements should use a
+// semantic group, not TYPO3's generic "default" bucket.
 $registeredGroups = ['default' => true];
 $tcaOverride = $root . '/Configuration/TCA/Overrides/tt_content.php';
 if (is_file($tcaOverride)) {
@@ -147,8 +149,26 @@ foreach (glob($elementsRoot . '/*', GLOB_ONLYDIR) ?: [] as $dir) {
         $warn[] = 'missing description';
     }
     $group = (string)($config['group'] ?? 'default');
+    if ($group === 'default') {
+        $err[] = "group must not be 'default' — use a registered semantic wizard group";
+    }
     if (!isset($registeredGroups[$group])) {
         $warn[] = "group '{$group}' is not registered in Configuration/TCA/Overrides/tt_content.php";
+    }
+    $keywords = $config['keywords'] ?? null;
+    if (!is_array($keywords) || $keywords === []) {
+        $err[] = 'missing keywords';
+    } else {
+        foreach ($keywords as $keyword) {
+            if (!is_string($keyword) || trim($keyword) === '') {
+                $err[] = 'keywords must be non-empty strings';
+                break;
+            }
+            if (strtolower(trim($keyword)) === 'default') {
+                $err[] = 'keywords must not contain "default"';
+                break;
+            }
+        }
     }
     if (!isset($setBlocks['innesto/' . $key])) {
         $err[] = "not registered in Configuration/Sets/Innesto/config.yaml (hidden from the wizard)";

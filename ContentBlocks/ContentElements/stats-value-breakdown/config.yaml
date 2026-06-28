@@ -3,6 +3,13 @@ typeName: innesto_statsvaluebreakdown
 title: 'Stats with Value Breakdown'
 description: 'A compact value breakdown list pairing labelled amounts with change badges — grafted from the blocks.so stats-15 registry component.'
 group: stats
+keywords:
+  - 'stats'
+  - 'values'
+  - 'breakdown'
+  - 'amounts'
+  - 'badges'
+  - 'change'
 prefixFields: false
 basics:
   - TYPO3/Appearance

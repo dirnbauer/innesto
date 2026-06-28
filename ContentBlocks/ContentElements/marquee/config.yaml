@@ -2,7 +2,14 @@ name: innesto/marquee
 typeName: innesto_marquee
 title: 'Marquee'
 description: 'Scrolling ticker of short text pills — grafted from the Magic UI marquee registry component.'
-group: default
+group: magic-ui
+keywords:
+  - 'marquee'
+  - 'ticker'
+  - 'scrolling'
+  - 'looping text'
+  - 'animated pills'
+  - 'motion'
 prefixFields: false
 basics:
   - TYPO3/Appearance

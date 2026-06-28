@@ -3,6 +3,13 @@ typeName: innesto_statssegmentedprogress
 title: 'Stats with Segmented Progress'
 description: 'A usage summary with a single segmented progress bar splitting capacity into colored shares plus a swatch legend — grafted from the blocks.so stats-13 registry component.'
 group: stats
+keywords:
+  - 'stats'
+  - 'usage'
+  - 'segmented progress'
+  - 'capacity'
+  - 'legend'
+  - 'breakdown'
 prefixFields: false
 basics:
   - TYPO3/Appearance

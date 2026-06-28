@@ -3,6 +3,13 @@ typeName: innesto_statscards
 title: 'Stats with Card Layout'
 description: 'A responsive grid of stat cards, each pairing a metric value with a positive or negative change indicator — grafted from the blocks.so stats-03 registry component.'
 group: stats
+keywords:
+  - 'stats'
+  - 'metrics'
+  - 'kpi'
+  - 'cards'
+  - 'grid'
+  - 'change'
 prefixFields: false
 basics:
   - TYPO3/Appearance

@@ -3,6 +3,13 @@ typeName: innesto_statsbadges
 title: 'Stats with Badges'
 description: 'Key metric cards pairing a value with a trend badge that signals increase or decrease — grafted from the blocks.so stats-04 registry component.'
 group: stats
+keywords:
+  - 'stats'
+  - 'metrics'
+  - 'kpi'
+  - 'badges'
+  - 'trend'
+  - 'change'
 prefixFields: false
 basics:
   - TYPO3/Appearance

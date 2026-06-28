@@ -3,6 +3,13 @@ typeName: innesto_statsstatus
 title: 'Stats with Status'
 description: 'A responsive grid of stat cards pairing a key figure with goal progress and a color-coded status indicator — grafted from the blocks.so stats-06 registry component.'
 group: stats
+keywords:
+  - 'stats'
+  - 'metrics'
+  - 'kpi'
+  - 'status'
+  - 'goals'
+  - 'progress'
 prefixFields: false
 basics:
   - TYPO3/Appearance

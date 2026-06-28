@@ -3,6 +3,13 @@ typeName: innesto_statsareachart
 title: 'Stats with Area Chart'
 description: 'Stat tiles pairing a value, absolute change and percentage delta with a compact area sparkline drawn from editor-entered data points — grafted from the blocks.so stats-10 registry component.'
 group: stats
+keywords:
+  - 'stats'
+  - 'metrics'
+  - 'area chart'
+  - 'sparkline'
+  - 'trend'
+  - 'data points'
 prefixFields: false
 basics:
   - TYPO3/Appearance

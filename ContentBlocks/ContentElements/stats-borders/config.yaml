@@ -3,6 +3,13 @@ typeName: innesto_statsborders
 title: 'Stats with Borders'
 description: 'Key metrics in border-divided cells, each pairing the current value with a previous-period comparison and a color-coded trend badge — grafted from the blocks.so stats-02 registry component.'
 group: stats
+keywords:
+  - 'stats'
+  - 'metrics'
+  - 'kpi'
+  - 'borders'
+  - 'comparison'
+  - 'trend'
 prefixFields: false
 basics:
   - TYPO3/Appearance

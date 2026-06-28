@@ -3,6 +3,13 @@ typeName: innesto_statsusagebreakdown
 title: 'Stats with Usage Breakdown'
 description: 'A usage summary card with a total, a stacked breakdown bar and a color-coded legend — grafted from the blocks.so stats-14 registry component.'
 group: stats
+keywords:
+  - 'stats'
+  - 'usage'
+  - 'breakdown'
+  - 'stacked bar'
+  - 'legend'
+  - 'total'
 prefixFields: false
 basics:
   - TYPO3/Appearance

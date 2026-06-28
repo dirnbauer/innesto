@@ -3,6 +3,13 @@ typeName: innesto_statslinks
 title: 'Stats with Links'
 description: 'Key metric cards showing a stat name, value and trend change with a footer link on every card — grafted from the blocks.so stats-05 registry component.'
 group: stats
+keywords:
+  - 'stats'
+  - 'metrics'
+  - 'kpi'
+  - 'links'
+  - 'cards'
+  - 'trend'
 prefixFields: false
 basics:
   - TYPO3/Appearance
