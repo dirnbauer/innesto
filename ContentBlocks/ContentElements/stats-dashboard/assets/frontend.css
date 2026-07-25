@@ -1,3 +1,12 @@
+/* Status TEXT uses desiderio's solved *-text tokens instead of the raw status
+   colour: these elements paint the status colour on a 10-12% tint of itself,
+   where the raw token measures 3.8-4.1:1. The *-text variants pull the hue
+   towards --foreground (towards white in dark mode); the theme documents them
+   as verified >=4.9:1 across every preset and both schemes.
+
+   Only the `color:` property changes. Borders, tints, status dots and progress
+   arcs keep the raw hue — they are non-text, the 3:1 UI floor applies, and
+   pulling them towards the foreground would just make them muddy. */
 /* Grafted from registry item "stats-11" (Stats Dashboard with Progress Bars). Tokens map onto the Desiderio shadcn variables. */
 
 .innesto-stats-dashboard__intro {
@@ -113,8 +122,8 @@
     color: var(--muted-foreground);
 }
 .innesto-stats-dashboard__metric--positive .innesto-stats-dashboard__subtext {
-    color: var(--chart-2);
+    color: var(--d-success-text);
 }
 .innesto-stats-dashboard__metric--warning .innesto-stats-dashboard__subtext {
-    color: var(--destructive);
+    color: var(--d-danger-text);
 }
