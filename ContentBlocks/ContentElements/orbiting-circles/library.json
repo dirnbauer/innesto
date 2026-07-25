@@ -1,0 +1,19 @@
+{
+    "header": "Where your event data goes after ingest",
+    "orbiting_circles_items": [
+        {
+            "title": "Snowflake"
+        },
+        {
+            "title": "Webhooks"
+        },
+        {
+            "title": "Slack alerts"
+        }
+    ],
+    "radius": "medium",
+    "circle_size": "medium",
+    "speed": "slow",
+    "reverse": 0,
+    "show_path": 1
+}

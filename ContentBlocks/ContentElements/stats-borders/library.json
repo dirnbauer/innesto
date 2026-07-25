@@ -1,0 +1,27 @@
+{
+    "eyebrow": "June 2026 vs June 2025",
+    "header": "This month against the same month last year",
+    "stats_borders_items": [
+        {
+            "title": "Product teams",
+            "value": "890",
+            "previous": "from 704 a year ago",
+            "difference": "26.4%",
+            "trend": "up"
+        },
+        {
+            "title": "Events per month",
+            "value": "4.2 bn",
+            "previous": "from 3.1 bn a year ago",
+            "difference": "35.5%",
+            "trend": "up"
+        },
+        {
+            "title": "Median query response",
+            "value": "240 ms",
+            "previous": "from 388 ms a year ago",
+            "difference": "38.1%",
+            "trend": "down"
+        }
+    ]
+}

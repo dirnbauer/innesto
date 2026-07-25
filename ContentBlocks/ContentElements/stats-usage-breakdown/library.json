@@ -1,0 +1,29 @@
+{
+    "eyebrow": "Invoice preview",
+    "header": "What the Business plan actually costs each month",
+    "card_title": "June invoice",
+    "badge_text": "+12.5%",
+    "badge_tone": "up",
+    "total_value": "EUR 341",
+    "total_caption": "this month",
+    "breakdown_title": "What the invoice is made of",
+    "stats_usage_breakdown_items": [
+        {
+            "title": "Business plan",
+            "value": "EUR 249",
+            "percent": 73
+        },
+        {
+            "title": "Events above 20 M",
+            "value": "EUR 62",
+            "percent": 18.2
+        },
+        {
+            "title": "Retention beyond 90 days",
+            "value": "EUR 30",
+            "percent": 8.8
+        }
+    ],
+    "footnote": "Set your own caps and alerts in",
+    "footnote_link_text": "billing settings."
+}

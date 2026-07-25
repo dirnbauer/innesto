@@ -1,0 +1,29 @@
+{
+    "eyebrow": "Event mix",
+    "header": "What is filling the 20 million event allowance",
+    "summary_text": "Ingested this month",
+    "used_value": "14.2 M",
+    "total_text": "of 20 M events",
+    "segments": [
+        {
+            "title": "Web SDK",
+            "amount": "8.1 M",
+            "percent": 40.5,
+            "color": "chart-1"
+        },
+        {
+            "title": "Mobile SDKs",
+            "amount": "4.4 M",
+            "percent": 22,
+            "color": "chart-2"
+        },
+        {
+            "title": "Server imports",
+            "amount": "1.7 M",
+            "percent": 8.5,
+            "color": "chart-4"
+        }
+    ],
+    "free_title": "Still available",
+    "free_amount": "5.8 M"
+}

@@ -1,0 +1,72 @@
+{
+    "eyebrow": "Customer stories",
+    "header": "Three customers on what the event data changed",
+    "case_studies_items": [
+        {
+            "quote": "We shipped the same onboarding for two years without knowing where it lost people. Step three turned out to be the answer, and fixing it took activation from 34% to 58%.",
+            "author_name": "Marta Ilves",
+            "author_role": "Head of Product, Camino Freight",
+            "metrics": [
+                {
+                    "value": "58%",
+                    "title": "Activation rate",
+                    "description": "Up from 34% before the March 2024 rebuild"
+                },
+                {
+                    "value": "11 days",
+                    "title": "Time to first insight",
+                    "description": "Down from six weeks of hand-built CSV exports"
+                },
+                {
+                    "value": "3.4x",
+                    "title": "Weekly report opens",
+                    "description": "Across 40 operations staff in Tallinn and Riga"
+                }
+            ]
+        },
+        {
+            "quote": "Support kept escalating a checkout bug nobody could reproduce. The session trail showed a 14-second wait on card validation, and the ticket queue dropped by a third that week.",
+            "author_name": "Deniz Aygün",
+            "author_role": "Engineering Lead, Kestrel Payments",
+            "metrics": [
+                {
+                    "value": "-34%",
+                    "title": "Checkout support tickets",
+                    "description": "Measured over the eight weeks after the fix"
+                },
+                {
+                    "value": "14 s",
+                    "title": "Wait removed from card step",
+                    "description": "Released to all regions on 9 April 2025"
+                },
+                {
+                    "value": "2.4 M",
+                    "title": "Events sent per month",
+                    "description": "Web, iOS and Android on one shared schema"
+                }
+            ]
+        },
+        {
+            "quote": "Forty per cent of trials finished and nobody could say why the rest walked away. Two cohort reports later we cut the signup form to four fields and stopped losing them at the door.",
+            "author_name": "Sofia Bregenz",
+            "author_role": "Growth Manager, Lumen Tutoring",
+            "metrics": [
+                {
+                    "value": "+21 pts",
+                    "title": "Trial completion",
+                    "description": "From 40% to 61% between January and June 2025"
+                },
+                {
+                    "value": "4",
+                    "title": "Signup form fields",
+                    "description": "Down from nine after the February cohort review"
+                },
+                {
+                    "value": "18",
+                    "title": "Dashboards in daily use",
+                    "description": "Shared across tutoring, support and finance"
+                }
+            ]
+        }
+    ]
+}

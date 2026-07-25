@@ -1,0 +1,40 @@
+{
+    "header": "Sending your first event from a Node project",
+    "terminal_title": "zsh — ~/projects/camino-web",
+    "terminal_lines": [
+        {
+            "kind": "muted",
+            "text": "# Install the JavaScript SDK and send one event"
+        },
+        {
+            "kind": "command",
+            "text": "npm install @signalbureau/browser"
+        },
+        {
+            "kind": "output",
+            "text": "added 1 package in 2.4s"
+        },
+        {
+            "kind": "command",
+            "text": "export SIGNAL_BUREAU_KEY=sb_live_7f3c9a21"
+        },
+        {
+            "kind": "command",
+            "text": "node scripts/send-first-event.js"
+        },
+        {
+            "kind": "output",
+            "text": "POST https://ingest.eu.signalbureau.io/v1/events"
+        },
+        {
+            "kind": "success",
+            "text": "✔ 1 event accepted in 240 ms — region fra1"
+        },
+        {
+            "kind": "muted",
+            "text": "# It shows up in Live View within about 5 seconds"
+        }
+    ],
+    "speed": "normal",
+    "animate": 1
+}

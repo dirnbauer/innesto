@@ -1,0 +1,24 @@
+{
+    "eyebrow": "Reliability",
+    "header": "The numbers the on-call engineer checks first",
+    "stats_cards_items": [
+        {
+            "title": "Ingest uptime",
+            "value": "99.98%",
+            "change": "+0.01 pts vs May",
+            "change_type": "positive"
+        },
+        {
+            "title": "Events dropped",
+            "value": "812,400",
+            "change": "-31.6% vs May",
+            "change_type": "positive"
+        },
+        {
+            "title": "Queue lag, p95",
+            "value": "1.8 s",
+            "change": "+0.4 s vs May",
+            "change_type": "negative"
+        }
+    ]
+}

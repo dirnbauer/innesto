@@ -1,0 +1,24 @@
+{
+    "eyebrow": "Q3 by region",
+    "header": "Regional ingest against this quarter's targets",
+    "stats_status_items": [
+        {
+            "title": "Frankfurt",
+            "value": "2.71 bn events",
+            "detail": "4 of 5 goals",
+            "status": "within"
+        },
+        {
+            "title": "Dublin",
+            "value": "1.49 bn events",
+            "detail": "2 of 5 goals",
+            "status": "observe"
+        },
+        {
+            "title": "Cross-region replication",
+            "value": "99.2%",
+            "detail": "1 of 4 goals",
+            "status": "critical"
+        }
+    ]
+}

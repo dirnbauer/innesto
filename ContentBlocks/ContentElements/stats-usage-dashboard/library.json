@@ -1,0 +1,27 @@
+{
+    "eyebrow": "Team plan",
+    "header": "Team plan usage since the billing period opened",
+    "period_label": "Last 30 days",
+    "updated_label": "Updated 6 minutes ago",
+    "cta_text": "Move to Business",
+    "stats_usage_dashboard_items": [
+        {
+            "title": "Events ingested",
+            "current_value": "1.36 M",
+            "limit_value": "2 M",
+            "percent": 68
+        },
+        {
+            "title": "Seats in use",
+            "current_value": "4",
+            "limit_value": "5",
+            "percent": 80
+        },
+        {
+            "title": "Query API calls",
+            "current_value": "112 K",
+            "limit_value": "500 K",
+            "percent": 22
+        }
+    ]
+}

@@ -1,0 +1,17 @@
+{
+    "header": "Teams sending events to Signal Bureau today",
+    "marquee_items": [
+        {
+            "title": "Camino Freight"
+        },
+        {
+            "title": "Kestrel Payments"
+        },
+        {
+            "title": "Lumen Tutoring"
+        }
+    ],
+    "speed": "slow",
+    "reverse": 0,
+    "pause_on_hover": 1
+}

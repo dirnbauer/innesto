@@ -1,0 +1,24 @@
+{
+    "eyebrow": "Since May",
+    "header": "Month-on-month movement in the core figures",
+    "stats_trending_items": [
+        {
+            "title": "Events ingested",
+            "value": "4.2 bn",
+            "delta": "+9.41%",
+            "trend": "up"
+        },
+        {
+            "title": "Median query response",
+            "value": "240 ms",
+            "delta": "-11.43%",
+            "trend": "down"
+        },
+        {
+            "title": "Workspaces cancelled",
+            "value": "12",
+            "delta": "+33.33%",
+            "trend": "up"
+        }
+    ]
+}

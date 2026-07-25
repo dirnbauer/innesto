@@ -1,0 +1,24 @@
+{
+    "eyebrow": "Last 30 days",
+    "header": "Platform load over the past 30 days",
+    "stats_badges_items": [
+        {
+            "title": "Events ingested",
+            "value": "4.2 bn",
+            "badge_text": "+9.4%",
+            "badge_tone": "up"
+        },
+        {
+            "title": "Median query response",
+            "value": "240 ms",
+            "badge_text": "-31 ms",
+            "badge_tone": "down"
+        },
+        {
+            "title": "Ingest calls rejected",
+            "value": "0.02%",
+            "badge_text": "-0.01 pts",
+            "badge_tone": "down"
+        }
+    ]
+}

@@ -1,0 +1,23 @@
+{
+    "header": "What a workspace is worth over three years",
+    "stats_value_breakdown_entries": [
+        {
+            "title": "After 1 year",
+            "value": "EUR 948",
+            "percentage": "+7.4%",
+            "trend": "positive"
+        },
+        {
+            "title": "After 2 years",
+            "value": "EUR 1,986",
+            "percentage": "+12.1%",
+            "trend": "positive"
+        },
+        {
+            "title": "After 3 years",
+            "value": "EUR 2,904",
+            "percentage": "-3.2%",
+            "trend": "negative"
+        }
+    ]
+}
