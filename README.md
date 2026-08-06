@@ -22,9 +22,11 @@ Blocks elements.
    [Terminal note](Documentation/Elements/Terminal.md)), the
    [shadcnblocks case-studies2](https://www.shadcnblocks.com/block/case-studies2)
    block (quotes + metrics, modeled as nested Collections), and the complete
-   15-element stats family from [blocks.so](https://blocks.so/) (trending,
-   badges, progress bars, circular progress, area charts, dashboards,
-   breakdowns — all rendered without React, via tokens, CSS and SVG).
+   15-element stats family from [blocks.so/stats](https://blocks.so/stats)
+   (trending, badges, progress bars, circular progress, area charts,
+   dashboards, breakdowns — all rendered without React, via tokens, CSS and
+   SVG). The stats mapping and verification checklist are documented in
+   [Blocks stats](Documentation/Elements/BlocksStats.md).
 3. **Registry glue code.** A console command fetches any registry item — every
    registry cataloged on [registry.directory](https://registry.directory/)
    speaks the same `registry-item` JSON schema — and scaffolds a Content
@@ -36,6 +38,7 @@ Blocks elements.
    vendor/bin/typo3 innesto:add shadcn/button
    vendor/bin/typo3 innesto:add @shadcnblocks/case-studies2 --key case-studies
    vendor/bin/typo3 innesto:add blocks/stats-09 --key stats-progress
+   vendor/bin/typo3 innesto:add https://blocks.so/r/stats-09.json --key stats-progress
    vendor/bin/typo3 innesto:add https://magicui.design/r/globe.json --key globe
    vendor/bin/typo3 innesto:add magicui/orbiting-circles --ai   # + AI finishing pass
    ```
@@ -44,7 +47,7 @@ Blocks elements.
 docs: [Adding content elements from a shadcn block](https://github.com/dirnbauer/desiderio/blob/main/Documentation/Developer/AddingContentElements.rst)**
 — it walks the `terminal` graft from picking the component to seeing it render.
 This repo keeps a [CLI/command reference](Documentation/AddingContentElements.md)
-with two more worked examples (marquee, case-studies).
+with worked examples plus the checked blocks.so stats-family workflow.
 
 ## What the pipeline converts automatically — and what it can't
 

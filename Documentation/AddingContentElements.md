@@ -4,8 +4,8 @@
 > Desiderio docs:
 > [Adding content elements from a shadcn block](https://github.com/dirnbauer/desiderio/blob/main/Documentation/Developer/AddingContentElements.rst).**
 > It follows the `terminal` graft end to end. This file is the Innesto-side
-> reference: the `innesto:add` command, its options, and two more worked
-> examples (`marquee`, `case-studies`).
+> reference: the `innesto:add` command, its options, worked examples
+> (`marquee`, `case-studies`), and the checked blocks.so stats-family workflow.
 
 This is the complete, step-by-step manual for grafting a component from any
 [shadcn/ui registry](https://registry.directory/) onto TYPO3 as a Desiderio
@@ -72,6 +72,11 @@ Good graft candidates are *documents with a little motion*: marquees, logo
 clouds, bento grids, animated lists, badges. See
 [What might not work](#what-converts-automatically--and-what-doesnt) before
 picking something interaction-heavy.
+
+For the complete blocks.so stats collection, see the dedicated
+[Blocks stats note](Elements/BlocksStats.md). It maps `stats-01` through
+`stats-15` to the shipped `innesto/stats-*` elements and lists the verification
+steps used after the grafting pass.
 
 ## Step 2 — Run `innesto:add`
 
@@ -424,6 +429,36 @@ one level deeper; the frontend renders the 2:1 bordered split from the
 upstream design, restyled entirely through the semantic tokens — no value in
 [`assets/frontend.css`](../ContentBlocks/ContentElements/case-studies/assets/frontend.css)
 is a raw color.
+
+## Worked example 3: the blocks.so stats family
+
+The shipped stats elements were checked against
+[blocks.so/stats](https://blocks.so/stats), which exposes 15 registry items:
+`@blocks-so/stats-01` through `@blocks-so/stats-15`. Innesto keeps those
+original sources in each element's `sources/` folder and uses semantic element
+keys such as `innesto/stats-progress` instead of exposing numbered variants to
+editors.
+
+To graft one stats item manually:
+
+```bash
+vendor/bin/typo3 innesto:add blocks/stats-09 --key stats-progress
+```
+
+Then run the finishing pass like any other graft: model the repeated metrics as
+Collection fields, translate the JSX to Fluid, move styling into semantic-token
+CSS, add a backend preview, and run `extension:setup` plus `cache:flush`.
+
+The full stats-family mapping and the exact verification checklist are in
+[Documentation/Elements/BlocksStats.md](Elements/BlocksStats.md). The important
+checks are:
+
+- all 15 local `stats-*` folders exist and keep their upstream `stats-XX.tsx`
+  source;
+- every stats `config.yaml` uses `group: stats` and is listed in
+  `Configuration/Sets/Innesto/config.yaml`;
+- every Collection has an explicit, unique `innesto_*` table;
+- the content-element audit passes with no warnings.
 
 ## Grafting into your own sitepackage
 
