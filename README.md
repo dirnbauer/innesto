@@ -2,10 +2,15 @@
 
 [![CI](https://github.com/dirnbauer/innesto/actions/workflows/ci.yml/badge.svg)](https://github.com/dirnbauer/innesto/actions/workflows/ci.yml)
 
-*innesto (it.) — graft.* A TYPO3 v14 experiment that grafts components from
+*innesto (it.) — graft.* A TYPO3 v14 companion extension that grafts components from
 [shadcn/ui registries](https://registry.directory/) onto the
 [Desiderio](https://github.com/dirnbauer/desiderio) design system as Content
 Blocks elements.
+
+The browser runtime contains no React components. Original TSX files are kept
+only as source provenance for the deterministic Fluid conversion; finished
+elements render with Fluid, semantic shadcn tokens, CSS, SVG, and small
+progressive scripts such as Alpine.js only where interaction requires them.
 
 ## What it does
 
@@ -70,7 +75,7 @@ finishing pass.
 
 ```bash
 composer config repositories.innesto vcs https://github.com/dirnbauer/innesto
-composer require dirnbauer/innesto:@dev
+composer require webconsulting/innesto:@dev
 vendor/bin/typo3 extension:setup
 ```
 
@@ -78,7 +83,7 @@ Then add the set to your site's `config.yaml`:
 
 ```yaml
 dependencies:
-  - dirnbauer/innesto
+  - webconsulting/innesto
 ```
 
 ## Grafting a component in four steps
@@ -138,7 +143,7 @@ php scripts/audit-content-elements.php
 ```
 
 [CI](.github/workflows/ci.yml) runs `composer validate`, PHP lint, and the
-audit on PHP 8.3 and 8.4 for every push and pull request. It is install-free:
+audit on PHP 8.4 for every push and pull request. It is install-free:
 the extension is meant to be installed into a TYPO3 project that provides
 `webconsulting/desiderio`, so the audit reads `config.yaml` via ext-yaml
 rather than resolving the runtime.

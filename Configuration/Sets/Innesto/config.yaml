@@ -1,4 +1,4 @@
-name: dirnbauer/innesto
+name: webconsulting/innesto
 label: 'Innesto'
 dependencies:
   - webconsulting/desiderio

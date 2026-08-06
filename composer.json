@@ -1,18 +1,18 @@
 {
-    "name": "dirnbauer/innesto",
+    "name": "webconsulting/innesto",
     "type": "typo3-cms-extension",
     "description": "Innesto — grafts shadcn/ui registry components onto TYPO3 as Desiderio-styled Content Blocks",
     "license": "GPL-2.0-or-later",
     "authors": [
         {
-            "name": "Kurt Dirnbauer"
+            "name": "webconsulting studio"
         }
     ],
     "require": {
-        "php": "^8.3",
+        "php": "^8.4",
         "friendsoftypo3/content-blocks": "^2.2",
         "typo3/cms-core": "^14.3",
-        "webconsulting/desiderio": "*"
+        "webconsulting/desiderio": "^4.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

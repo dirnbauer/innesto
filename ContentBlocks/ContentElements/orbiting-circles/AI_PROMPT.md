@@ -1,6 +1,6 @@
 # Finish the Innesto graft: innesto/orbiting-circles
 
-You are inside the element directory `/var/www/html/vendor/dirnbauer/innesto/ContentBlocks/ContentElements/orbiting-circles`.
+You are inside the element directory `/var/www/html/vendor/webconsulting/innesto/ContentBlocks/ContentElements/orbiting-circles`.
 The upstream shadcn registry component "Orbiting Circles" (A collection of circles which move in orbit along a circular path) was scaffolded
 here; your job is the finishing pass that cannot be done mechanically.
 
