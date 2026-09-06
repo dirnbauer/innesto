@@ -15,6 +15,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -71,7 +72,7 @@ final class AddRegistryItemCommand extends Command
         $io->section(sprintf('Fetched "%s" (%s)', $item['name'], $item['type'] ?? 'unknown type'));
 
         $elementKey = (string)($input->getOption('key') ?? $item['name']);
-        $elementKey = strtolower(preg_replace('/[^a-z0-9-]+/i', '-', $elementKey) ?? $elementKey);
+        $elementKey = trim(strtolower(preg_replace('/[^a-z0-9]+/i', '-', $elementKey) ?? $elementKey), '-');
 
         $target = (string)($input->getOption('target')
             ?? ExtensionManagementUtility::extPath('innesto') . 'ContentBlocks/ContentElements');
@@ -103,7 +104,7 @@ final class AddRegistryItemCommand extends Command
 
         $elementDir = rtrim($target, '/') . '/' . $elementKey;
         $prompt = $this->promptBuilder->build($item, $elementKey, $elementDir);
-        file_put_contents($elementDir . '/AI_PROMPT.md', $prompt);
+        (new Filesystem())->dumpFile($elementDir . '/AI_PROMPT.md', $prompt);
         $io->text('AI finishing prompt written to ' . $elementKey . '/AI_PROMPT.md');
 
         if ($input->getOption('ai')) {
@@ -113,9 +114,9 @@ final class AddRegistryItemCommand extends Command
             }
         } else {
             $io->text([
-                'Next steps (or rerun with --ai):',
-                '  1. Run the finishing pass: claude -p "$(cat AI_PROMPT.md)" --permission-mode acceptEdits',
-                '  2. Review the result, then: vendor/bin/typo3 extension:setup && cache:flush',
+                'Next steps:',
+                '  1. In ' . $elementDir . ': claude -p "$(cat AI_PROMPT.md)" --permission-mode acceptEdits',
+                '  2. Review the result, then from the project root: vendor/bin/typo3 extension:setup && vendor/bin/typo3 cache:flush',
             ]);
         }
         return Command::SUCCESS;
@@ -150,7 +151,7 @@ final class AddRegistryItemCommand extends Command
             $io->error('Finishing pass failed (exit ' . $process->getExitCode() . '). The scaffold is intact; rerun manually with AI_PROMPT.md.');
             return Command::FAILURE;
         }
-        $io->success('Finishing pass complete. Review the element, then run extension:setup && cache:flush.');
+        $io->success('Finishing pass complete. Review the element, then from the project root run vendor/bin/typo3 extension:setup && vendor/bin/typo3 cache:flush.');
         return Command::SUCCESS;
     }
 }

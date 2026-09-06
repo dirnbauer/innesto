@@ -49,31 +49,19 @@ conversion work:
    16x16 backend icon for each element.
 6. Register every block in the Innesto site set so editors can add it.
 
-## Checked steps
+## Verification
 
-These are the checks to repeat after adding another blocks.so family:
+Every element has a maintained `library.json` demo. `innesto:seed` uses these
+values, including nested data points and decimal values in the area charts.
 
 ```bash
-# The blocks page currently lists stats-01 through stats-15.
-# Compare that inventory with local element folders and sources.
-find ContentBlocks/ContentElements -mindepth 1 -maxdepth 1 -type d -name 'stats-*' | sort
-
-# Each Collection must declare a stable, prefixed table. This prints nothing
-# when every Collection is followed by table:.
-awk '
-  /type:[[:space:]]*Collection/ { file=FILENAME; line=FNR; need=1; next }
-  need && /table:/ { need=0; next }
-  need { print file ":" line ": Collection missing table:"; need=0 }
-' ContentBlocks/ContentElements/stats-*/config.yaml
-
-# Run the full contract audit. If host PHP has no ext-yaml, point AUDIT_AUTOLOAD
-# at an autoloader that provides symfony/yaml.
 composer audit:content-elements
-
-# Validate package metadata.
-composer validate --no-check-publish
+Build/Scripts/runTests.sh -s functional
 ```
 
-The full audit checks config parsing, site-set registration, collection table
-uniqueness, template references, token-only CSS, no inline scripts, backend
-previews, icons, and XLIFF files.
+The audit checks metadata, registration, unique collection tables, template
+references, token-only CSS, backend previews, icons and XLIFF. Functional tests
+seed the full family through TYPO3 DataHandler and render every element through
+Fluid. The browser check additionally verifies the three area-chart SVGs.
+
+See [Development](../Development.md) for dependencies and DDEV commands.

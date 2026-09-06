@@ -1,534 +1,133 @@
-# Adding content elements from the shadcn registry
+# Adding content elements
 
-> 📖 **The canonical, screenshot-by-screenshot walkthrough now lives in the
-> Desiderio docs:
-> [Adding content elements from a shadcn block](https://github.com/dirnbauer/desiderio/blob/main/Documentation/Developer/AddingContentElements.rst).**
-> It follows the `terminal` graft end to end. This file is the Innesto-side
-> reference: the `innesto:add` command, its options, worked examples
-> (`marquee`, `case-studies`), and the checked blocks.so stats-family workflow.
+Innesto generates a Content Blocks scaffold from a shadcn registry item.
+Registry CSS is converted automatically; React markup, state and props need
+to be translated into Fluid templates and editor fields.
 
-This is the complete, step-by-step manual for grafting a component from any
-[shadcn/ui registry](https://registry.directory/) onto TYPO3 as a Desiderio
-Content Blocks element. It walks through the exact graft that produced the
-shipped `innesto/marquee` element — from picking the component to seeing it
-scroll on the page:
+## Fetch a new component
 
-![The finished marquee element rendering on the frontend](Images/frontend-marquee.png)
+Use an unused key: the 19 shipped elements already exist, and `innesto:add`
+refuses to overwrite them.
 
-Every command and screenshot in this manual was taken from a real TYPO3
-v14.3 installation.
+```bash
+vendor/bin/typo3 innesto:add magicui/marquee --key partner-marquee
+vendor/bin/typo3 innesto:add @shadcnblocks/case-studies2 --key customer-stories
+vendor/bin/typo3 innesto:add blocks/stats-09 --key project-progress
+vendor/bin/typo3 innesto:add https://example.com/r/component.json --key custom-card
+```
 
-## How a graft works
-
-Every registry on [registry.directory](https://registry.directory/) — shadcn/ui,
-Magic UI, Origin UI, Aceternity UI, … — serves its components as JSON following
-the same [`registry-item` schema](https://ui.shadcn.com/schema/registry-item.json):
-React/TSX sources, plain CSS, and theme variables.
-
-Innesto splits the conversion into two phases:
-
-1. **The mechanical phase** (`innesto:add`, fully automatic): fetch the JSON,
-   convert the CSS, scaffold a complete Content Blocks element folder, register
-   the element in the site set, and write a tailored finishing prompt.
-2. **The finishing phase** (you, or an AI agent via `--ai`): translate the React
-   markup to Fluid, model the component props as editor fields, and port the
-   styles onto the Desiderio design tokens. React components are programs, not
-   documents — this phase cannot be mechanical, which is why it is clearly
-   separated and prompt-assisted.
-
-## Prerequisites
-
-- A Composer-based TYPO3 v14.3 installation with
-  [Desiderio](https://github.com/dirnbauer/desiderio) set up
-- Innesto installed and added to your site's `config.yaml`
-  (see the [README](../README.md#install))
-- CLI access (`vendor/bin/typo3`); in ddev prefix commands with `ddev exec`
-- Optional, for the AI finishing pass: the [`claude` CLI](https://claude.com/claude-code)
-
-## Step 1 — Pick a component
-
-Browse [registry.directory](https://registry.directory/) or a registry's own
-site and note the item name. `innesto:add` accepts two forms:
-
-| Form | Example |
+| Option | Meaning |
 | --- | --- |
-| Shorthand `<registry>/<item>` for known registries | `magicui/marquee`, `shadcn/button`, `shadcnblocks/case-studies2`, `blocks/stats-01` |
-| Full item-JSON URL for everything else | `https://magicui.design/r/globe.json` |
+| `--key`, `-k` | Element folder and name; defaults to the registry item name |
+| `--target`, `-t` | ContentElements directory; defaults to this extension |
+| `--ai` | Run the finishing pass with the installed `claude` executable |
 
-A leading `@` is accepted too, so the namespace form from the shadcn CLI docs
-(`@shadcnblocks/case-studies2`) works verbatim.
+Keys use lowercase letters, numbers and single hyphens. Known shorthands are
+`shadcn`, `magicui`, `shadcnblocks` and `blocks`; a leading `@` is optional.
+Other registries need a complete item JSON URL. Registry dependencies are
+reported for manual review and are not downloaded recursively.
+Keys must also produce a unique CType: `demo-card` and `democard` conflict
+because Innesto's existing CType convention removes hyphens.
 
-The shorthand map currently knows `shadcn`, `magicui`, `shadcnblocks`, and
-`blocks` (blocks.so)
-([`RegistryClient`](../Classes/Registry/RegistryClient.php)). For any other
-registry, pass the URL of the item JSON — it is usually linked as "Open in v0"
-/ "registry item" on the component page, or simply `<registry>/r/<item>.json`.
+The command writes:
 
-> **Note (shadcn registry):** items of the official registry live under a
-> style path — the shorthand resolves to
-> `https://ui.shadcn.com/r/styles/new-york-v4/<item>.json` for you.
+```text
+ContentBlocks/ContentElements/<key>/
+├── config.yaml
+├── templates/frontend.html
+├── assets/frontend.css
+├── assets/icon.svg
+├── language/labels.xlf
+├── sources/<upstream-file>
+└── AI_PROMPT.md
+```
 
-Good graft candidates are *documents with a little motion*: marquees, logo
-clouds, bento grids, animated lists, badges. See
-[What might not work](#what-converts-automatically--and-what-doesnt) before
-picking something interaction-heavy.
+Source basenames must be unique to avoid losing files during extraction.
+Registry titles and descriptions are serialized with Symfony YAML, including
+quotes and multiline text.
 
-For the complete blocks.so stats collection, see the dedicated
-[Blocks stats note](Elements/BlocksStats.md). It maps `stats-01` through
-`stats-15` to the shipped `innesto/stats-*` elements and lists the verification
-steps used after the grafting pass.
+For the default target, the command adds `innesto/<key>` to
+`Configuration/Sets/Innesto/config.yaml`. A custom target needs that entry in
+the consuming site's set manually. Desiderio sites restrict available blocks
+through site sets, so an unlisted block may remain hidden in the wizard.
 
-## Step 2 — Run `innesto:add`
+## Finish the scaffold
+
+With `--ai`, the command invokes Claude from the new element directory.
+`INNESTO_CLAUDE_BIN` can select the executable. In DDEV, the host's Claude CLI
+usually is not installed inside the container. Run the generated prompt from
+the host instead:
 
 ```bash
-vendor/bin/typo3 innesto:add magicui/marquee
-# in ddev:
-ddev exec vendor/bin/typo3 innesto:add magicui/marquee
-```
-
-Real output:
-
-```
-Fetched "marquee" (registry:ui)
--------------------------------
-
- * marquee/sources/marquee.tsx
- * marquee/assets/frontend.css
- * marquee/assets/icon.svg
- * marquee/config.yaml
- * marquee/language/labels.xlf
- * marquee/templates/frontend.html
-
- [OK] Element "innesto/marquee" scaffolded.
-
- Registered "innesto/marquee" in the Innesto site set (Configuration/Sets/Innesto/config.yaml).
- AI finishing prompt written to marquee/AI_PROMPT.md
- Next steps (or rerun with --ai):
-   1. Run the finishing pass: claude -p "$(cat AI_PROMPT.md)" --permission-mode acceptEdits
-   2. Review the result, then: vendor/bin/typo3 extension:setup && cache:flush
-```
-
-Useful options:
-
-| Option | Purpose |
-| --- | --- |
-| `--key globe` | Folder/element key if it should differ from the item name |
-| `--target <dir>` | Scaffold into another extension's `ContentBlocks/ContentElements` (see [Grafting into your own sitepackage](#grafting-into-your-own-sitepackage)) |
-| `--ai` | Run the finishing pass automatically via the `claude` CLI |
-
-### What was generated
-
-```
-ContentBlocks/ContentElements/marquee/
-├── AI_PROMPT.md                       # tailored prompt for the finishing pass
-├── config.yaml                        # element definition — fields still TODO
-├── templates/frontend.html            # Fluid stub with Desiderio wrappers
-├── assets/frontend.css                # cssVars/keyframes already converted
-├── assets/icon.svg                    # placeholder graft icon
-├── language/labels.xlf                # title + description from the registry
-└── sources/marquee.tsx                # upstream source, kept for provenance
-```
-
-Two parts are already real work done for you:
-
-**`assets/frontend.css`** — the registry item's `css` and `cssVars` blocks are
-converted to plain CSS. Tailwind `@theme` animation entries become custom
-properties plus matching utility classes (the Desiderio Tailwind build does
-not scan grafted elements, so the utilities must be emitted here):
-
-```css
-/* Grafted from registry item "marquee" (Marquee). Tokens map onto the Desiderio shadcn variables. */
-:root {
-    --animate-marquee: marquee var(--duration) infinite linear;
-}
-.animate-marquee {
-    animation: var(--animate-marquee);
-}
-@keyframes marquee {
-    from { transform: translateX(0); }
-    to { transform: translateX(calc(-100% - var(--gap))); }
-}
-```
-
-**The site-set registration** — Content Blocks exposes every content block as
-a virtual site set named after the block (`innesto/marquee`). Desiderio
-references all of its elements that way, which switches the New Content
-Element wizard into allow-list mode per site: any block *not* listed in a site
-set is hidden from editors. `innesto:add` therefore appends the new block to
-`Configuration/Sets/Innesto/config.yaml`:
-
-```yaml
-optionalDependencies:
-  - innesto/marquee
-```
-
-Without this line the element would render fine but never appear in the
-wizard — the number one "why can't I add my element?" trap.
-
-## Step 3 — The finishing pass
-
-The scaffolded `templates/frontend.html` is a stub; `config.yaml` has only the
-`header` field. The finishing pass turns the preserved React source into a
-proper editor-facing element. You have two options.
-
-### Option A: let an agent do it
-
-```bash
-vendor/bin/typo3 innesto:add magicui/marquee --ai
-```
-
-This runs the `claude` CLI with the generated `AI_PROMPT.md` in the element
-directory. The prompt contains the upstream sources and all Desiderio
-conventions, so the pass is reproducible with any agent:
-
-```bash
-cd ContentBlocks/ContentElements/marquee
+cd ContentBlocks/ContentElements/partner-marquee
 claude -p "$(cat AI_PROMPT.md)" --permission-mode acceptEdits
 ```
 
-> In ddev the `claude` binary usually lives on the host, not in the web
-> container — run `innesto:add` inside ddev and the finishing pass from the
-> host, or set `INNESTO_CLAUDE_BIN`.
+If the finishing process fails, the scaffold and prompt remain available.
+Run the prompt from the existing folder; repeating `innesto:add` would fail
+because that folder already exists.
 
-Review the result like any contribution: check the rendered output, the
-backend form, and that the CSS only uses semantic tokens.
+Finish these files, then review the generated changes:
 
-### Option B: do it yourself
+1. **`templates/frontend.html`:** translate markup to Fluid 5; use Desiderio
+   layout components and render editor text with `f:render.text`. Keep the
+   per-element `f:asset.css` include. Use CSS for motion where possible and
+   load any JavaScript through `f:asset.script`.
+2. **`config.yaml`:** model component props as fields. Keep `header` as an
+   existing field. Give each Collection a unique `innesto_*` table, including
+   nested Collections. Use `title` instead of the reserved child identifier
+   `label`. Preserve existing CTypes and field names when editing a block.
+3. **`assets/frontend.css`:** use Desiderio semantic variables such as
+   `var(--primary)`, `var(--muted)` and `var(--border)`. Prefix selectors with
+   the element name and support `prefers-reduced-motion` for animations.
+4. **`templates/backend-preview.fluid.html`:** provide a preview using the
+   `Preview` layout and Desiderio's `content-preview.css`.
+5. **`library.json`:** provide demo values keyed by field identifier.
+   Collections contain arrays of child objects. Keep numeric values numeric,
+   including decimal chart data.
 
-Work through the three files. The shipped marquee shows each step.
+Finished examples are in this repository: `marquee` for animation,
+`case-studies` for nested Collections and File fields, and `stats-area-chart`
+for decimal chart data. See also [Terminal](Elements/Terminal.md) and
+[Blocks stats](Elements/BlocksStats.md).
 
-**1. Model the props as fields in `config.yaml`.** Look at the props interface
-in `sources/marquee.tsx` (`reverse`, `pauseOnHover`, `repeat`, children) and
-translate them to Content Blocks fields:
+Remove the temporary `AI_PROMPT.md` after finishing. Keep upstream sources
+and license notices for provenance.
 
-```yaml
-fields:
-  -
-    identifier: header
-    useExistingField: true
-    label: 'Heading'
-  -
-    identifier: marquee_items          # the React children become a Collection
-    type: Collection
-    table: innesto_marquee_items
-    prefixField: true
-    label: 'Items'
-    minItems: 3
-    fields:
-      -
-        identifier: title              # NEVER name a child field "label" — reserved!
-        type: Textarea
-        rows: 1
-        label: 'Item text'
-        required: true
-  -
-    identifier: speed                  # enum prop → Select
-    type: Select
-    renderType: selectSingle
-    label: 'Scroll Speed'
-    items:
-      - { label: 'Slow', value: slow }
-      - { label: 'Normal', value: normal }
-      - { label: 'Fast', value: fast }
-    default: normal
-  -
-    identifier: reverse                # boolean prop → Checkbox toggle
-    type: Checkbox
-    renderType: checkboxToggle
-    label: 'Reverse direction'
-    default: 0
-  -
-    identifier: pause_on_hover
-    type: Checkbox
-    renderType: checkboxToggle
-    label: 'Pause on hover'
-    default: 1
-```
-
-Conventions: Select for enums, Checkbox `checkboxToggle` for booleans,
-Textarea `rows: 1` for short text, Collection for repeatable children. A
-Collection child must never be called `label` — that identifier is reserved by
-Content Blocks and breaks the generated table.
-
-**2. Translate the markup in `templates/frontend.html`.** Keep the generated
-`d:layout.section` / `d:layout.container` wrapper and the `f:asset.css` line.
-Editor content comes from `{data.<field>}`; the repeat-for-seamless-loop trick
-from the React component becomes a plain `f:for`:
-
-```xml
-<div
-    class="innesto-marquee innesto-marquee--{data.speed -> f:or(alternative: 'normal')}{f:if(condition: data.reverse, then: ' innesto-marquee--reverse')}{f:if(condition: data.pause_on_hover, then: ' innesto-marquee--pause')}"
-    role="group"
-    aria-label="{data.header -> f:or(alternative: 'Marquee')}"
->
-    <ul class="innesto-marquee__group">
-        <f:for each="{data.marquee_items}" as="entry">
-            <li class="innesto-marquee__pill">{entry.title}</li>
-        </f:for>
-    </ul>
-    <f:for each="{0: 1, 1: 2, 2: 3}" as="copy">
-        <ul class="innesto-marquee__group" aria-hidden="true">
-            <f:for each="{data.marquee_items}" as="entry">
-                <li class="innesto-marquee__pill">{entry.title}</li>
-            </f:for>
-        </ul>
-    </f:for>
-</div>
-```
-
-State-free interactivity (hover, direction, speed) becomes CSS modifier
-classes. Real state (toggles, tabs) goes to Alpine.js `x-data` attributes —
-no inline `<script>`.
-
-**3. Port the styles in `assets/frontend.css`.** Use only the semantic theme
-tokens — never hard-coded colors — and the element follows every Desiderio
-preset automatically, including dark mode:
-
-```css
-.innesto-marquee__pill {
-    border: 1px solid var(--border);
-    border-radius: calc(var(--radius, 0.625rem) + 4px);
-    background: var(--card);
-    color: var(--card-foreground);
-    box-shadow: var(--shadow-sm);
-}
-@media (prefers-reduced-motion: reduce) {
-    .innesto-marquee__group { animation-play-state: paused; }
-}
-```
-
-Prefix every class with `.innesto-<key>`, and honor
-`prefers-reduced-motion` for anything that moves.
-
-**4. Optional but recommended:** a `templates/backend-preview.fluid.html`
-modeled on the Desiderio previews gives editors a real preview card in the
-page module (visible in the screenshot below).
-
-## Step 4 — Activate the element
+## Activate and check
 
 ```bash
-vendor/bin/typo3 extension:setup    # creates the new database tables
+vendor/bin/typo3 extension:setup
 vendor/bin/typo3 cache:flush
 ```
 
-`extension:setup` is required whenever `config.yaml` gains fields backed by
-new columns or Collection tables.
+Schema setup is needed when a block gains database fields or Collection tables.
+Run this repository's `composer audit:content-elements`, then inspect the
+content wizard, edit form, backend preview and frontend. The audit checks
+metadata, registration, Collection table uniqueness, assets, icons and XLIFF;
+runtime tests additionally execute the commands and render templates.
 
-### Seed a demo record
-
-```bash
-vendor/bin/typo3 innesto:seed <page-uid>                   # all elements
-vendor/bin/typo3 innesto:seed <page-uid> -e case-studies   # one element
-```
-
-`innesto:seed` puts one demo record of every Innesto element onto the page so
-the graft can be inspected in the page module and on the frontend immediately.
-It is idempotent — existing records of an element's CType on that page are
-skipped (`--force` deletes and reseeds them). Values come from the element's
-`fixture.json` when present (the same flat `identifier => value` format
-Desiderio uses, Collections as arrays of item objects), otherwise they are
-derived from `config.yaml`: Collections get two child rows (data-point series
-six), Selects their default, Numbers plausible percentages. Records are
-created through DataHandler, so inline children, counter columns, and the
-reference index stay consistent. Demo records are **appended after** a page's
-existing content (never above it), and the command warns when the target page
-already holds non-Innesto elements — seed onto a dedicated sysfolder to keep
-real pages clean. `File` fields are left empty — add images manually or ship a
-fixture once FAL seeding lands.
-
-## Step 5 — Use it in the backend
-
-The element now appears in the **New Content Element wizard** under
-"Typical page content", with the icon, title, and description taken from the
-registry item:
-
-![The New Content Element wizard finding the grafted Marquee](Images/backend-wizard.png)
-
-The edit form shows the fields exactly as modeled, with the element type
-resolved from the registry item's title:
-
-![Top of the marquee edit form with the resolved element type](Images/backend-edit-form.png)
-
-Scrolling down: the Items collection, scroll speed select, and the two
-toggles:
-
-![The marquee edit form with the Items collection and option fields](Images/backend-edit-form-fields.png)
-
-And the page module renders the backend preview (here next to a second graft,
-`innesto/orbiting-circles`, finished entirely by the `--ai` pass):
-
-![Page module previews of two grafted elements](Images/backend-page-module.png)
-
-## Step 6 — Check the frontend
-
-Open the page. The marquee scrolls, pauses on hover, masks its edges, and uses
-the active theme preset's card, border, and primary tokens — switch the
-Desiderio preset in the site settings and the graft repaints with it:
-
-![The finished marquee element rendering on the frontend](Images/frontend-marquee.png)
-
-## Worked example 2: a shadcnblocks block (`innesto/case-studies`)
-
-The marquee above is *motion with little structure*. The shipped
-`innesto/case-studies` element is the opposite — a structured, document-shaped
-block — and shows the patterns that kind of graft needs. It was produced from
-[`case-studies2` on shadcnblocks.com](https://www.shadcnblocks.com/block/case-studies2):
-customer quotes with portrait, role, company logo, and per-study metrics.
-
-### Fetch and rename
+## Seed demo records
 
 ```bash
-vendor/bin/typo3 innesto:add @shadcnblocks/case-studies2 --key case-studies
+vendor/bin/typo3 innesto:seed <page-uid>
+vendor/bin/typo3 innesto:seed <page-uid> -e terminal -e case-studies
+vendor/bin/typo3 innesto:seed <page-uid> -e terminal --force
 ```
 
-Two things to note:
+Use a dedicated, existing page. Records are appended after its current
+content. A normal rerun skips existing CTypes, including hidden records.
+`--force` replaces all records of each selected CType on that page, including
+collection children, so use it only for demo content you intend to replace.
+Other content remains in place.
 
-- `shadcnblocks` is a known shorthand, and a leading `@` is accepted, so the
-  namespace form used in the shadcn CLI docs works verbatim.
-- Registries ship numbered variants (`case-studies1`, `case-studies2`, …).
-  `--key` drops the digit so the element key, CSS prefix, and editor-facing
-  name stay clean (`innesto/case-studies`, `.innesto-case-studies`). The
-  upstream name is preserved in `sources/case-studies2.tsx` for provenance.
+`fixture.json`, if supplied, overrides `library.json`. Missing values retain
+TYPO3's field defaults; the command no longer invents placeholder metrics.
+An element without a fixture gets its configured title and field defaults.
+File fields remain empty and must be populated through the backend.
 
-The command warns about `registryDependencies: utils, separator` — both are
-intentionally *not* resolved: `cn()` is a React-only class helper, and the
-`<Separator>` component becomes a plain `<hr>` with a `border-top` in the
-finishing pass. Most `registryDependencies` of presentational blocks dissolve
-like this; fetch a dependency only when it carries actual content.
-
-### The finishing pass for structured blocks
-
-The React source repeats a "study" twice with hard-coded demo content. The
-finishing pass turns that repetition into editor data:
-
-| Upstream pattern | Content Blocks modeling |
-| --- | --- |
-| Repeated `<div className="grid …">` study blocks | `Collection` field (`case_studies_items`, `table: innesto_case_studies_items`) |
-| The two metric `<div>`s inside each study | **nested** `Collection` (`metrics`, `table: innesto_case_studies_metrics`) |
-| `<img>` portrait / company logo | `File` fields (`allowed: common-image-types`, `maxitems: 1`) |
-| Hard-coded strings (quote, name, role, "98%") | `Textarea` fields, `rows: 1` for short text |
-| `<Separator className="my-20" />` between studies | `<f:if condition="!{iterator.isFirst}"><hr …/></f:if>` |
-| `4500+ Satisfied Customers` eyebrow line | plain `eyebrow` field — same shape Desiderio already uses, so the column is shared |
-
-Nested Collections are the one thing to be careful with: give **every**
-`Collection` an explicit `table:` key (`innesto_case_studies_items`,
-`innesto_case_studies_metrics`). Without it, Content Blocks derives the table
-name from the bare identifier, and generic identifiers like `metrics` or
-`items` silently share one table with any other element that picks the same
-name. And never name a child field `label` — reserved, use `title`.
-
-### Activate and seed
-
-```bash
-vendor/bin/typo3 extension:setup    # creates both collection tables
-vendor/bin/typo3 cache:flush
-```
-
-In the edit form the studies are an IRRE collection with the metrics nested
-one level deeper; the frontend renders the 2:1 bordered split from the
-upstream design, restyled entirely through the semantic tokens — no value in
-[`assets/frontend.css`](../ContentBlocks/ContentElements/case-studies/assets/frontend.css)
-is a raw color.
-
-## Worked example 3: the blocks.so stats family
-
-The shipped stats elements were checked against
-[blocks.so/stats](https://blocks.so/stats), which exposes 15 registry items:
-`@blocks-so/stats-01` through `@blocks-so/stats-15`. Innesto keeps those
-original sources in each element's `sources/` folder and uses semantic element
-keys such as `innesto/stats-progress` instead of exposing numbered variants to
-editors.
-
-To graft one stats item manually:
-
-```bash
-vendor/bin/typo3 innesto:add blocks/stats-09 --key stats-progress
-```
-
-Then run the finishing pass like any other graft: model the repeated metrics as
-Collection fields, translate the JSX to Fluid, move styling into semantic-token
-CSS, add a backend preview, and run `extension:setup` plus `cache:flush`.
-
-The full stats-family mapping and the exact verification checklist are in
-[Documentation/Elements/BlocksStats.md](Elements/BlocksStats.md). The important
-checks are:
-
-- all 15 local `stats-*` folders exist and keep their upstream `stats-XX.tsx`
-  source;
-- every stats `config.yaml` uses `group: stats` and is listed in
-  `Configuration/Sets/Innesto/config.yaml`;
-- every Collection has an explicit, unique `innesto_*` table;
-- the content-element audit passes with no warnings.
-
-## Grafting into your own sitepackage
-
-By default elements land in `EXT:innesto/ContentBlocks/ContentElements`. To
-graft into your own extension instead:
-
-```bash
-vendor/bin/typo3 innesto:add magicui/marquee \
-  --target /var/www/html/packages/my_sitepackage/ContentBlocks/ContentElements
-```
-
-With `--target`, Innesto cannot know your site set, so register the block
-yourself — add the block name to your set's config
-(`Configuration/Sets/<YourSet>/config.yaml`):
-
-```yaml
-optionalDependencies:
-  - innesto/marquee
-```
-
-Skipping this hides the element from the New Content Element wizard on every
-site that restricts content blocks per set (any Desiderio site does).
-
-## What converts automatically — and what doesn't
-
-| Registry item part | Conversion |
-| --- | --- |
-| `cssVars` (theme/light/dark tokens) | ✅ automatic — Desiderio uses the same shadcn variable names, 1:1 |
-| `css` (keyframes, rules) | ✅ automatic — serialized into `assets/frontend.css` |
-| Tailwind `@theme` animation entries | ✅ automatic — custom property + matching utility class |
-| Registry `categories` → wizard group | ✅ automatic — the item's first category becomes the Content Blocks `group`; the blocks.so categories ship pre-registered as wizard groups ([`Configuration/TCA/Overrides/tt_content.php`](../Configuration/TCA/Overrides/tt_content.php)) |
-| Site-set registration | ✅ automatic (default target) |
-| React/TSX markup | ⚠️ finishing pass — structural markup translates quickly; hooks/state need Alpine.js or CSS |
-| Component props | ⚠️ finishing pass — modeled as Content Blocks fields |
-| npm `dependencies` / `registryDependencies` | ❌ not fetched — the command lists them as a warning; resolve manually |
-
-Components that are mostly *state machines* — command palettes, comboboxes,
-drag-and-drop, anything built on Radix primitives with heavy keyboard
-interaction — do not graft well. The scaffold still works, but the finishing
-pass would mean reimplementing the component. Pick presentational components.
-
-## Troubleshooting
-
-**The element does not appear in the New Content Element wizard.**
-The block is not registered as a site-set dependency (see Step 2), or caches
-are stale. Check `Configuration/Sets/Innesto/config.yaml` lists
-`innesto/<key>` under `optionalDependencies`, then `cache:flush`. The same
-mechanism also filters the *Type* dropdown in existing records.
-
-**`Element directory already exists`.**
-`innesto:add` never overwrites. Delete the folder or pass a different `--key`.
-
-**The frontend renders unstyled.**
-The per-element CSS is loaded by the `f:asset.css` line in
-`templates/frontend.html` — keep it. After renaming the key, the
-`{cb:assetPath()}` reference and class prefixes must match the new folder name.
-
-**`SQL error` / fields missing after editing `config.yaml`.**
-Run `vendor/bin/typo3 extension:setup` to create new columns/tables, then
-`cache:flush`.
-
-**`claude CLI not found` when using `--ai` inside ddev.**
-The binary lives on the host. Run the finishing pass from the host in the
-element directory, or point `INNESTO_CLAUDE_BIN` at a binary available inside
-the container.
-
-**A Collection child field named `label` breaks the backend.**
-`label` is reserved by Content Blocks for the generated table — rename the
-field (e.g. `title`).
-
-**Registry item URL returns 404 for the official shadcn registry.**
-Items live under a style path: `https://ui.shadcn.com/r/styles/new-york-v4/<item>.json`.
-The `shadcn/<item>` shorthand handles this for you.
+DataHandler creates relations and updates the reference index. Invalid page
+UIDs, unknown element keys, malformed fixture data and DataHandler errors
+produce failures. Replacements are created before old records are deleted;
+the database transaction rolls back if DataHandler reports an error. Keep the
+content and its collection tables on the same database connection.

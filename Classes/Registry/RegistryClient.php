@@ -36,6 +36,7 @@ final class RegistryClient
         $url = $this->resolveUrl($reference);
         $response = $this->requestFactory->request($url, 'GET', [
             'headers' => ['Accept' => 'application/json'],
+            'timeout' => 30,
         ]);
         if ($response->getStatusCode() !== 200) {
             throw new \RuntimeException(
@@ -44,8 +45,8 @@ final class RegistryClient
             );
         }
         $item = json_decode((string)$response->getBody(), true, 512, JSON_THROW_ON_ERROR);
-        if (!is_array($item) || !isset($item['name'])) {
-            throw new \RuntimeException('Response is not a registry item (missing "name"): ' . $url, 1765432102);
+        if (!is_array($item) || !is_string($item['name'] ?? null) || trim($item['name']) === '') {
+            throw new \RuntimeException('Response is not a registry item (missing non-empty "name"): ' . $url, 1765432102);
         }
         return $item;
     }

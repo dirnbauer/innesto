@@ -33,19 +33,12 @@ fade in. Colours — including the window dots — come entirely from the Deside
 semantic tokens via `color-mix`, so the element follows every preset and dark
 mode.
 
-> **One CSS gotcha worth remembering:** the typewriter uses
-> `clip-path … steps(N, jump-none)`, not `steps(N, end)`. With `end` the final
-> keyframe is never held, so a long line stops one character short.
+## Demo and customization
 
-## Adding your own graft
+`innesto:seed <page-uid> -e terminal` uses the maintained `library.json` demo.
+The old terminal-only `fixture.json` has been removed so all 19 elements use
+the same fixture format. Existing content records are unaffected.
 
-This element was produced with the standard Innesto graft workflow
-(`innesto:add magicui/terminal` → finishing pass → `extension:setup`). For the
-**complete, screenshot-by-screenshot manual** — picking a component, modelling
-fields, translating to Fluid, porting styles onto tokens, and the backend/
-frontend walkthrough — see the Desiderio documentation:
-
-📖 **[Adding content elements from a shadcn block](https://github.com/dirnbauer/desiderio/blob/main/Documentation/Developer/AddingContentElements.rst)**
-
-The [CLI/command reference](../AddingContentElements.md) in this repo covers the
-`innesto:add` options and two more worked examples.
+The [command reference](../AddingContentElements.md) explains how to create
+another graft. Use a new key, for example `--key project-terminal`, because
+the shipped `terminal` directory already exists.
