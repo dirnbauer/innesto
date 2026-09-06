@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Webconsulting\Innesto\Registry;
 
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Yaml\Yaml;
+
 /**
  * Writes a Content Blocks element skeleton for a fetched registry item:
  * converted CSS, the original sources for the manual finishing pass, a
@@ -23,33 +26,50 @@ final class ElementScaffolder
      */
     public function scaffold(array $item, string $elementKey, string $targetDirectory): array
     {
+        if (!preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/D', $elementKey)) {
+            throw new \InvalidArgumentException('Element keys must contain lowercase letters, numbers and single hyphens.');
+        }
         $elementDir = rtrim($targetDirectory, '/') . '/' . $elementKey;
-        if (is_dir($elementDir)) {
+        if (file_exists($elementDir) || is_link($elementDir)) {
             throw new \RuntimeException('Element directory already exists: ' . $elementDir, 1765432104);
         }
-        foreach (['templates', 'assets', 'language', 'sources'] as $sub) {
-            if (!mkdir($dir = $elementDir . '/' . $sub, 0775, true) && !is_dir($dir)) {
-                throw new \RuntimeException('Could not create ' . $dir, 1765432105);
+        $typeName = 'innesto_' . str_replace('-', '', $elementKey);
+        foreach (glob(rtrim($targetDirectory, '/') . '/*/config.yaml') ?: [] as $configFile) {
+            if ((Yaml::parseFile($configFile)['typeName'] ?? null) === $typeName) {
+                throw new \InvalidArgumentException('Element key conflicts with the existing CType in ' . $configFile);
             }
         }
-
-        $written = [];
-        $write = static function (string $relativePath, string $content) use ($elementDir, &$written): void {
-            file_put_contents($elementDir . '/' . $relativePath, $content);
-            $written[] = $relativePath;
-        };
-
+        $sources = [];
         foreach ($item['files'] ?? [] as $file) {
-            $write('sources/' . basename((string)($file['path'] ?? 'source.txt')), (string)($file['content'] ?? ''));
+            $name = basename((string)($file['path'] ?? 'source.txt'));
+            if ($name === '' || $name === '.' || $name === '..' || isset($sources[$name])) {
+                throw new \InvalidArgumentException('Registry source filenames must be non-empty and unique: ' . $name);
+            }
+            $sources[$name] = (string)($file['content'] ?? '');
         }
 
-        $write('assets/frontend.css', $this->buildCss($item, $elementKey));
-        $write('assets/icon.svg', $this->buildIcon($item));
-        $write('config.yaml', $this->buildConfig($item, $elementKey));
-        $write('language/labels.xlf', $this->buildLabels($item, $elementKey));
-        $write('templates/frontend.html', $this->buildTemplate($item, $elementKey));
-
-        return $written;
+        // Render everything before creating the directory, so malformed registry
+        // data cannot leave an incomplete element that blocks a retry.
+        $files = [
+            'assets/frontend.css' => $this->buildCss($item, $elementKey),
+            'assets/icon.svg' => $this->buildIcon(),
+            'config.yaml' => $this->buildConfig($item, $elementKey, $typeName),
+            'language/labels.xlf' => $this->buildLabels($item, $elementKey),
+            'templates/frontend.html' => $this->buildTemplate($item, $elementKey),
+        ];
+        foreach ($sources as $name => $content) {
+            $files['sources/' . $name] = $content;
+        }
+        $filesystem = new Filesystem();
+        try {
+            foreach ($files as $path => $content) {
+                $filesystem->dumpFile($elementDir . '/' . $path, $content);
+            }
+        } catch (\Throwable $exception) {
+            $filesystem->remove($elementDir);
+            throw $exception;
+        }
+        return array_keys($files);
     }
 
     /**
@@ -73,37 +93,25 @@ final class ElementScaffolder
     /**
      * @param array<string, mixed> $item
      */
-    private function buildConfig(array $item, string $elementKey): string
+    private function buildConfig(array $item, string $elementKey, string $typeName): string
     {
-        $typeName = 'innesto_' . str_replace('-', '', $elementKey);
         $title = (string)($item['title'] ?? ucwords(str_replace('-', ' ', $elementKey)));
         $description = (string)($item['description'] ?? 'Grafted from a shadcn registry item.');
         // The registry item's first category becomes the wizard group. If the
         // registry does not expose categories, keep the element out of TYPO3's
         // generic "default" bucket and place it in Innesto's Components group.
         $group = strtolower(preg_replace('/[^a-z0-9-]+/i', '-', (string)(($item['categories'] ?? [])[0] ?? 'components')) ?? 'components');
-        $keywords = implode("\n", array_map(
-            fn(string $keyword): string => "  - '" . $this->escapeYaml($keyword) . "'",
-            $this->buildKeywords($item, $elementKey, $group)
-        ));
-        return <<<YAML
-name: innesto/$elementKey
-typeName: $typeName
-title: '$title'
-description: '{$this->escapeYaml($description)}'
-group: $group
-keywords:
-$keywords
-prefixFields: false
-basics:
-  - TYPO3/Appearance
-fields:
-  -
-    identifier: header
-    useExistingField: true
-# TODO: model the component props from sources/ as fields (Select, Checkbox,
-# Collection, …) — see existing Desiderio elements for the conventions.
-YAML . "\n";
+        return Yaml::dump([
+            'name' => 'innesto/' . $elementKey,
+            'typeName' => $typeName,
+            'title' => $title,
+            'description' => $description,
+            'group' => $group ?: 'components',
+            'keywords' => $this->buildKeywords($item, $elementKey, $group),
+            'prefixFields' => false,
+            'basics' => ['TYPO3/Appearance'],
+            'fields' => [['identifier' => 'header', 'useExistingField' => true]],
+        ], 4, 2) . "# TODO: model component props from sources/ as Content Blocks fields.\n";
     }
 
     /**
@@ -210,10 +218,7 @@ HTML . "\n";
 XML . "\n";
     }
 
-    /**
-     * @param array<string, mixed> $item
-     */
-    private function buildIcon(array $item): string
+    private function buildIcon(): string
     {
         return <<<SVG
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" class="icon-root">
@@ -226,8 +231,4 @@ XML . "\n";
 SVG . "\n";
     }
 
-    private function escapeYaml(string $value): string
-    {
-        return str_replace("'", "''", $value);
-    }
 }

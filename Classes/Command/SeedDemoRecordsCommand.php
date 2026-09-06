@@ -13,78 +13,19 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
-/**
- * Seeds one demo record per Innesto content element onto a page, so every
- * graft can be inspected in the page module and on the frontend right after
- * `extension:setup`. Values come from an element's fixture.json when present
- * (same flat identifier => value format Desiderio uses), otherwise they are
- * derived from config.yaml. Records are created through DataHandler, so
- * inline children, counter columns, and the reference index stay consistent.
- */
-#[AsCommand(
-    name: 'innesto:seed',
-    description: 'Create one demo record per Innesto content element on a page'
-)]
+/** Seeds library.json values through DataHandler, including nested collections. */
+#[AsCommand(name: 'innesto:seed', description: 'Create one demo record per Innesto content element on a page')]
 final class SeedDemoRecordsCommand extends Command
 {
-    /**
-     * Identifier-keyed demo values for Textarea fields; generic fallback is
-     * a humanized identifier. Kept in sync with the shipped elements.
-     */
-    private const TEXT_SAMPLES = [
-        'eyebrow' => 'Pattern Library',
-        'value' => '1,234',
-        'current_value' => '450 GB',
-        'limit_value' => '1 TB',
-        'delta' => '+8.3%',
-        'change' => '+8.3%',
-        'difference' => '+1,204',
-        'percentage' => '+12%',
-        'percentage_change' => '+4.1%',
-        'previous' => 'from 1,108',
-        'badge_text' => '+12.5%',
-        'quote' => 'Innesto turned a registry component into an editor-managed element in minutes.',
-        'author_name' => 'Jane Demo',
-        'author_role' => 'CTO',
-        'detail' => '3/5 goals',
-        'limit' => '996 of 10,000',
-        'link_text' => 'View more',
-        'target' => '150 GB',
-        'subtext' => 'On track',
-        'current' => '$250',
-        'total' => '$1,000',
-        'amount' => '4.2 GB',
-        'summary_text' => 'Using storage',
-        'used_value' => '8,300 MB',
-        'total_text' => 'of 15 GB',
-        'free_title' => 'Free',
-        'free_amount' => '6.7 GB',
-        'period_label' => 'Last 30 days',
-        'updated_label' => 'Updated just now',
-        'cta_text' => 'Upgrade',
-        'intro' => 'You are currently on the demo plan.',
-        'ticker' => 'ACME',
-        'card_title' => 'Usage',
-        'total_value' => '$860',
-        'total_caption' => 'this month',
-        'breakdown_title' => 'Resource breakdown',
-        'footnote' => 'Configure limits in resource settings.',
-        'footnote_link_text' => 'Settings',
-        'title' => 'Demo metric',
-    ];
-
-    private const NUMBER_SAMPLES = [72, 48, 85, 64, 31];
-
-    /** @var array<string, array<string, array<string, mixed>>> */
-    private array $dataMap = [];
-
     public function __construct(
         private readonly ConnectionPool $connectionPool,
         private readonly LanguageServiceFactory $languageServiceFactory,
@@ -96,259 +37,173 @@ final class SeedDemoRecordsCommand extends Command
     {
         $this
             ->addArgument('page', InputArgument::REQUIRED, 'Target page uid for the demo records')
-            ->addOption(
-                'element',
-                'e',
-                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-                'Only seed the given element key(s), e.g. -e stats-trending -e case-studies'
-            )
-            ->addOption(
-                'force',
-                'f',
-                InputOption::VALUE_NONE,
-                'Delete existing records of an element\'s CType on the page and reseed them'
-            );
+            ->addOption('element', 'e', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Only seed the given element key(s)')
+            ->addOption('force', 'f', InputOption::VALUE_NONE, 'Replace existing records of the selected CTypes on the page');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $pageUid = (int)$input->getArgument('page');
-        $filter = (array)$input->getOption('element');
+        $pageUid = filter_var($input->getArgument('page'), FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+        if ($pageUid === false) {
+            $io->error('Page must be a positive integer uid.');
+            return Command::FAILURE;
+        }
+        $filter = $input->getOption('element');
+        $configFiles = glob(ExtensionManagementUtility::extPath('innesto') . 'ContentBlocks/ContentElements/*/config.yaml') ?: [];
+        $unknown = array_diff($filter, array_map(static fn(string $path): string => basename(dirname($path)), $configFiles));
+        if ($unknown !== []) {
+            $io->error('Unknown element(s): ' . implode(', ', $unknown));
+            return Command::FAILURE;
+        }
 
         Bootstrap::initializeBackendAuthentication();
         $GLOBALS['LANG'] = $this->languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER']);
-
-        $page = $this->connectionPool->getConnectionForTable('pages')
-            ->select(['uid', 'title'], 'pages', ['uid' => $pageUid, 'deleted' => 0])->fetchAssociative();
+        $pageQuery = $this->connectionPool->getQueryBuilderForTable('pages');
+        $pageQuery->getRestrictions()->removeAll()->add(new DeletedRestriction());
+        $page = $pageQuery->select('title')->from('pages')
+            ->where($pageQuery->expr()->eq('uid', $pageQuery->createNamedParameter($pageUid, Connection::PARAM_INT)))
+            ->executeQuery()->fetchAssociative();
         if ($page === false) {
             $io->error(sprintf('Page %d does not exist.', $pageUid));
             return Command::FAILURE;
         }
 
-        $foreignContent = $this->countForeignContent($pageUid);
+        $records = $this->pageRecords($pageUid);
+        $foreignContent = count(array_filter($records, static fn(array $record): bool => !str_starts_with($record['CType'], 'innesto_')));
         if ($foreignContent > 0) {
-            $io->warning(sprintf(
-                'Page %d already holds %d non-Innesto content element(s). Demo records are appended below them, '
-                . 'but a dedicated sysfolder keeps your real content clean.',
-                $pageUid,
-                $foreignContent
-            ));
+            $io->warning(sprintf('Page %d contains %d non-Innesto element(s). Demo records will be appended; use a dedicated demo page.', $pageUid, $foreignContent));
         }
 
-        $elementsDirectory = ExtensionManagementUtility::extPath('innesto') . 'ContentBlocks/ContentElements';
-        $created = $skipped = $deleted = 0;
-        // Append demo records after the page's existing content so they never
-        // jump above real elements; chaining each new record after the previous
-        // one keeps DataHandler from reusing (colliding) sorting values.
-        $predecessor = $this->lastElementUid($pageUid);
-
-        foreach (glob($elementsDirectory . '/*/config.yaml') ?: [] as $configFile) {
+        $skipped = 0;
+        $deletions = $elements = [];
+        foreach ($configFiles as $configFile) {
             $elementKey = basename(dirname($configFile));
             if ($filter !== [] && !in_array($elementKey, $filter, true)) {
                 continue;
             }
             $config = Yaml::parseFile($configFile);
-            $typeName = (string)$config['typeName'];
-
-            $existing = $this->findExisting($pageUid, $typeName);
-            if ($existing !== []) {
-                if (!$input->getOption('force')) {
-                    $io->text(sprintf(' · %-28s skipped — uid %s exists (use --force to reseed)', $elementKey, implode(',', $existing)));
-                    $skipped++;
-                    continue;
-                }
-                $this->deleteRecords($existing);
-                $deleted += count($existing);
+            $existing = array_keys(array_filter($records, static fn(array $record): bool => $record['CType'] === $config['typeName']));
+            if ($existing !== [] && !$input->getOption('force')) {
+                $io->text(sprintf('Skipped %s — uid %s exists (use --force to reseed)', $elementKey, implode(',', $existing)));
+                $skipped++;
+                continue;
             }
-
-            $fixtureFile = dirname($configFile) . '/fixture.json';
-            $fixture = is_file($fixtureFile)
-                ? (array)json_decode((string)file_get_contents($fixtureFile), true)
-                : [];
-
-            $newId = $this->addRecord($config, $fixture, $pageUid, $typeName, $predecessor);
-            $predecessor = $newId;
-            $io->text(sprintf(' · %-28s queued (%s)', $elementKey, $newId));
-            $created++;
+            $deletions += array_fill_keys($existing, ['delete' => 1]);
+            $elements[] = ['config' => $config, 'fixture' => $this->loadFixture(dirname($configFile))];
+            $io->text('Queued ' . $elementKey);
         }
-
-        if ($this->dataMap === []) {
+        if ($elements === []) {
             $io->success(sprintf('Nothing to do on page %d ("%s") — %d element(s) skipped.', $pageUid, $page['title'], $skipped));
             return Command::SUCCESS;
         }
 
-        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-        $dataHandler->start($this->dataMap, []);
-        $dataHandler->process_datamap();
-
-        if ($dataHandler->errorLog !== []) {
-            $io->error(array_merge(['DataHandler reported errors:'], $dataHandler->errorLog));
-            return Command::FAILURE;
+        // A positive pid inserts at the top; a negative uid/NEW id inserts after
+        // that record. Never use a record being replaced as the sorting anchor.
+        $target = $pageUid;
+        foreach ($records as $uid => $record) {
+            if ((int)$record['colPos'] === 0 && !isset($deletions[$uid])) {
+                $target = '-' . $uid;
+                break;
+            }
+        }
+        $dataMap = [];
+        foreach ($elements as ['config' => $config, 'fixture' => $fixture]) {
+            $newId = StringUtility::getUniqueId('NEW');
+            $dataMap['tt_content'][$newId] = [
+                'pid' => $target,
+                'CType' => $config['typeName'],
+                'colPos' => 0,
+                'header' => $config['title'],
+                ...$this->buildFields($config['fields'], $fixture, $pageUid, $dataMap, $config['typeName']),
+            ];
+            $target = '-' . $newId;
         }
 
+        try {
+            $this->connectionPool->getConnectionForTable('tt_content')->transactional(static function () use ($dataMap, $deletions): void {
+                $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+                $dataHandler->start($dataMap, ['tt_content' => $deletions]);
+                $dataHandler->process_datamap();
+                if ($dataHandler->errorLog === []) {
+                    $dataHandler->process_cmdmap();
+                }
+                if ($dataHandler->errorLog !== []) {
+                    throw new \RuntimeException('DataHandler reported errors: ' . implode('; ', $dataHandler->errorLog));
+                }
+            });
+        } catch (\Throwable $exception) {
+            $io->error($exception->getMessage());
+            return Command::FAILURE;
+        }
         $io->success(sprintf(
-            'Seeded %d demo record(s) on page %d ("%s")%s%s. Flush frontend caches to see them.',
-            $created,
-            $pageUid,
-            $page['title'],
-            $skipped > 0 ? sprintf(', skipped %d existing', $skipped) : '',
-            $deleted > 0 ? sprintf(', replaced %d', $deleted) : ''
+            'Seeded %d demo record(s) on page %d ("%s"); skipped %d, replaced %d.',
+            count($elements), $pageUid, $page['title'], $skipped, count($deletions)
         ));
         return Command::SUCCESS;
     }
 
-    /**
-     * @param array<string, mixed> $config
-     * @param array<string, mixed> $fixture
-     * @param int|string $predecessor real uid or NEW id to position after; 0 = top of page
-     */
-    private function addRecord(array $config, array $fixture, int $pageUid, string $typeName, int|string $predecessor = 0): string
+    /** @return array<int, array{CType: string, colPos: int|string}> */
+    private function pageRecords(int $pageUid): array
     {
-        $newId = StringUtility::getUniqueId('NEW');
-        // DataHandler positioning: positive pid = top of page; negative target
-        // (real uid or NEW id) = insert immediately after that record.
-        $target = $predecessor === 0 ? $pageUid : '-' . $predecessor;
-        $record = [
-            'pid' => $target,
-            'CType' => $typeName,
-            'colPos' => 0,
-            'header' => (string)($fixture['header'] ?? $config['title']),
-        ];
-        foreach ((array)$config['fields'] as $field) {
-            $identifier = (string)$field['identifier'];
-            if (!empty($field['useExistingField']) && $identifier === 'header') {
-                continue;
-            }
-            $column = !empty($field['prefixField']) ? $typeName . '_' . $identifier : $identifier;
-            $value = $this->buildFieldValue($field, $fixture[$identifier] ?? null, $pageUid, 0);
-            if ($value !== null) {
-                $record[$column] = $value;
-            }
+        $query = $this->connectionPool->getQueryBuilderForTable('tt_content');
+        // Include hidden and scheduled records in both duplicate detection and sorting.
+        $query->getRestrictions()->removeAll()->add(new DeletedRestriction());
+        /** @var array<int, array{CType: string, colPos: int|string}> $records */
+        $records = $query->select('uid', 'CType', 'colPos')->from('tt_content')
+            ->where($query->expr()->eq('pid', $query->createNamedParameter($pageUid, Connection::PARAM_INT)))
+            ->orderBy('sorting', 'DESC')->addOrderBy('uid', 'DESC')
+            ->executeQuery()->fetchAllAssociativeIndexed();
+        return $records;
+    }
+
+    /** @return array<string, mixed> */
+    private function loadFixture(string $directory): array
+    {
+        $path = $directory . (is_file($directory . '/fixture.json') ? '/fixture.json' : '/library.json');
+        $fixture = is_file($path) ? json_decode((string)file_get_contents($path), true, 512, JSON_THROW_ON_ERROR) : [];
+        if (!is_array($fixture) || ($fixture !== [] && array_is_list($fixture))) {
+            throw new \UnexpectedValueException('Demo fixture must be a JSON object: ' . $path);
         }
-        $this->dataMap['tt_content'][$newId] = $record;
-        return $newId;
+        return $fixture;
     }
 
     /**
-     * Returns the datamap value for one field: a scalar for plain fields, a
-     * comma list of NEW ids for Collections (children are appended to the
-     * datamap recursively), or null when the field cannot be seeded (File).
-     *
-     * @param array<string, mixed> $field
+     * @param list<array<string, mixed>> $fields
+     * @param array<string, mixed> $fixture
+     * @param array<array<string, array<string, mixed>>> $dataMap Table names mapped to NEW record IDs and fields.
+     * @return array<string, string|int|float>
      */
-    private function buildFieldValue(array $field, mixed $fixtureValue, int $pageUid, int $index): string|int|null
+    private function buildFields(array $fields, array $fixture, int $pageUid, array &$dataMap, string $prefix = ''): array
     {
-        $type = (string)($field['type'] ?? '');
-        switch ($type) {
-            case 'Collection':
-                $table = (string)$field['table'];
-                $items = is_array($fixtureValue) ? array_values($fixtureValue) : null;
-                $childFields = (array)$field['fields'];
-                // A collection holding a single Number is a data series (chart
-                // points) — two rows would draw a straight line.
-                $isDataSeries = count($childFields) === 1 && ($childFields[0]['type'] ?? '') === 'Number';
-                $count = $items !== null ? count($items) : max($isDataSeries ? 6 : 2, (int)($field['minItems'] ?? 0));
+        $values = [];
+        foreach ($fields as $field) {
+            $identifier = $field['identifier'];
+            $value = $fixture[$identifier] ?? null;
+            if ($value === null || ($field['type'] ?? '') === 'File') {
+                continue; // DataHandler supplies defaults; File fields need editor-managed FAL references.
+            }
+            if (($field['type'] ?? '') === 'Collection') {
+                if (!is_array($value) || !array_is_list($value)) {
+                    throw new \UnexpectedValueException('Expected a collection of demo values for ' . $identifier);
+                }
                 $childIds = [];
-                for ($i = 0; $i < $count; $i++) {
-                    $childId = StringUtility::getUniqueId('NEW');
-                    $child = ['pid' => $pageUid];
-                    foreach ((array)$field['fields'] as $childField) {
-                        $childIdentifier = (string)$childField['identifier'];
-                        $childFixture = $items[$i][$childIdentifier] ?? null;
-                        $value = $this->buildFieldValue($childField, $childFixture, $pageUid, $i);
-                        if ($value !== null) {
-                            $child[$childIdentifier] = $value;
-                        }
+                foreach ($value as $item) {
+                    if (!is_array($item)) {
+                        throw new \UnexpectedValueException('Collection demo entries must be objects.');
                     }
-                    $this->dataMap[$table][$childId] = $child;
+                    $childId = StringUtility::getUniqueId('NEW');
+                    $dataMap[$field['table']][$childId] = ['pid' => $pageUid, ...$this->buildFields($field['fields'], $item, $pageUid, $dataMap)];
                     $childIds[] = $childId;
                 }
-                return implode(',', $childIds);
-            case 'File':
-                // Needs sys_file plumbing — provide images manually or via fixture-driven FAL later.
-                return null;
-            case 'Number':
-                return is_numeric($fixtureValue)
-                    ? (int)$fixtureValue
-                    : self::NUMBER_SAMPLES[$index % count(self::NUMBER_SAMPLES)];
-            case 'Select':
-                return is_string($fixtureValue) && $fixtureValue !== ''
-                    ? $fixtureValue
-                    : (string)($field['default'] ?? ($field['items'][0]['value'] ?? ''));
-            case 'Checkbox':
-                return is_numeric($fixtureValue) ? (int)$fixtureValue : (int)($field['default'] ?? 0);
-            case 'Link':
-                return is_string($fixtureValue) && $fixtureValue !== '' ? $fixtureValue : 'https://example.com/';
-            default:
-                if (is_scalar($fixtureValue) && (string)$fixtureValue !== '') {
-                    return (string)$fixtureValue;
-                }
-                $identifier = (string)$field['identifier'];
-                $sample = self::TEXT_SAMPLES[$identifier]
-                    ?? ucfirst(str_replace('_', ' ', $identifier));
-                // Vary repeated collection rows so lists do not look cloned.
-                return $index > 0 && isset(self::TEXT_SAMPLES[$identifier]) && $identifier === 'title'
-                    ? $sample . ' ' . ($index + 1)
-                    : $sample;
+                $value = implode(',', $childIds);
+            }
+            if (!is_scalar($value)) {
+                throw new \UnexpectedValueException('Expected a scalar demo value for ' . $identifier);
+            }
+            $column = $prefix !== '' && !empty($field['prefixField']) ? $prefix . '_' . $identifier : $identifier;
+            $values[$column] = is_bool($value) ? (int)$value : $value;
         }
-    }
-
-    /**
-     * @return list<int>
-     */
-    private function findExisting(int $pageUid, string $typeName): array
-    {
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tt_content');
-        $rows = $queryBuilder->select('uid')->from('tt_content')
-            ->where(
-                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pageUid, \TYPO3\CMS\Core\Database\Connection::PARAM_INT)),
-                $queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter($typeName))
-            )
-            ->executeQuery()->fetchFirstColumn();
-        return array_map(intval(...), $rows);
-    }
-
-    /**
-     * Highest-sorting live content element in colPos 0 on the page, or 0 when
-     * the page is empty — the anchor demo records are appended after.
-     */
-    private function lastElementUid(int $pageUid): int
-    {
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tt_content');
-        $uid = $queryBuilder->select('uid')->from('tt_content')
-            ->where(
-                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pageUid, \TYPO3\CMS\Core\Database\Connection::PARAM_INT)),
-                $queryBuilder->expr()->eq('colPos', $queryBuilder->createNamedParameter(0, \TYPO3\CMS\Core\Database\Connection::PARAM_INT))
-            )
-            ->orderBy('sorting', 'DESC')->setMaxResults(1)
-            ->executeQuery()->fetchOne();
-        return (int)$uid;
-    }
-
-    /**
-     * Number of live content elements on the page that are not Innesto demos —
-     * used to warn before mixing demo records into a page's real content.
-     */
-    private function countForeignContent(int $pageUid): int
-    {
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tt_content');
-        return (int)$queryBuilder->count('uid')->from('tt_content')
-            ->where(
-                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pageUid, \TYPO3\CMS\Core\Database\Connection::PARAM_INT)),
-                $queryBuilder->expr()->notLike('CType', $queryBuilder->createNamedParameter('innesto\_%'))
-            )
-            ->executeQuery()->fetchOne();
-    }
-
-    /**
-     * @param list<int> $uids
-     */
-    private function deleteRecords(array $uids): void
-    {
-        $commandMap = ['tt_content' => array_fill_keys($uids, ['delete' => 1])];
-        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-        $dataHandler->start([], $commandMap);
-        $dataHandler->process_cmdmap();
+        return $values;
     }
 }

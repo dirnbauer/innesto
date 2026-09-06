@@ -2,148 +2,93 @@
 
 [![CI](https://github.com/dirnbauer/innesto/actions/workflows/ci.yml/badge.svg)](https://github.com/dirnbauer/innesto/actions/workflows/ci.yml)
 
-*innesto (it.) — graft.* A TYPO3 v14 companion extension that grafts components from
-[shadcn/ui registries](https://registry.directory/) onto the
-[Desiderio](https://github.com/dirnbauer/desiderio) design system as Content
-Blocks elements.
+Innesto turns shadcn registry components into editor-managed TYPO3 Content
+Blocks styled by [Desiderio](https://github.com/dirnbauer/desiderio). It ships
+19 finished elements: marquee, orbiting circles, terminal, case studies, and
+[15 stats blocks](Documentation/Elements/BlocksStats.md).
 
-The browser runtime contains no React components. Original TSX files are kept
-only as source provenance for the deterministic Fluid conversion; finished
-elements render with Fluid, semantic shadcn tokens, CSS, SVG, and small
-progressive scripts such as Alpine.js only where interaction requires them.
+The frontend uses Fluid 5, CSS and SVG. Only the area chart needs a small
+JavaScript renderer. Upstream TSX files remain in `sources/` for provenance;
+there is no React runtime or frontend build step in this extension.
 
-## What it does
+## Requirements and installation
 
-1. **Companion extension.** Innesto depends on Desiderio; its site set pulls
-   in the whole Desiderio set, so every grafted element automatically uses the
-   active shadcn theme preset, semantic tokens, and Fluid 5 component atoms.
-2. **Own content elements.** Elements live in
-   `ContentBlocks/ContentElements/` and are auto-discovered by TYPO3 Content
-   Blocks. Nineteen finished grafts ship with the extension: the
-   [Magic UI marquee](https://magicui.design/docs/components/marquee),
-   orbiting-circles, and
-   [terminal](https://magicui.design/docs/components/terminal) (an animated,
-   JavaScript-free typewriter — see the
-   [Terminal note](Documentation/Elements/Terminal.md)), the
-   [shadcnblocks case-studies2](https://www.shadcnblocks.com/block/case-studies2)
-   block (quotes + metrics, modeled as nested Collections), and the complete
-   15-element stats family from [blocks.so/stats](https://blocks.so/stats)
-   (trending, badges, progress bars, circular progress, area charts,
-   dashboards, breakdowns — all rendered without React, via tokens, CSS and
-   SVG). The stats mapping and verification checklist are documented in
-   [Blocks stats](Documentation/Elements/BlocksStats.md).
-3. **Registry glue code.** A console command fetches any registry item — every
-   registry cataloged on [registry.directory](https://registry.directory/)
-   speaks the same `registry-item` JSON schema — and scaffolds a Content
-   Blocks element from it:
+- TYPO3 **14.3.6 or newer within v14** (the [latest release](https://get.typo3.org/list/version/14) checked on 2026-09-06).
+- PHP **8.4 or 8.5**.
+- Desiderio **4.0.6 or newer within v4** and Content Blocks **2.2 or newer within v2**.
 
-   ```bash
-   vendor/bin/typo3 innesto:add magicui/marquee
-   vendor/bin/typo3 innesto:add magicui/terminal
-   vendor/bin/typo3 innesto:add shadcn/button
-   vendor/bin/typo3 innesto:add @shadcnblocks/case-studies2 --key case-studies
-   vendor/bin/typo3 innesto:add blocks/stats-09 --key stats-progress
-   vendor/bin/typo3 innesto:add https://blocks.so/r/stats-09.json --key stats-progress
-   vendor/bin/typo3 innesto:add https://magicui.design/r/globe.json --key globe
-   vendor/bin/typo3 innesto:add magicui/orbiting-circles --ai   # + AI finishing pass
-   ```
-
-📖 **The complete, screenshot-by-screenshot manual lives in the Desiderio
-docs: [Adding content elements from a shadcn block](https://github.com/dirnbauer/desiderio/blob/main/Documentation/Developer/AddingContentElements.rst)**
-— it walks the `terminal` graft from picking the component to seeing it render.
-This repo keeps a [CLI/command reference](Documentation/AddingContentElements.md)
-with worked examples plus the checked blocks.so stats-family workflow.
-
-## What the pipeline converts automatically — and what it can't
-
-| Registry item part | Conversion |
-| --- | --- |
-| `cssVars` (theme/light/dark tokens) | ✅ automatic — emitted as CSS custom properties; Desiderio uses the same shadcn variable names, so they map 1:1 |
-| `css` (keyframes, rules) | ✅ automatic — serialized into the element's `assets/frontend.css` |
-| Tailwind `@theme` animation entries | ✅ automatic — custom property + matching utility class (the Desiderio Tailwind build does not scan grafted elements) |
-| Site-set registration (New Content Element wizard visibility) | ✅ automatic — the block is appended to the Innesto set's `optionalDependencies` |
-| Registry `categories` → wizard group | ✅ automatic — the item's first category becomes the element's wizard group; the blocks.so families (Stats, Grid List, Onboarding, …) ship pre-registered |
-| React/TSX markup | ⚠️ scaffolded — the source is preserved under `sources/`, the Fluid 5 template is generated as a stub with TODO markers; structural markup translates quickly, hooks/state need Alpine.js or a manual pass (or the `--ai` finishing pass) |
-| Component props | ⚠️ manual — model them as Content Blocks fields in `config.yaml` (covered by the `--ai` finishing pass) |
-
-That last row is the honest limit: React components are programs, not
-documents, so a fully mechanical React→Fluid conversion is not possible.
-The glue code does everything deterministic and leaves a clearly marked
-finishing pass.
-
-## Install
+In the consuming TYPO3 project's Composer configuration, register all three
+repositories. Composer does not inherit repositories from dependencies:
 
 ```bash
-composer config repositories.innesto vcs https://github.com/dirnbauer/innesto
-composer require webconsulting/innesto:@dev
+composer config repositories.desiderio vcs https://github.com/dirnbauer/desiderio.git
+composer config repositories.visual-editor-enhancements vcs https://github.com/dirnbauer/typo3-visual-editor-enhancements.git
+composer config repositories.innesto vcs https://github.com/dirnbauer/innesto.git
+composer require webconsulting/innesto:^2.0
 vendor/bin/typo3 extension:setup
+vendor/bin/typo3 cache:flush
 ```
 
-Then add the set to your site's `config.yaml`:
+Add the site set in your site's `config.yaml`:
 
 ```yaml
 dependencies:
   - webconsulting/innesto
 ```
 
-## Grafting a component in four steps
+This includes Desiderio and registers all shipped blocks in the content wizard.
+An existing installation keeps its CTypes, fields and collection tables.
+
+## Commands
 
 ```bash
-# 1. Pick an item on https://registry.directory/ and fetch it — shorthand
-#    (@ optional) for shadcn/magicui/shadcnblocks/blocks, item-JSON URL for the rest:
-vendor/bin/typo3 innesto:add @shadcnblocks/case-studies2 --key case-studies
+# Scaffold a NEW element; choose a key that does not already exist.
+vendor/bin/typo3 innesto:add magicui/marquee --key partner-marquee
 
-# 2. Finish the graft — translate React → Fluid, model props as fields
-#    (the scaffold includes a tailored AI_PROMPT.md, or rerun with --ai):
-cd ContentBlocks/ContentElements/case-studies
-claude -p "$(cat AI_PROMPT.md)" --permission-mode acceptEdits
-
-# 3. Create the new tables and flush caches:
-vendor/bin/typo3 extension:setup && vendor/bin/typo3 cache:flush
-
-# 4. Optional: put one demo record of every element on a page to inspect it:
+# Create demo content on a dedicated, existing page.
 vendor/bin/typo3 innesto:seed <page-uid>
-
-# 5. Add the element in the New Content Element wizard — done.
+vendor/bin/typo3 innesto:seed <page-uid> --element terminal
 ```
 
-The [manual](Documentation/AddingContentElements.md) walks through both worked
-examples: the marquee (motion, CSS modifiers) and the case-studies block
-(structured content, nested Collections, File fields).
+Scaffolding converts registry CSS and generates configuration, a Fluid stub,
+source files and a temporary finishing prompt. Translating React logic and
+modeling editor fields still require a finishing pass. The optional `--ai`
+flag runs the installed Claude CLI. See the [command reference](Documentation/AddingContentElements.md).
 
-## Element anatomy
-
-```
-ContentBlocks/ContentElements/<key>/
-├── AI_PROMPT.md                 # reproducible prompt for the finishing pass
-├── config.yaml                  # fields modeled from the component props
-├── templates/frontend.html      # Fluid 5, uses Desiderio d: atoms + tokens
-├── templates/backend-preview.fluid.html
-├── assets/frontend.css          # converted css/cssVars, semantic tokens only
-├── assets/icon.svg
-├── language/labels.xlf
-└── sources/<original>.tsx       # upstream source, kept for provenance
-```
-
-Upstream component sources keep their original licenses (Magic UI marquee:
-MIT). The extension itself is GPL-2.0-or-later, like TYPO3.
+Demo values come from each element's `library.json`. Existing records,
+including hidden ones, are skipped. `--force` replaces records of the selected
+CTypes on that page through DataHandler, including their collection children.
 
 ## Development
 
-Every graft is held to a contract — parseable config, uniquely-prefixed
-Collection tables, no reserved child identifiers, each configured field
-rendered, token-only styling (no raw colours), no inline scripts, a backend
-preview, a valid 16×16 icon, well-formed XLIFF, and site-set registration.
-The audit enforces it across all elements:
+This repository is an extension. Its DDEV configuration provides a separate
+local runtime, with PHP 8.4 and generated files under ignored directories.
 
 ```bash
-composer audit:content-elements
-# or directly (ext-yaml or a symfony/yaml autoloader via AUDIT_AUTOLOAD):
-php scripts/audit-content-elements.php
+ddev start
+ddev composer install
+ddev exec Build/Scripts/runTests.sh -s ci
 ```
 
-[CI](.github/workflows/ci.yml) runs `composer validate`, PHP lint, and the
-audit on PHP 8.4 for every push and pull request. It is install-free:
-the extension is meant to be installed into a TYPO3 project that provides
-`webconsulting/desiderio`, so the audit reads `config.yaml` via ext-yaml
-rather than resolving the runtime.
+The test suite exercises registry scaffolding, YAML registration, real TYPO3
+DataHandler seeding and Fluid rendering. Functional tests use isolated SQLite
+databases; they do not modify the local demo database. CI runs on PHP 8.4 and
+8.5 with installed TYPO3 dependencies, PHP lint, PHPStan and the content audit.
+
+For individual checks:
+
+```bash
+ddev exec Build/Scripts/runTests.sh -s unit
+ddev exec Build/Scripts/runTests.sh -s functional
+ddev composer phpstan
+ddev composer audit:content-elements
+```
+
+On a host with PHP 8.4+ and the required extensions, `composer install` and
+`Build/Scripts/runTests.sh -s ci` also work. `-p 8.5` selects a `php8.5` binary;
+`PHP_BIN=/path/to/php` selects another executable.
+
+See [Development](Documentation/Development.md) for local demo setup and
+[Adding content elements](Documentation/AddingContentElements.md) for the
+contract new grafts must satisfy. The extension is GPL-2.0-or-later; preserved
+upstream sources retain their original licenses.

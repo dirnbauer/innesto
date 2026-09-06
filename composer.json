@@ -11,22 +11,46 @@
     "require": {
         "php": "^8.4",
         "friendsoftypo3/content-blocks": "^2.2",
-        "typo3/cms-core": "^14.3",
-        "webconsulting/desiderio": "^4.0"
+        "typo3/cms-core": "^14.3.6",
+        "webconsulting/desiderio": "^4.0.6"
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
+    "repositories": [
+        {"type": "vcs", "url": "https://github.com/dirnbauer/desiderio.git", "no-api": true},
+        {"type": "vcs", "url": "https://github.com/dirnbauer/typo3-visual-editor-enhancements.git", "no-api": true}
+    ],
+    "require-dev": {
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^12.5",
+        "typo3/cms-install": "^14.3.6",
+        "typo3/testing-framework": "^9.5"
+    },
     "autoload": {
         "psr-4": {
             "Webconsulting\\Innesto\\": "Classes/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Webconsulting\\Innesto\\Tests\\": "Tests/"
+        }
+    },
+    "config": {
+        "github-protocols": ["https"],
+        "allow-plugins": {
+            "typo3/class-alias-loader": true,
+            "typo3/cms-composer-installers": true
+        },
+        "sort-packages": true
+    },
     "extra": {
         "typo3/cms": {
+            "web-dir": ".Build/public",
             "extension-key": "innesto"
         }
     },
     "scripts": {
-        "audit:content-elements": "php scripts/audit-content-elements.php"
+        "audit:content-elements": "@php scripts/audit-content-elements.php",
+        "test": "@php vendor/bin/phpunit",
+        "phpstan": "@php vendor/bin/phpstan analyse --no-progress"
     }
 }
