@@ -1,0 +1,17 @@
+..  Global includes and substitutions for every page of this manual.
+
+..  |extension_key| replace:: innesto
+..  |composer_name| replace:: webconsulting/innesto
+..  |extension_name| replace:: Innesto
+
+..  role:: php(code)
+    :language: php
+
+..  role:: bash(code)
+    :language: bash
+
+..  role:: yaml(code)
+    :language: yaml
+
+..  role:: html(code)
+    :language: html
