@@ -52,6 +52,9 @@ final class RegistryTest extends TestCase
         }
     }
 
+    /**
+     * @return list<array{string}>
+     */
     public static function invalidKeys(): array
     {
         return [[''], ['../escape'], ['-'], ['Demo'], ['two--dashes']];
@@ -123,6 +126,9 @@ final class RegistryTest extends TestCase
         self::assertSame($config, Yaml::parseFile($path));
     }
 
+    /**
+     * @return list<array{string}>
+     */
     public static function siteSetFormats(): array
     {
         $base = "name: webconsulting/innesto\ndependencies: [webconsulting/desiderio]\n";
@@ -158,6 +164,9 @@ final class RegistryTest extends TestCase
         self::assertStringContainsString('transform: rotate(360deg)', $css);
     }
 
+    /**
+     * @param array<string, mixed> $item
+     */
     #[DataProvider('invalidRegistryItems')]
     public function testMalformedRegistryItemsAreRejected(array $item): void
     {
@@ -167,6 +176,9 @@ final class RegistryTest extends TestCase
         (new RegistryClient($factory))->fetchItem('magicui/demo');
     }
 
+    /**
+     * @return list<array{array<string, mixed>}>
+     */
     public static function invalidRegistryItems(): array
     {
         return [[[]], [['name' => 42]], [['name' => []]], [['name' => '  ']]];

@@ -11,8 +11,9 @@
     "require": {
         "php": "^8.4",
         "friendsoftypo3/content-blocks": "^2.2",
-        "typo3/cms-core": "^14.3.6",
-        "webconsulting/desiderio": "^4.0.6"
+        "typo3/cms-core": "^14.3.7",
+        "typo3/cms-fluid-styled-content": "^14.3.7",
+        "webconsulting/desiderio": "^4.1.1"
     },
     "repositories": [
         {"type": "vcs", "url": "https://github.com/dirnbauer/desiderio.git", "no-api": true},
@@ -20,8 +21,11 @@
     ],
     "require-dev": {
         "phpstan/phpstan": "^2.1",
-        "phpunit/phpunit": "^12.5",
-        "typo3/cms-install": "^14.3.6",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "phpunit/phpunit": "^12.4 || ^13.0",
+        "saschaegerer/phpstan-typo3": "^3.0",
+        "typo3/cms-install": "^14.3.7",
+        "typo3/coding-standards": "^0.9",
         "typo3/testing-framework": "^9.5"
     },
     "autoload": {
@@ -45,12 +49,24 @@
     "extra": {
         "typo3/cms": {
             "web-dir": ".Build/public",
-            "extension-key": "innesto"
+            "extension-key": "innesto",
+            "version": "2.1.0",
+            "Package": {
+                "providesPackages": []
+            }
         }
     },
     "scripts": {
         "audit:content-elements": "@php scripts/audit-content-elements.php",
-        "test": "@php vendor/bin/phpunit",
-        "phpstan": "@php vendor/bin/phpstan analyse --no-progress"
+        "ci": [
+            "@ci:cgl",
+            "@ci:phpstan",
+            "@ci:tests:unit",
+            "@ci:tests:functional"
+        ],
+        "ci:cgl": "php-cs-fixer fix --config .php-cs-fixer.dist.php --diff --verbose",
+        "ci:phpstan": "phpstan analyse --configuration phpstan.neon --no-progress",
+        "ci:tests:functional": "phpunit --configuration Build/phpunit/FunctionalTests.xml",
+        "ci:tests:unit": "phpunit --configuration Build/phpunit/UnitTests.xml"
     }
 }

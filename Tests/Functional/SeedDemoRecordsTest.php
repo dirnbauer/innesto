@@ -13,7 +13,7 @@ use Webconsulting\Innesto\Tests\Fixtures\RejectDemoWrite;
 
 final class SeedDemoRecordsTest extends FunctionalTestCase
 {
-    protected array $coreExtensionsToLoad = ['form', 'workspaces'];
+    protected array $coreExtensionsToLoad = ['fluid_styled_content', 'form', 'workspaces'];
     protected array $testExtensionsToLoad = [
         'friendsoftypo3/content-blocks',
         'praetorius/vite-asset-collector',
@@ -142,8 +142,11 @@ TS);
         $response = $this->executeFrontendSubRequest(new InternalRequest('https://innesto.example/'));
         $html = (string)$response->getBody();
         self::assertSame(200, $response->getStatusCode(), substr(strip_tags($html), 0, 3000));
-        foreach (glob(dirname(__DIR__, 2) . '/ContentBlocks/ContentElements/*/library.json') as $fixturePath) {
-            $fixture = json_decode(file_get_contents($fixturePath), true, 512, JSON_THROW_ON_ERROR);
+        $fixturePaths = glob(dirname(__DIR__, 2) . '/ContentBlocks/ContentElements/*/library.json');
+        self::assertIsArray($fixturePaths);
+        foreach ($fixturePaths as $fixturePath) {
+            $fixture = json_decode((string)file_get_contents($fixturePath), true, 512, JSON_THROW_ON_ERROR);
+            self::assertIsArray($fixture);
             self::assertStringContainsString(htmlspecialchars($fixture['header']), $html, basename(dirname($fixturePath)));
         }
         preg_match_all('/data-values="([^"]*)"/', $html, $charts);
@@ -152,6 +155,9 @@ TS);
         self::assertStringNotContainsString('Oops, an error occurred', $html);
     }
 
+    /**
+     * @return list<array<string, mixed>>
+     */
     private function records(): array
     {
         return $this->getConnectionPool()->getConnectionForTable('tt_content')
