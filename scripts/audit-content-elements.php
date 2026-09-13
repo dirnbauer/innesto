@@ -22,7 +22,6 @@ declare(strict_types=1);
  *
  * Usage: php scripts/audit-content-elements.php [repo-root]
  */
-
 $root = rtrim($argv[1] ?? getcwd(), DIRECTORY_SEPARATOR);
 $elementsRoot = $root . '/ContentBlocks/ContentElements';
 if (!is_dir($elementsRoot)) {
@@ -171,7 +170,7 @@ foreach (glob($elementsRoot . '/*', GLOB_ONLYDIR) ?: [] as $dir) {
         }
     }
     if (!isset($setBlocks['innesto/' . $key])) {
-        $err[] = "not registered in Configuration/Sets/Innesto/config.yaml (hidden from the wizard)";
+        $err[] = 'not registered in Configuration/Sets/Innesto/config.yaml (hidden from the wizard)';
     }
 
     // Templates / assets presence
@@ -268,7 +267,7 @@ $reset = "\033[0m";
 $red = "\033[31m";
 $yellow = "\033[33m";
 $green = "\033[32m";
-echo "Innesto content-element audit — " . count($elements) . " elements, " . count($tables) . " collection tables\n";
+echo 'Innesto content-element audit — ' . count($elements) . ' elements, ' . count($tables) . " collection tables\n";
 echo str_repeat('-', 64) . "\n";
 foreach ($elements as $key) {
     $e = $errors[$key] ?? [];

@@ -24,9 +24,7 @@ final class RegistryClient
         'blocks' => 'https://blocks.so/r/%s.json',
     ];
 
-    public function __construct(private readonly RequestFactory $requestFactory)
-    {
-    }
+    public function __construct(private readonly RequestFactory $requestFactory) {}
 
     /**
      * @return array<string, mixed> the decoded registry item

@@ -72,7 +72,7 @@ final class CssConverter
         $lines = [];
         foreach ($rules as $key => $value) {
             if (is_array($value)) {
-                $lines[] = sprintf("%s%s {", $indent, $key);
+                $lines[] = sprintf('%s%s {', $indent, $key);
                 $lines[] = $this->serializeBlock($value, $depth + 1);
                 $lines[] = $indent . '}';
             } else {

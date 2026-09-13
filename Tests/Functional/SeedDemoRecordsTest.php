@@ -6,8 +6,8 @@ namespace Webconsulting\Innesto\Tests\Functional;
 
 use Symfony\Component\Console\Tester\CommandTester;
 use TYPO3\CMS\Core\Configuration\SiteWriter;
-use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use Webconsulting\Innesto\Command\SeedDemoRecordsCommand;
 use Webconsulting\Innesto\Tests\Fixtures\RejectDemoWrite;
 

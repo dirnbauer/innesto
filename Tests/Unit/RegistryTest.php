@@ -8,8 +8,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
-use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Http\RequestFactory;
 use Webconsulting\Innesto\Registry\CssConverter;
 use Webconsulting\Innesto\Registry\ElementScaffolder;
 use Webconsulting\Innesto\Registry\RegistryClient;
@@ -143,7 +143,7 @@ final class RegistryTest extends TestCase
 
     public function testKnownRegistryReferencesAndExplicitUrlResolve(): void
     {
-        $client = new RegistryClient($this->createStub(RequestFactory::class));
+        $client = new RegistryClient(self::createStub(RequestFactory::class));
         self::assertSame('https://magicui.design/r/marquee.json', $client->resolveUrl('@magicui/marquee'));
         self::assertSame('https://blocks.so/r/stats-09.json', $client->resolveUrl('blocks/stats-09'));
         self::assertSame('https://example.com/demo.json', $client->resolveUrl('https://example.com/demo.json'));
@@ -170,7 +170,7 @@ final class RegistryTest extends TestCase
     #[DataProvider('invalidRegistryItems')]
     public function testMalformedRegistryItemsAreRejected(array $item): void
     {
-        $factory = $this->createStub(RequestFactory::class);
+        $factory = self::createStub(RequestFactory::class);
         $factory->method('request')->willReturn(new JsonResponse($item));
         $this->expectException(\RuntimeException::class);
         (new RegistryClient($factory))->fetchItem('magicui/demo');

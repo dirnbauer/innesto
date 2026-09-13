@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Webconsulting\Innesto\Command;
 
-use Webconsulting\Innesto\Registry\ElementScaffolder;
-use Webconsulting\Innesto\Registry\FinishingPromptBuilder;
-use Webconsulting\Innesto\Registry\RegistryClient;
-use Webconsulting\Innesto\Registry\SetRegistrar;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -19,6 +15,10 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use Webconsulting\Innesto\Registry\ElementScaffolder;
+use Webconsulting\Innesto\Registry\FinishingPromptBuilder;
+use Webconsulting\Innesto\Registry\RegistryClient;
+use Webconsulting\Innesto\Registry\SetRegistrar;
 
 #[AsCommand(
     name: 'innesto:add',

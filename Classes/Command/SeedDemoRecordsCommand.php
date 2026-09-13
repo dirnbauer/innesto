@@ -138,7 +138,11 @@ final class SeedDemoRecordsCommand extends Command
         }
         $io->success(sprintf(
             'Seeded %d demo record(s) on page %d ("%s"); skipped %d, replaced %d.',
-            count($elements), $pageUid, $page['title'], $skipped, count($deletions)
+            count($elements),
+            $pageUid,
+            $page['title'],
+            $skipped,
+            count($deletions)
         ));
         return Command::SUCCESS;
     }

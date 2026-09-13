@@ -16,9 +16,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 final class ElementScaffolder
 {
-    public function __construct(private readonly CssConverter $cssConverter)
-    {
-    }
+    public function __construct(private readonly CssConverter $cssConverter) {}
 
     /**
      * @param array<string, mixed> $item
