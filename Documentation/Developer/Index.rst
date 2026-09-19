@@ -27,17 +27,15 @@ The pieces
             semantic tokens, including the ``.dark`` block and keyframes.
 
     *   -   :php:`Registry\ElementScaffolder`
-        -   Writes the element directory. Refuses to overwrite, and
+        -   Writes the whole element directory in one all-or-nothing
+            pass — config, templates, assets, labels, the upstream
+            sources and :file:`AI_PROMPT.md`. Refuses to overwrite, and
             rejects keys that would collide on CType or on a source
             basename.
 
     *   -   :php:`Registry\SetRegistrar`
         -   Appends ``innesto/<key>`` to the site set, idempotently and
             preserving the file's existing YAML shape.
-
-    *   -   :php:`Registry\FinishingPromptBuilder`
-        -   Builds :file:`AI_PROMPT.md` — the instructions the finishing
-            pass follows.
 
     *   -   :php:`Command\SeedDemoRecordsCommand`
         -   Seeds demo records through DataHandler, inside a transaction.
@@ -74,6 +72,15 @@ statically over every shipped template:
         -   The Desiderio namespace is declared with its canonical URI
             exactly where ``d:`` tags are used — and nowhere else.
 
+    *   -   I5
+        -   Headings come from ``d:atom.typography``; a hand-written
+            ``<hN>`` in a frontend template is a failure.
+
+    *   -   I6
+        -   Icons come from ``d:atom.icon``. The only inline ``<svg>`` a
+            graft may keep is a data graphic — a progress ring or donut,
+            recognised by its ``pathLength``.
+
 :php:`Tests\Functional\Templates\ShippedTemplatesLintTest` adds what a
 static check cannot do: it runs Desiderio's Fluid 5 linter over both
 templates of all 19 elements with the runtime rendering context, and
@@ -81,20 +88,59 @@ requires zero errors and zero skipped checks. A Desiderio component that
 gains a required argument, or renames one, fails that test instead of
 producing a white page.
 
-..  _developer-audit:
+..  _developer-package:
 
-The content element audit
-=========================
+The package contract
+====================
 
-..  code-block:: bash
+:php:`Tests\Unit\ElementPackageConformanceTest` checks everything around
+the template, once per element and with the element's name in the data
+set, so a failure says which graft is wrong:
 
-    composer audit:content-elements
+..  list-table::
+    :header-rows: 1
 
-Checks metadata, wizard registration, Collection table uniqueness,
-template references, token-only CSS, backend previews, icons and XLIFF
-across every element. It runs without a TYPO3 installation when
-``ext-yaml`` is available; otherwise point ``AUDIT_AUTOLOAD`` at a
-Composer autoloader that provides ``symfony/yaml``.
+    *   -   Rule
+        -   What it enforces
+
+    *   -   P1
+        -   The package is complete: config, both templates, stylesheet,
+            icon and labels. The icon is a well-formed 16x16
+            ``currentColor`` line drawing; :file:`labels.xlf` is valid
+            XLIFF with a ``title`` and a ``description`` unit.
+
+    *   -   P2
+        -   ``name``, ``typeName``, title and description are set, the
+            wizard group is registered in
+            :file:`Configuration/TCA/Overrides/tt_content.php` and is not
+            ``default``, keywords exist, and the block is listed in
+            :file:`Configuration/Sets/Innesto/config.yaml` — without that
+            entry the element stays invisible.
+
+    *   -   P3
+        -   Every Collection declares an explicit ``table:`` that starts
+            with ``innesto_`` and is unique across the extension. Two
+            elements sharing a table corrupt both schemas.
+
+    *   -   P4
+        -   The element offers the ``TYPO3/Appearance`` basic *and*
+            passes ``frame_class``, ``space_before_class`` and
+            ``space_after_class`` into ``d:layout.section``, so the
+            editor's choice actually reaches the markup.
+
+    *   -   P5
+        -   No colour literals in CSS, JavaScript or the template — only
+            the semantic tokens — and no inline ``<script>``.
+
+    *   -   P6
+        -   Every configured editor field is rendered by the frontend
+            template. A field nothing renders is either dead or a
+            forgotten graft.
+
+    *   -   P7
+        -   :file:`library.json` is a demo record :bash:`innesto:seed`
+            can apply: every key is a configured field, Collections are
+            lists of child objects, everything else is scalar.
 
 ..  _developer-tests:
 
@@ -112,7 +158,8 @@ Tests
 
 The unit suite covers registry URL handling, the generated YAML and XML,
 source and CType collisions, invalid paths, non-overwrite behaviour, CSS
-conversion, idempotent site-set registration and the component contract.
+conversion, idempotent site-set registration, and both contracts above —
+including the scaffolded stub, which has to satisfy them from the start.
 
 The functional suite boots the installed TYPO3 release with Content
 Blocks, Visual Editor, the Vite asset collector, Desiderio and Innesto.
@@ -120,35 +167,3 @@ It seeds the whole family through DataHandler, renders every element
 through the frontend, and covers repeated runs, hidden records,
 replacement ordering and the rollback of parent and child records when a
 write fails.
-
-..  _developer-demo:
-
-A local demo
-============
-
-DDEV serves :file:`.Build/public`. After :bash:`ddev start` and
-:bash:`ddev composer install`, run :bash:`ddev exec vendor/bin/typo3 setup`
-— for the DDEV database, host, database, user and password are all ``db``.
-Create a site, add ``webconsulting/innesto`` to its dependencies, drop the
-setup wizard's placeholder ``page`` TypoScript so Desiderio's set renders,
-and build the theme delivery:
-
-..  code-block:: bash
-
-    ddev exec npx --yes vite@8.2.0 build --config Build/vite.config.mjs
-
-Then enable the built assets in :file:`config/system/additional.php`:
-
-..  code-block:: php
-
-    <?php
-    if (getenv('IS_DDEV_PROJECT') === 'true') {
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = '^innesto\\.ddev\\.site$';
-        $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['vite_asset_collector']['useDevServer'] = '0';
-    }
-
-..  code-block:: bash
-
-    ddev exec vendor/bin/typo3 extension:setup
-    ddev exec vendor/bin/typo3 innesto:seed <page-uid>
-    ddev exec vendor/bin/typo3 cache:flush

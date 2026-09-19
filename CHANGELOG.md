@@ -5,6 +5,32 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2026-09-19
+
+Built against Desiderio 4.1.7.
+
+### Added
+
+- `Tests/Unit/ElementPackageConformanceTest`: the package contract, checked once per element with the element's name in the data set — complete package and valid 16x16 `currentColor` icon and XLIFF (P1), metadata and site-set registration (P2), explicit, `innesto_`-prefixed and extension-wide unique Collection tables (P3), the Appearance palette actually reaching `d:layout.section` (P4), token-only styling and no inline `<script>` (P5), every configured editor field rendered (P6), and a `library.json` the seeder can apply (P7). It replaces `scripts/audit-content-elements.php`, which checked most of this from a bespoke script CI ran once.
+- `ContentElementConformanceTest` rules I5 (headings come from `d:atom.typography`) and I6 (icons come from `d:atom.icon`; only a `pathLength` data graphic may stay an inline `<svg>`).
+- A test that pins the scaffolded template stub to the same rules, so a fresh graft never starts with a red suite.
+
+### Changed
+
+- Every element composes Desiderio components instead of hand-rolled markup. The copy-pasted eyebrow + headline block becomes `d:molecule.sectionIntro` in seventeen templates, headings render through `d:atom.typography`, and trend, status and chevron icons become `d:atom.icon` — so grafts now follow the theme's heading scale and the site's icon library. 55 duplicated `.__intro` / `.__eyebrow` / `.__headline` rules are deleted from fourteen stylesheets.
+- Fourteen hard-coded English strings move into XLIFF; the screen-reader trend announcements reuse Desiderio's existing `trend.*` units instead of near-duplicates.
+- `ElementScaffolder` writes `AI_PROMPT.md` as part of the element, inside the same all-or-nothing loop as every other file. `Registry\FinishingPromptBuilder` is gone, and with it a class that existed to return one heredoc and a second, separate write that could fail on its own.
+- The scaffolded stub now ships the `d:layout.section` Appearance wiring and a `d:molecule.sectionIntro` instead of a bare `<h2>`.
+- `Configuration/TCA/Overrides/tt_content.php` registers the three wizard groups the shipped elements use plus the scaffolder's `components` fallback; ten speculative groups and their labels are removed.
+
+### Fixed
+
+- The editor's Appearance palette did nothing. Every element declares the `TYPO3/Appearance` basic, but no template passed `frame_class`, `space_before_class` or `space_after_class` to `d:layout.section`, so frame and spacing choices never reached the markup. All nineteen section roots wire them now, and P4 guards it.
+
+### Removed
+
+- `scripts/audit-content-elements.php` and its CI job, `Build/Scripts/runTests.sh`, `Build/vite.config.mjs`, the checked-in `.ddev` profile, a stale documentation screenshot, and the developer manual's local-DDEV-demo chapter that described them.
+
 ## [2.1.0] - 2026-09-13
 
 Built against Desiderio 4.1.1.

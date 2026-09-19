@@ -109,13 +109,15 @@ Activating a new element
 
 ..  code-block:: bash
 
+    composer ci:tests:unit
     vendor/bin/typo3 extension:setup
     vendor/bin/typo3 cache:flush
-    composer audit:content-elements
 
-Schema setup is needed whenever a block gains database fields or
-Collection tables. Then inspect the wizard, the edit form, the backend
-preview and the frontend.
+The unit suite is the finishing checklist: it holds the new element to
+the same package and composition contract as the shipped ones. Schema
+setup is needed whenever a block gains database fields or Collection
+tables. Then inspect the wizard, the edit form, the backend preview and
+the frontend.
 
 ..  _usage-seed:
 
@@ -153,11 +155,6 @@ Two elements worth a closer look
 
 Terminal
 --------
-
-..  figure:: /Images/terminal-frontend.png
-    :alt: The Terminal element on the frontend
-
-    ``innesto/terminal`` types out commands and reveals their output.
 
 The upstream Magic UI component drives its typewriter with
 ``motion/react``. The graft re-creates that motion in pure CSS: each line

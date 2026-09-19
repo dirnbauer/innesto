@@ -11,14 +11,14 @@
 
 Nineteen finished grafts ship with it — marquee, orbiting circles, terminal, case studies and the complete 15-element [blocks.so stats family](https://blocks.so/stats). The frontend is Fluid 5, CSS and SVG; only the area chart needs a small JavaScript renderer. The upstream TSX stays in `sources/` for provenance: there is no React runtime and no frontend build step.
 
-Because every graft composes Desiderio components and paints itself only from Desiderio tokens, it follows every preset and dark mode without knowing they exist. Two test suites hold it to that contract — a static conformance test and Desiderio's own Fluid 5 linter.
+Because every graft composes Desiderio components and paints itself only from Desiderio tokens, it follows every preset and dark mode without knowing they exist. Three test layers hold it to that contract: a composition test (which components a template may use), a package test (metadata, collection tables, token-only styling, demo data) and Desiderio's own Fluid 5 linter.
 
 ## Requirements
 
 - TYPO3 14.3 LTS
 - PHP 8.4+ (8.5 is exercised in CI)
-- Desiderio 4.1.1+ and Content Blocks 2.2+
-- `typo3/cms-fluid-styled-content` — Desiderio's site set depends on it since 4.1.1
+- Desiderio 4.1+ and Content Blocks 2.2+
+- `typo3/cms-fluid-styled-content` — Desiderio's site set depends on it
 
 ## Install
 
@@ -28,7 +28,7 @@ Composer does not inherit repositories from dependencies, so register all three 
 composer config repositories.desiderio vcs https://github.com/dirnbauer/desiderio.git
 composer config repositories.visual-editor-enhancements vcs https://github.com/dirnbauer/typo3-visual-editor-enhancements.git
 composer config repositories.innesto vcs https://github.com/dirnbauer/innesto.git
-composer require webconsulting/innesto:^2.1
+composer require webconsulting/innesto:^2.2
 vendor/bin/typo3 extension:setup
 vendor/bin/typo3 cache:flush
 ```
@@ -69,15 +69,14 @@ composer ci:tests:unit
 composer ci:tests:functional    # SQLite, no database server needed
 composer ci:phpstan             # level 8, no baseline
 composer ci:cgl -- --dry-run
-composer audit:content-elements # metadata, tables, assets, icons, XLIFF
 docker run --rm -v $PWD:/project ghcr.io/typo3-documentation/render-guides:latest --config=Documentation
 ```
 
-Functional tests use isolated SQLite databases and never touch a local demo database. The repository's DDEV configuration provides a separate local runtime; see the manual for the demo setup.
+Functional tests use isolated SQLite databases and never touch a local demo database. `ci:tests:unit` alone checks every shipped element against the package contract, so it is also the checklist a new graft has to pass.
 
 ## Docs
 
-Full manual in [`Documentation/`](Documentation/Index.rst): what a graft is, installation and the site set, configuration, the command reference and the finishing checklist, and a developer reference covering the component contract, the audit and the test suites.
+Full manual in [`Documentation/`](Documentation/Index.rst): what a graft is, installation and the site set, configuration, the command reference and the finishing checklist, and a developer reference covering the component contract and the test suites.
 
 ## License
 

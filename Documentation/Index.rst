@@ -75,8 +75,8 @@ Nineteen finished grafts ship with the extension.
 
     ..  card:: Developer reference
 
-        The component contract every graft is held to, the audit and
-        the test suites.
+        The component and package contracts every graft is held to, and
+        the test suites that enforce them.
 
         ..  card-footer:: :ref:`Read the reference <developer>`
             :button-style: btn btn-secondary stretched-link
