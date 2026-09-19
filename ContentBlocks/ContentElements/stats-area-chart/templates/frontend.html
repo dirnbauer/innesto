@@ -6,18 +6,12 @@
 <f:asset.css identifier="innesto-stats-area-chart" href="{cb:assetPath()}/frontend.css"/>
 <f:asset.script identifier="innesto-stats-area-chart" src="{cb:assetPath()}/frontend.js"/>
 
-<d:layout.section spacing="md" class="innesto-stats-area-chart-section">
+<d:layout.section frame="{data.frame_class}" spaceBefore="{data.space_before_class}" spaceAfter="{data.space_after_class}" spacing="md" class="innesto-stats-area-chart-section">
     <d:layout.container>
-        <f:if condition="{data.eyebrow} || {data.header}">
-            <header class="innesto-stats-area-chart__intro">
-                <f:if condition="{data.eyebrow}">
-                    <p class="innesto-stats-area-chart__eyebrow">{data -> f:render.text(field: 'eyebrow')}</p>
-                </f:if>
-                <f:if condition="{data.header}">
-                    <h2 class="innesto-stats-area-chart__headline">{data -> f:render.text(field: 'header')}</h2>
-                </f:if>
-            </header>
-        </f:if>
+        <d:molecule.sectionIntro align="center">
+            <f:fragment name="eyebrow"><f:if condition="{data.eyebrow}">{data -> f:render.text(field: 'eyebrow')}</f:if></f:fragment>
+            <f:fragment name="heading"><f:if condition="{data.header}">{data -> f:render.text(field: 'header')}</f:if></f:fragment>
+        </d:molecule.sectionIntro>
 
         <dl class="innesto-stats-area-chart">
             <f:for each="{data.stats}" as="entry">

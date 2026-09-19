@@ -5,18 +5,12 @@
 
 <f:asset.css identifier="innesto-stats-progress" href="{cb:assetPath()}/frontend.css"/>
 
-<d:layout.section spacing="md" class="innesto-stats-progress-section">
+<d:layout.section frame="{data.frame_class}" spaceBefore="{data.space_before_class}" spaceAfter="{data.space_after_class}" spacing="md" class="innesto-stats-progress-section">
     <d:layout.container>
-        <f:if condition="{data.eyebrow} || {data.header}">
-            <header class="innesto-stats-progress__intro">
-                <f:if condition="{data.eyebrow}">
-                    <p class="innesto-stats-progress__eyebrow">{data -> f:render.text(field: 'eyebrow')}</p>
-                </f:if>
-                <f:if condition="{data.header}">
-                    <h2 class="innesto-stats-progress__headline">{data -> f:render.text(field: 'header')}</h2>
-                </f:if>
-            </header>
-        </f:if>
+        <d:molecule.sectionIntro align="center">
+            <f:fragment name="eyebrow"><f:if condition="{data.eyebrow}">{data -> f:render.text(field: 'eyebrow')}</f:if></f:fragment>
+            <f:fragment name="heading"><f:if condition="{data.header}">{data -> f:render.text(field: 'header')}</f:if></f:fragment>
+        </d:molecule.sectionIntro>
 
         <f:if condition="{data.stats_progress_items}">
             <dl class="innesto-stats-progress">
@@ -32,7 +26,7 @@
                         <dd class="innesto-stats-progress__meta">
                             <span class="innesto-stats-progress__percent">{entry.percent}&#37;</span>
                             <f:if condition="{entry.limit}">
-                                <span class="innesto-stats-progress__limit">{entry.value} of {entry.limit}</span>
+                                <span class="innesto-stats-progress__limit"><f:translate key="LLL:EXT:innesto/Resources/Private/Language/labels.xlf:usage.ofLimit" arguments="{0: entry.value, 1: entry.limit}"/></span>
                             </f:if>
                         </dd>
                     </div>

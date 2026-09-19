@@ -5,18 +5,12 @@
 
 <f:asset.css identifier="innesto-stats-usage-dashboard" href="{cb:assetPath()}/frontend.css"/>
 
-<d:layout.section spacing="md" class="innesto-stats-usage-dashboard-section">
+<d:layout.section frame="{data.frame_class}" spaceBefore="{data.space_before_class}" spaceAfter="{data.space_after_class}" spacing="md" class="innesto-stats-usage-dashboard-section">
     <d:layout.container>
-        <f:if condition="{data.eyebrow} || {data.header}">
-            <header class="innesto-stats-usage-dashboard__intro">
-                <f:if condition="{data.eyebrow}">
-                    <p class="innesto-stats-usage-dashboard__eyebrow">{data -> f:render.text(field: 'eyebrow')}</p>
-                </f:if>
-                <f:if condition="{data.header}">
-                    <h2 class="innesto-stats-usage-dashboard__headline">{data -> f:render.text(field: 'header')}</h2>
-                </f:if>
-            </header>
-        </f:if>
+        <d:molecule.sectionIntro align="start" headingVariant="h3">
+            <f:fragment name="eyebrow"><f:if condition="{data.eyebrow}">{data -> f:render.text(field: 'eyebrow')}</f:if></f:fragment>
+            <f:fragment name="heading"><f:if condition="{data.header}">{data -> f:render.text(field: 'header')}</f:if></f:fragment>
+        </d:molecule.sectionIntro>
 
         <article class="innesto-stats-usage-dashboard">
             <f:if condition="{data.period_label} || {data.updated_label} || ({data.cta_text} && {data.cta_link})">
@@ -45,7 +39,7 @@
                             </svg>
                             <span class="innesto-stats-usage-dashboard__name">{entry.title}</span>
                             <span class="innesto-stats-usage-dashboard__usage">{entry.current_value} / <span class="innesto-stats-usage-dashboard__usage-limit">{entry.limit_value}</span></span>
-                            <span class="innesto-stats-usage-dashboard__sr">{entry.percent}&#37; used</span>
+                            <span class="sr-only"><f:translate key="LLL:EXT:innesto/Resources/Private/Language/labels.xlf:usage.percentUsed" arguments="{0: entry.percent}"/></span>
                         </li>
                     </f:for>
                 </ul>

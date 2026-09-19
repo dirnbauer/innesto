@@ -9,28 +9,6 @@
    pulling them towards the foreground would just make them muddy. */
 /* Grafted from registry item "stats-14" (Stats with Usage Breakdown). Tokens map onto the Desiderio shadcn variables. */
 
-.innesto-stats-usage-breakdown__intro {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    text-align: center;
-}
-.innesto-stats-usage-breakdown__eyebrow {
-    margin: 0;
-    font-weight: 500;
-    color: var(--foreground);
-}
-.innesto-stats-usage-breakdown__headline {
-    margin: 0;
-    font-size: clamp(2.25rem, 1.75rem + 2vw, 3rem);
-    font-weight: 500;
-    line-height: 1.15;
-    color: var(--foreground);
-}
-.innesto-stats-usage-breakdown__intro + .innesto-stats-usage-breakdown {
-    margin-top: 3rem;
-}
-
 .innesto-stats-usage-breakdown {
     display: flex;
     justify-content: center;

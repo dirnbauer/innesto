@@ -5,11 +5,12 @@
 
 <f:asset.css identifier="innesto-stats-circular-links" href="{cb:assetPath()}/frontend.css"/>
 
-<d:layout.section spacing="md" class="innesto-stats-circular-links-section">
+<d:layout.section frame="{data.frame_class}" spaceBefore="{data.space_before_class}" spaceAfter="{data.space_after_class}" spacing="md" class="innesto-stats-circular-links-section">
     <d:layout.container>
-        <f:if condition="{data.header}">
-            <h2 class="innesto-stats-circular-links__headline">{data -> f:render.text(field: 'header')}</h2>
-        </f:if>
+        <f:variable name="viewMoreLabel"><f:translate key="LLL:EXT:innesto/Resources/Private/Language/labels.xlf:action.viewMore"/></f:variable>
+        <d:molecule.sectionIntro align="start" headingVariant="h3">
+            <f:fragment name="heading"><f:if condition="{data.header}">{data -> f:render.text(field: 'header')}</f:if></f:fragment>
+        </d:molecule.sectionIntro>
 
         <div class="innesto-stats-circular-links">
             <f:for each="{data.items}" as="entry">
@@ -38,7 +39,7 @@
                     </div>
                     <f:if condition="{entry.link}">
                         <footer class="innesto-stats-circular-links__footer">
-                            <f:link.typolink parameter="{entry.link}" class="innesto-stats-circular-links__link">{entry.link_text -> f:or(alternative: 'View more')} <span aria-hidden="true">→</span></f:link.typolink>
+                            <f:link.typolink parameter="{entry.link}" class="innesto-stats-circular-links__link">{entry.link_text -> f:or(alternative: viewMoreLabel)} <span aria-hidden="true">→</span></f:link.typolink>
                         </footer>
                     </f:if>
                 </article>

@@ -9,28 +9,6 @@
    pulling them towards the foreground would just make them muddy. */
 /* Grafted from registry item "stats-01" (Stats with Trending). Tokens map onto the Desiderio shadcn variables. */
 
-.innesto-stats-trending__intro {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    text-align: center;
-}
-.innesto-stats-trending__eyebrow {
-    margin: 0;
-    font-weight: 500;
-    color: var(--foreground);
-}
-.innesto-stats-trending__headline {
-    margin: 0;
-    font-size: clamp(2.25rem, 1.75rem + 2vw, 3rem);
-    font-weight: 500;
-    line-height: 1.15;
-    color: var(--foreground);
-}
-.innesto-stats-trending__intro + .innesto-stats-trending {
-    margin-top: 3rem;
-}
-
 /* The 1px gaps over a border-colored backdrop recreate the upstream
    gap-px/bg-border divider effect; overflow hides the square card corners. */
 .innesto-stats-trending {

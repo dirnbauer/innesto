@@ -5,29 +5,24 @@
 
 <f:asset.css identifier="innesto-stats-circular-progress" href="{cb:assetPath()}/frontend.css"/>
 
-<d:layout.section spacing="md" class="innesto-stats-circular-progress-section">
+<d:layout.section frame="{data.frame_class}" spaceBefore="{data.space_before_class}" spaceAfter="{data.space_after_class}" spacing="md" class="innesto-stats-circular-progress-section">
     <d:layout.container>
-        <f:if condition="{data.eyebrow} || {data.header} || {data.intro} || {data.link}">
-            <header class="innesto-stats-circular-progress__intro">
-                <f:if condition="{data.eyebrow}">
-                    <p class="innesto-stats-circular-progress__eyebrow">{data -> f:render.text(field: 'eyebrow')}</p>
-                </f:if>
-                <f:if condition="{data.header}">
-                    <h2 class="innesto-stats-circular-progress__headline">{data -> f:render.text(field: 'header')}</h2>
-                </f:if>
-                <f:if condition="{data.intro} || {data.link}">
-                    <p class="innesto-stats-circular-progress__lead">
-                        <f:if condition="{data.intro}">{data.intro}</f:if>
-                        <f:if condition="{data.link}">
-                            <f:link.typolink parameter="{data.link}" class="innesto-stats-circular-progress__link">
-                                {f:if(condition: data.link_text, then: data.link_text, else: 'Learn more')}
-                                <svg class="innesto-stats-circular-progress__link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
-                            </f:link.typolink>
+        <d:molecule.sectionIntro align="start" headingVariant="h4" leadVariant="p" leadClass="innesto-stats-circular-progress__lead">
+            <f:fragment name="eyebrow"><f:if condition="{data.eyebrow}">{data -> f:render.text(field: 'eyebrow')}</f:if></f:fragment>
+            <f:fragment name="heading"><f:if condition="{data.header}">{data -> f:render.text(field: 'header')}</f:if></f:fragment>
+            <f:fragment name="lead">
+                <f:if condition="{data.intro}">{data.intro}</f:if>
+                <f:if condition="{data.link}">
+                    <f:link.typolink parameter="{data.link}" class="innesto-stats-circular-progress__link">
+                        <f:if condition="{data.link_text}">
+                            <f:then>{data.link_text}</f:then>
+                            <f:else><f:translate key="LLL:EXT:innesto/Resources/Private/Language/labels.xlf:action.learnMore"/></f:else>
                         </f:if>
-                    </p>
+                        <d:atom.icon name="arrow-right" size="xs" class="innesto-stats-circular-progress__link-icon"/>
+                    </f:link.typolink>
                 </f:if>
-            </header>
-        </f:if>
+            </f:fragment>
+        </d:molecule.sectionIntro>
 
         <f:if condition="{data.stats_circular_progress_items}">
             <dl class="innesto-stats-circular-progress">

@@ -9,25 +9,6 @@
    pulling them towards the foreground would just make them muddy. */
 /* Grafted from registry item "stats-04" (Stats with Badges). Tokens map onto the Desiderio shadcn variables. */
 
-.innesto-stats-badges__intro {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    margin-bottom: 2.5rem;
-}
-.innesto-stats-badges__eyebrow {
-    margin: 0;
-    font-weight: 500;
-    color: var(--muted-foreground);
-}
-.innesto-stats-badges__headline {
-    margin: 0;
-    font-size: clamp(1.5rem, 1.25rem + 1vw, 2rem);
-    font-weight: 600;
-    line-height: 1.2;
-    color: var(--foreground);
-}
-
 .innesto-stats-badges {
     margin: 0;
     display: grid;
@@ -102,16 +83,4 @@
     line-height: 1.2;
     font-variant-numeric: tabular-nums;
     color: var(--foreground);
-}
-
-.innesto-stats-badges__sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
 }

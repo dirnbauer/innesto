@@ -1,27 +1,5 @@
 /* Grafted from registry item "case-studies2" (Case Studies 2 - Case studies with quotes and metrics). Tokens map onto the Desiderio shadcn variables. */
 
-.innesto-case-studies__intro {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    text-align: center;
-}
-.innesto-case-studies__eyebrow {
-    margin: 0;
-    font-weight: 500;
-    color: var(--foreground);
-}
-.innesto-case-studies__headline {
-    margin: 0;
-    font-size: clamp(2.25rem, 1.75rem + 2vw, 3rem);
-    font-weight: 500;
-    line-height: 1.15;
-    color: var(--foreground);
-}
-.innesto-case-studies__intro + .innesto-case-studies {
-    margin-top: 5rem;
-}
-
 .innesto-case-studies__separator {
     margin: 5rem 0;
     border: 0;

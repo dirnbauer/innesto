@@ -5,18 +5,12 @@
 
 <f:asset.css identifier="innesto-stats-trending" href="{cb:assetPath()}/frontend.css"/>
 
-<d:layout.section spacing="md" class="innesto-stats-trending-section">
+<d:layout.section frame="{data.frame_class}" spaceBefore="{data.space_before_class}" spaceAfter="{data.space_after_class}" spacing="md" class="innesto-stats-trending-section">
     <d:layout.container>
-        <f:if condition="{data.eyebrow} || {data.header}">
-            <header class="innesto-stats-trending__intro">
-                <f:if condition="{data.eyebrow}">
-                    <p class="innesto-stats-trending__eyebrow">{data -> f:render.text(field: 'eyebrow')}</p>
-                </f:if>
-                <f:if condition="{data.header}">
-                    <h2 class="innesto-stats-trending__headline">{data -> f:render.text(field: 'header')}</h2>
-                </f:if>
-            </header>
-        </f:if>
+        <d:molecule.sectionIntro align="center">
+            <f:fragment name="eyebrow"><f:if condition="{data.eyebrow}">{data -> f:render.text(field: 'eyebrow')}</f:if></f:fragment>
+            <f:fragment name="heading"><f:if condition="{data.header}">{data -> f:render.text(field: 'header')}</f:if></f:fragment>
+        </d:molecule.sectionIntro>
 
         <f:if condition="{data.stats_trending_items}">
             <dl class="innesto-stats-trending">
@@ -27,13 +21,13 @@
                             <dd class="innesto-stats-trending__delta {f:if(condition: '{entry.trend} == \'down\'', then: 'innesto-stats-trending__delta--down', else: 'innesto-stats-trending__delta--up')}">
                                 <f:if condition="{entry.trend} == 'down'">
                                     <f:then>
-                                        <svg class="innesto-stats-trending__delta-icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1.5 3.5 5 7l2-2 3.5 3.5"/><path d="M7.5 8.5h3v-3"/></svg>
+                                        <d:atom.icon name="trending-down" size="xs" class="innesto-stats-trending__delta-icon"/>
                                     </f:then>
                                     <f:else>
-                                        <svg class="innesto-stats-trending__delta-icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1.5 8.5 5 5l2 2 3.5-3.5"/><path d="M7.5 3.5h3v3"/></svg>
+                                        <d:atom.icon name="trending-up" size="xs" class="innesto-stats-trending__delta-icon"/>
                                     </f:else>
                                 </f:if>
-                                <span class="sr-only"><f:if condition="{entry.trend} == 'down'"><f:then>Decreased</f:then><f:else>Increased</f:else></f:if> by </span>
+                                <span class="sr-only"><f:if condition="{entry.trend} == 'down'"><f:then><f:translate key="LLL:EXT:desiderio/Resources/Private/Language/labels.xlf:trend.down"/></f:then><f:else><f:translate key="LLL:EXT:desiderio/Resources/Private/Language/labels.xlf:trend.positive"/></f:else></f:if> </span>
                                 <span>{entry.delta}</span>
                             </dd>
                         </f:if>

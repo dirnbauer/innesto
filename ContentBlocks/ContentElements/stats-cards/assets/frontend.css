@@ -9,25 +9,6 @@
    pulling them towards the foreground would just make them muddy. */
 /* Grafted from registry item "stats-03" (Stats with Card Layout). Tokens map onto the Desiderio shadcn variables. */
 
-.innesto-stats-cards__intro {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    margin-bottom: 2.5rem;
-}
-.innesto-stats-cards__eyebrow {
-    margin: 0;
-    font-weight: 500;
-    color: var(--muted-foreground);
-}
-.innesto-stats-cards__headline {
-    margin: 0;
-    font-size: clamp(1.75rem, 1.4rem + 1.5vw, 2.25rem);
-    font-weight: 600;
-    line-height: 1.2;
-    color: var(--foreground);
-}
-
 .innesto-stats-cards {
     display: grid;
     grid-template-columns: 1fr;

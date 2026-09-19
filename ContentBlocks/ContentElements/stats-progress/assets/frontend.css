@@ -1,27 +1,5 @@
 /* Grafted from registry item "stats-09" (Stats with Progress). Tokens map onto the Desiderio shadcn variables. */
 
-.innesto-stats-progress__intro {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    text-align: center;
-}
-.innesto-stats-progress__eyebrow {
-    margin: 0;
-    font-weight: 500;
-    color: var(--foreground);
-}
-.innesto-stats-progress__headline {
-    margin: 0;
-    font-size: clamp(2.25rem, 1.75rem + 2vw, 3rem);
-    font-weight: 500;
-    line-height: 1.15;
-    color: var(--foreground);
-}
-.innesto-stats-progress__intro + .innesto-stats-progress {
-    margin-top: 3rem;
-}
-
 .innesto-stats-progress {
     display: grid;
     grid-template-columns: 1fr;

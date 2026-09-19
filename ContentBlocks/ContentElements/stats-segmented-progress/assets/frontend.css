@@ -1,27 +1,5 @@
 /* Grafted from registry item "stats-13" (Stats with Segmented Progress). Tokens map onto the Desiderio shadcn variables. */
 
-.innesto-stats-segmented-progress__intro {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    text-align: center;
-}
-.innesto-stats-segmented-progress__eyebrow {
-    margin: 0;
-    font-weight: 500;
-    color: var(--foreground);
-}
-.innesto-stats-segmented-progress__headline {
-    margin: 0;
-    font-size: clamp(2.25rem, 1.75rem + 2vw, 3rem);
-    font-weight: 500;
-    line-height: 1.15;
-    color: var(--foreground);
-}
-.innesto-stats-segmented-progress__intro + .innesto-stats-segmented-progress {
-    margin-top: 3rem;
-}
-
 /* Card contract (upstream: Card max-w-4xl shadow-sm) */
 .innesto-stats-segmented-progress {
     max-width: 56rem;

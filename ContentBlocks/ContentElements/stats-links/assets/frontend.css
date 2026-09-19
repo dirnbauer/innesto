@@ -9,17 +9,6 @@
    pulling them towards the foreground would just make them muddy. */
 /* Grafted from registry item "stats-05" (Stats with Links). Tokens map onto the Desiderio shadcn variables. */
 
-.innesto-stats-links__headline {
-    margin: 0;
-    font-size: clamp(2.25rem, 1.75rem + 2vw, 3rem);
-    font-weight: 500;
-    line-height: 1.15;
-    color: var(--foreground);
-}
-.innesto-stats-links__headline + .innesto-stats-links {
-    margin-top: 2.5rem;
-}
-
 .innesto-stats-links {
     margin: 0;
     display: grid;

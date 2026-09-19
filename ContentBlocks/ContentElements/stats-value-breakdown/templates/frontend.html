@@ -5,11 +5,11 @@
 
 <f:asset.css identifier="innesto-stats-value-breakdown" href="{cb:assetPath()}/frontend.css"/>
 
-<d:layout.section spacing="md" class="innesto-stats-value-breakdown-section">
+<d:layout.section frame="{data.frame_class}" spaceBefore="{data.space_before_class}" spaceAfter="{data.space_after_class}" spacing="md" class="innesto-stats-value-breakdown-section">
     <d:layout.container>
         <div class="innesto-stats-value-breakdown">
             <f:if condition="{data.header}">
-                <h2 class="innesto-stats-value-breakdown__heading">{data -> f:render.text(field: 'header')}</h2>
+                <d:atom.typography tag="h2" variant="small" class="innesto-stats-value-breakdown__heading">{data -> f:render.text(field: 'header')}</d:atom.typography>
             </f:if>
             <f:if condition="{data.stats_value_breakdown_entries}">
                 <ul class="innesto-stats-value-breakdown__list" role="list">

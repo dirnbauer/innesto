@@ -5,18 +5,12 @@
 
 <f:asset.css identifier="innesto-stats-badges" href="{cb:assetPath()}/frontend.css"/>
 
-<d:layout.section spacing="md" class="innesto-stats-badges-section">
+<d:layout.section frame="{data.frame_class}" spaceBefore="{data.space_before_class}" spaceAfter="{data.space_after_class}" spacing="md" class="innesto-stats-badges-section">
     <d:layout.container>
-        <f:if condition="{data.eyebrow} || {data.header}">
-            <header class="innesto-stats-badges__intro">
-                <f:if condition="{data.eyebrow}">
-                    <p class="innesto-stats-badges__eyebrow">{data -> f:render.text(field: 'eyebrow')}</p>
-                </f:if>
-                <f:if condition="{data.header}">
-                    <h2 class="innesto-stats-badges__headline">{data -> f:render.text(field: 'header')}</h2>
-                </f:if>
-            </header>
-        </f:if>
+        <d:molecule.sectionIntro align="start" headingVariant="h3">
+            <f:fragment name="eyebrow"><f:if condition="{data.eyebrow}">{data -> f:render.text(field: 'eyebrow')}</f:if></f:fragment>
+            <f:fragment name="heading"><f:if condition="{data.header}">{data -> f:render.text(field: 'header')}</f:if></f:fragment>
+        </d:molecule.sectionIntro>
 
         <dl class="innesto-stats-badges">
             <f:for each="{data.stats_badges_items}" as="entry">
@@ -27,12 +21,12 @@
                             <span class="innesto-stats-badges__badge {f:if(condition: '{entry.badge_tone} == \'down\'', then: 'innesto-stats-badges__badge--down', else: 'innesto-stats-badges__badge--up')}">
                                 <f:if condition="{entry.badge_tone} == 'down'">
                                     <f:then>
-                                        <svg class="innesto-stats-badges__badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 17h6v-6"/><path d="m22 17-8.5-8.5-5 5L2 7"/></svg>
-                                        <span class="innesto-stats-badges__sr-only">Decreased by </span>
+                                        <d:atom.icon name="trending-down" size="xs" class="innesto-stats-badges__badge-icon"/>
+                                        <span class="sr-only"><f:translate key="LLL:EXT:desiderio/Resources/Private/Language/labels.xlf:trend.down"/> </span>
                                     </f:then>
                                     <f:else>
-                                        <svg class="innesto-stats-badges__badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg>
-                                        <span class="innesto-stats-badges__sr-only">Increased by </span>
+                                        <d:atom.icon name="trending-up" size="xs" class="innesto-stats-badges__badge-icon"/>
+                                        <span class="sr-only"><f:translate key="LLL:EXT:desiderio/Resources/Private/Language/labels.xlf:trend.positive"/> </span>
                                     </f:else>
                                 </f:if>
                                 {entry.badge_text}

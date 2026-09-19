@@ -5,18 +5,12 @@
 
 <f:asset.css identifier="innesto-stats-borders" href="{cb:assetPath()}/frontend.css"/>
 
-<d:layout.section spacing="md" class="innesto-stats-borders-section">
+<d:layout.section frame="{data.frame_class}" spaceBefore="{data.space_before_class}" spaceAfter="{data.space_after_class}" spacing="md" class="innesto-stats-borders-section">
     <d:layout.container>
-        <f:if condition="{data.eyebrow} || {data.header}">
-            <header class="innesto-stats-borders__intro">
-                <f:if condition="{data.eyebrow}">
-                    <p class="innesto-stats-borders__eyebrow">{data -> f:render.text(field: 'eyebrow')}</p>
-                </f:if>
-                <f:if condition="{data.header}">
-                    <h2 class="innesto-stats-borders__headline">{data -> f:render.text(field: 'header')}</h2>
-                </f:if>
-            </header>
-        </f:if>
+        <d:molecule.sectionIntro align="center">
+            <f:fragment name="eyebrow"><f:if condition="{data.eyebrow}">{data -> f:render.text(field: 'eyebrow')}</f:if></f:fragment>
+            <f:fragment name="heading"><f:if condition="{data.header}">{data -> f:render.text(field: 'header')}</f:if></f:fragment>
+        </d:molecule.sectionIntro>
 
         <f:if condition="{data.stats_borders_items}">
             <dl class="innesto-stats-borders">
@@ -34,13 +28,13 @@
                                 <span class="innesto-stats-borders__badge {f:if(condition: '{entry.trend} == \'down\'', then: 'innesto-stats-borders__badge--down', else: 'innesto-stats-borders__badge--up')}">
                                     <f:if condition="{entry.trend} == 'down'">
                                         <f:then>
-                                            <svg class="innesto-stats-borders__trend-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 17h6v-6"/><path d="m22 17-8.5-8.5-5 5L2 7"/></svg>
+                                            <d:atom.icon name="trending-down" size="xs" class="innesto-stats-borders__trend-icon"/>
                                         </f:then>
                                         <f:else>
-                                            <svg class="innesto-stats-borders__trend-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg>
+                                            <d:atom.icon name="trending-up" size="xs" class="innesto-stats-borders__trend-icon"/>
                                         </f:else>
                                     </f:if>
-                                    <span class="sr-only"><f:if condition="{entry.trend} == 'down'"><f:then>Decreased</f:then><f:else>Increased</f:else></f:if> by </span>
+                                    <span class="sr-only"><f:if condition="{entry.trend} == 'down'"><f:then><f:translate key="LLL:EXT:desiderio/Resources/Private/Language/labels.xlf:trend.down"/></f:then><f:else><f:translate key="LLL:EXT:desiderio/Resources/Private/Language/labels.xlf:trend.positive"/></f:else></f:if> </span>
                                     <span>{entry.difference}</span>
                                 </span>
                             </f:if>

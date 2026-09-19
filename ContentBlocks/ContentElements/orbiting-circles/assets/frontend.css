@@ -7,8 +7,6 @@
     to { transform: rotate(calc(var(--angle) * 1deg + 360deg)) translateY(calc(var(--radius) * 1px)) rotate(calc(var(--angle) * -1deg - 360deg)); }
 }
 
-.innesto-orbiting-circles__intro { text-align: center; margin-block-end: var(--d-spacing-lg, 1.5rem); }
-
 .innesto-orbiting-circles {
     --radius: 160;
     --icon-size: 44px;

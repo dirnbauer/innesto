@@ -16,59 +16,64 @@
         <source>Case Studies</source>
       </segment>
     </unit>
-    <unit id="contentElementGroup.ai">
-      <segment>
-        <source>AI Components</source>
-      </segment>
-    </unit>
-    <unit id="contentElementGroup.commandMenu">
-      <segment>
-        <source>Command Menu</source>
-      </segment>
-    </unit>
-    <unit id="contentElementGroup.dialogs">
-      <segment>
-        <source>Dialogs</source>
-      </segment>
-    </unit>
-    <unit id="contentElementGroup.fileUpload">
-      <segment>
-        <source>File Upload</source>
-      </segment>
-    </unit>
-    <unit id="contentElementGroup.formLayout">
-      <segment>
-        <source>Form Layout</source>
-      </segment>
-    </unit>
-    <unit id="contentElementGroup.gridList">
-      <segment>
-        <source>Grid List</source>
-      </segment>
-    </unit>
-    <unit id="contentElementGroup.login">
-      <segment>
-        <source>Login &amp; Signup</source>
-      </segment>
-    </unit>
-    <unit id="contentElementGroup.onboarding">
-      <segment>
-        <source>Onboarding</source>
-      </segment>
-    </unit>
-    <unit id="contentElementGroup.sidebar">
-      <segment>
-        <source>Sidebar</source>
-      </segment>
-    </unit>
     <unit id="contentElementGroup.stats">
       <segment>
         <source>Stats</source>
       </segment>
     </unit>
-    <unit id="contentElementGroup.tables">
+    <unit id="action.learnMore">
       <segment>
-        <source>Tables</source>
+        <source>Learn more</source>
+      </segment>
+    </unit>
+    <unit id="action.viewMore">
+      <segment>
+        <source>View more</source>
+      </segment>
+    </unit>
+    <unit id="status.observe">
+      <segment>
+        <source>Observe</source>
+      </segment>
+    </unit>
+    <unit id="status.critical">
+      <segment>
+        <source>Critical</source>
+      </segment>
+    </unit>
+    <unit id="status.withinTarget">
+      <segment>
+        <source>Within target</source>
+      </segment>
+    </unit>
+    <unit id="usage.ofLimit">
+      <segment>
+        <source>%1$s of %2$s</source>
+      </segment>
+    </unit>
+    <unit id="usage.percentUsed">
+      <segment>
+        <source>%1$s%% used</source>
+      </segment>
+    </unit>
+    <unit id="caseStudies.logoAlt">
+      <segment>
+        <source>Company logo</source>
+      </segment>
+    </unit>
+    <unit id="marquee.aria">
+      <segment>
+        <source>Marquee</source>
+      </segment>
+    </unit>
+    <unit id="orbitingCircles.aria">
+      <segment>
+        <source>Orbiting circles</source>
+      </segment>
+    </unit>
+    <unit id="terminal.aria">
+      <segment>
+        <source>Terminal</source>
       </segment>
     </unit>
   </file>

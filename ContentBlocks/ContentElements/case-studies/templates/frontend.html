@@ -5,18 +5,13 @@
 
 <f:asset.css identifier="innesto-case-studies" href="{cb:assetPath()}/frontend.css"/>
 
-<d:layout.section spacing="md" class="innesto-case-studies-section">
+<d:layout.section frame="{data.frame_class}" spaceBefore="{data.space_before_class}" spaceAfter="{data.space_after_class}" spacing="md" class="innesto-case-studies-section">
     <d:layout.container>
-        <f:if condition="{data.eyebrow} || {data.header}">
-            <header class="innesto-case-studies__intro">
-                <f:if condition="{data.eyebrow}">
-                    <p class="innesto-case-studies__eyebrow">{data -> f:render.text(field: 'eyebrow')}</p>
-                </f:if>
-                <f:if condition="{data.header}">
-                    <h2 class="innesto-case-studies__headline">{data -> f:render.text(field: 'header')}</h2>
-                </f:if>
-            </header>
-        </f:if>
+        <f:variable name="logoAltLabel"><f:translate key="LLL:EXT:innesto/Resources/Private/Language/labels.xlf:caseStudies.logoAlt"/></f:variable>
+        <d:molecule.sectionIntro align="center">
+            <f:fragment name="eyebrow"><f:if condition="{data.eyebrow}">{data -> f:render.text(field: 'eyebrow')}</f:if></f:fragment>
+            <f:fragment name="heading"><f:if condition="{data.header}">{data -> f:render.text(field: 'header')}</f:if></f:fragment>
+        </d:molecule.sectionIntro>
 
         <div class="innesto-case-studies">
             <f:for each="{data.case_studies_items}" as="study" iteration="iterator">
@@ -41,7 +36,7 @@
                                 </div>
                                 <f:if condition="{study.logo}">
                                     <f:for each="{study.logo}" as="fileReference">
-                                        <f:image image="{fileReference}" maxWidth="280" alt="{f:if(condition: fileReference.alternative, then: fileReference.alternative, else: 'Company logo')}" class="innesto-case-studies__logo" loading="lazy" decoding="async"/>
+                                        <f:image image="{fileReference}" maxWidth="280" alt="{f:if(condition: fileReference.alternative, then: fileReference.alternative, else: logoAltLabel)}" class="innesto-case-studies__logo" loading="lazy" decoding="async"/>
                                     </f:for>
                                 </f:if>
                             </div>

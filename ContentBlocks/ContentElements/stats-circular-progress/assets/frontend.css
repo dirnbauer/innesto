@@ -1,23 +1,4 @@
 /* Grafted from registry item "stats-07" (Stats with Circular Progress). Tokens map onto the Desiderio shadcn variables. */
-
-.innesto-stats-circular-progress__intro {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-}
-.innesto-stats-circular-progress__eyebrow {
-    margin: 0;
-    font-weight: 500;
-    color: var(--foreground);
-}
-.innesto-stats-circular-progress__headline {
-    margin: 0;
-    font-size: 1.25rem;
-    font-weight: 500;
-    line-height: 1.4;
-    text-wrap: balance;
-    color: var(--foreground);
-}
 .innesto-stats-circular-progress__lead {
     margin: 0;
     font-size: 0.875rem;
@@ -40,9 +21,6 @@
     width: 1rem;
     height: 1rem;
     flex: none;
-}
-.innesto-stats-circular-progress__intro + .innesto-stats-circular-progress {
-    margin-top: 1.5rem;
 }
 
 .innesto-stats-circular-progress {

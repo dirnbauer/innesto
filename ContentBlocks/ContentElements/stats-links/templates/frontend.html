@@ -5,11 +5,11 @@
 
 <f:asset.css identifier="innesto-stats-links" href="{cb:assetPath()}/frontend.css"/>
 
-<d:layout.section spacing="md" class="innesto-stats-links-section">
+<d:layout.section frame="{data.frame_class}" spaceBefore="{data.space_before_class}" spaceAfter="{data.space_after_class}" spacing="md" class="innesto-stats-links-section">
     <d:layout.container>
-        <f:if condition="{data.header}">
-            <h2 class="innesto-stats-links__headline">{data -> f:render.text(field: 'header')}</h2>
-        </f:if>
+        <d:molecule.sectionIntro align="start">
+            <f:fragment name="heading"><f:if condition="{data.header}">{data -> f:render.text(field: 'header')}</f:if></f:fragment>
+        </d:molecule.sectionIntro>
 
         <dl class="innesto-stats-links">
             <f:for each="{data.stats_links_items}" as="entry">
@@ -26,7 +26,7 @@
                             <f:link.typolink parameter="{entry.link}" class="innesto-stats-links__link">
                                 <f:if condition="{entry.link_text}">
                                     <f:then>{entry.link_text}</f:then>
-                                    <f:else>View more</f:else>
+                                    <f:else><f:translate key="LLL:EXT:innesto/Resources/Private/Language/labels.xlf:action.viewMore"/></f:else>
                                 </f:if>
                                 <span class="innesto-stats-links__arrow" aria-hidden="true">→</span>
                             </f:link.typolink>

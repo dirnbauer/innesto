@@ -5,18 +5,17 @@
 
 <f:asset.css identifier="innesto-marquee" href="{cb:assetPath()}/frontend.css"/>
 
-<d:layout.section spacing="md" class="innesto-marquee-section">
+<d:layout.section frame="{data.frame_class}" spaceBefore="{data.space_before_class}" spaceAfter="{data.space_after_class}" spacing="md" class="innesto-marquee-section">
     <d:layout.container>
-        <f:if condition="{data.header}">
-            <header class="innesto-marquee__intro">
-                <h2 class="innesto-marquee__headline">{data -> f:render.text(field: 'header')}</h2>
-            </header>
-        </f:if>
+        <f:variable name="fallbackLabel"><f:translate key="LLL:EXT:innesto/Resources/Private/Language/labels.xlf:marquee.aria"/></f:variable>
+        <d:molecule.sectionIntro align="center">
+            <f:fragment name="heading"><f:if condition="{data.header}">{data -> f:render.text(field: 'header')}</f:if></f:fragment>
+        </d:molecule.sectionIntro>
 
         <div
             class="innesto-marquee innesto-marquee--{data.speed -> f:or(alternative: 'normal')}{f:if(condition: data.reverse, then: ' innesto-marquee--reverse')}{f:if(condition: data.pause_on_hover, then: ' innesto-marquee--pause')}"
             role="group"
-            aria-label="{data.header -> f:or(alternative: 'Marquee')}"
+            aria-label="{data.header -> f:or(alternative: fallbackLabel)}"
         >
             <ul class="innesto-marquee__group">
                 <f:for each="{data.marquee_items}" as="entry">
