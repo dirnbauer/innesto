@@ -17,7 +17,7 @@
                 <f:if condition="{data.card_title} || {data.badge_text}">
                     <div class="innesto-stats-usage-breakdown__card-head">
                         <f:if condition="{data.card_title}">
-                            <h3 class="innesto-stats-usage-breakdown__card-title">{data.card_title}</h3>
+                            <d:atom.typography tag="h3" variant="large" class="innesto-stats-usage-breakdown__card-title">{data.card_title}</d:atom.typography>
                         </f:if>
                         <f:if condition="{data.badge_text}">
                             <span class="innesto-stats-usage-breakdown__badge {f:if(condition: '{data.badge_tone} == \'down\'', then: 'innesto-stats-usage-breakdown__badge--down', else: 'innesto-stats-usage-breakdown__badge--up')}">{data.badge_text}</span>

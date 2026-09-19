@@ -17,7 +17,7 @@
                 <header class="innesto-stats-usage-dashboard__header">
                     <div class="innesto-stats-usage-dashboard__heading">
                         <f:if condition="{data.period_label}">
-                            <h3 class="innesto-stats-usage-dashboard__period">{data.period_label}</h3>
+                            <d:atom.typography tag="h3" variant="large" class="innesto-stats-usage-dashboard__period">{data.period_label}</d:atom.typography>
                         </f:if>
                         <f:if condition="{data.updated_label}">
                             <p class="innesto-stats-usage-dashboard__updated">{data.updated_label}</p>

@@ -19,6 +19,9 @@ use PHPUnit\Framework\TestCase;
  *     templates, and Desiderio's A2 rule reserves organisms for those
  *  I4 the Desiderio namespace is declared with its canonical URI wherever
  *     a d: tag is used
+ *  I5 headings come from the typography atom, never from a hand-written <hN>
+ *  I6 icons come from the icon atom; the only inline <svg> a graft may keep
+ *     is a data graphic (a progress ring or donut, marked by `pathLength`)
  *
  * Parsing is not asserted here but in
  * Tests/Functional/Templates/ShippedTemplatesLintTest, which runs
@@ -96,6 +99,39 @@ final class ContentElementConformanceTest extends TestCase
             }
             if (!$usesComponents && $declares) {
                 $violations[] = $path . ' [I4] declares the Desiderio namespace without using it';
+            }
+        }
+        self::assertSame([], $violations);
+    }
+
+    #[Test]
+    public function i5HeadingsComeFromTheTypographyAtom(): void
+    {
+        $violations = [];
+        foreach ($this->frontendTemplates() as $path => $source) {
+            if (preg_match_all('/<h[1-6]\b[^>]*>/', $source, $matches) > 0) {
+                foreach ($matches[0] as $tag) {
+                    $violations[] = sprintf('%s [I5] hand-written heading %s — use d:atom.typography', $path, $tag);
+                }
+            }
+        }
+        self::assertSame([], $violations);
+    }
+
+    #[Test]
+    public function i6IconsComeFromTheIconAtom(): void
+    {
+        $violations = [];
+        foreach ($this->frontendTemplates() as $path => $source) {
+            if (preg_match_all('/<svg\b.*?<\/svg>/s', $source, $matches) < 1) {
+                continue;
+            }
+            foreach ($matches[0] as $svg) {
+                // `pathLength` normalises a stroke for a progress ring or donut:
+                // those are data graphics, and Desiderio has no component for them.
+                if (!str_contains($svg, 'pathLength')) {
+                    $violations[] = $path . ' [I6] inline icon <svg> — use d:atom.icon';
+                }
             }
         }
         self::assertSame([], $violations);
