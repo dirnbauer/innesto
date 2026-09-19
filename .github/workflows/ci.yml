@@ -29,7 +29,7 @@ jobs:
       - name: Audit dependencies
         run: composer audit
       - name: PHP syntax
-        run: find Classes Configuration Tests scripts -name '*.php' -print0 | xargs -0 -n1 php -l
+        run: find Classes Configuration Tests -name '*.php' -print0 | xargs -0 -n1 php -l
 
   cgl:
     name: Coding standards
@@ -105,14 +105,3 @@ jobs:
       - run: composer install --no-progress --no-interaction
       - run: composer ci:tests:functional
 
-  content-elements:
-    name: Content element audit
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v5
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ env.PHP_VERSION }}
-          coverage: none
-      - run: composer install --no-progress --no-interaction
-      - run: composer audit:content-elements

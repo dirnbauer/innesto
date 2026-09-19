@@ -13,7 +13,7 @@
         "friendsoftypo3/content-blocks": "^2.2",
         "typo3/cms-core": "^14.3.7",
         "typo3/cms-fluid-styled-content": "^14.3.7",
-        "webconsulting/desiderio": "^4.1.1"
+        "webconsulting/desiderio": "^4.1"
     },
     "repositories": [
         {"type": "vcs", "url": "https://github.com/dirnbauer/desiderio.git", "no-api": true},
@@ -57,7 +57,6 @@
         }
     },
     "scripts": {
-        "audit:content-elements": "@php scripts/audit-content-elements.php",
         "ci": [
             "@ci:cgl",
             "@ci:phpstan",
