@@ -11,12 +11,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use Webconsulting\Innesto\Registry\ElementScaffolder;
-use Webconsulting\Innesto\Registry\FinishingPromptBuilder;
 use Webconsulting\Innesto\Registry\RegistryClient;
 use Webconsulting\Innesto\Registry\SetRegistrar;
 
@@ -29,7 +27,6 @@ final class AddRegistryItemCommand extends Command
     public function __construct(
         private readonly RegistryClient $registryClient,
         private readonly ElementScaffolder $scaffolder,
-        private readonly FinishingPromptBuilder $promptBuilder,
         private readonly SetRegistrar $setRegistrar,
     ) {
         parent::__construct();
@@ -90,36 +87,41 @@ final class AddRegistryItemCommand extends Command
 
         $io->success(sprintf('Element "innesto/%s" scaffolded.', $elementKey));
 
-        $blockName = 'innesto/' . $elementKey;
-        if ($input->getOption('target') === null) {
-            $setConfigPath = ExtensionManagementUtility::extPath('innesto') . 'Configuration/Sets/Innesto/config.yaml';
-            if ($this->setRegistrar->register($setConfigPath, $blockName)) {
-                $io->text(sprintf('Registered "%s" in the Innesto site set (Configuration/Sets/Innesto/config.yaml).', $blockName));
-            } else {
-                $io->warning(sprintf('Could not register "%s" in Configuration/Sets/Innesto/config.yaml — add it to optionalDependencies manually, otherwise the element stays hidden in the New Content Element wizard.', $blockName));
-            }
-        } else {
-            $io->warning(sprintf('Custom target: add "%s" to the optionalDependencies of your site set, otherwise the element stays hidden in the New Content Element wizard on sites that restrict content blocks per set (Desiderio does).', $blockName));
-        }
+        $this->registerInSiteSet($io, 'innesto/' . $elementKey, $input->getOption('target') === null);
 
         $elementDir = rtrim($target, '/') . '/' . $elementKey;
-        $prompt = $this->promptBuilder->build($item, $elementKey, $elementDir);
-        (new Filesystem())->dumpFile($elementDir . '/AI_PROMPT.md', $prompt);
-        $io->text('AI finishing prompt written to ' . $elementKey . '/AI_PROMPT.md');
-
-        if ($input->getOption('ai')) {
-            $exitCode = $this->runFinishingPass($io, $elementDir, $prompt);
-            if ($exitCode !== Command::SUCCESS) {
-                return $exitCode;
-            }
-        } else {
+        if (!$input->getOption('ai')) {
             $io->text([
                 'Next steps:',
-                '  1. In ' . $elementDir . ': claude -p "$(cat AI_PROMPT.md)" --permission-mode acceptEdits',
+                '  1. In ' . $elementDir . ': claude -p "$(cat ' . ElementScaffolder::PROMPT_FILE . ')" --permission-mode acceptEdits',
                 '  2. Review the result, then from the project root: vendor/bin/typo3 extension:setup && vendor/bin/typo3 cache:flush',
             ]);
+            return Command::SUCCESS;
         }
-        return Command::SUCCESS;
+
+        return $this->runFinishingPass($io, $elementDir, (string)file_get_contents(
+            $elementDir . '/' . ElementScaffolder::PROMPT_FILE
+        ));
+    }
+
+    /**
+     * A block that is not listed in a site set stays hidden in the New Content
+     * Element wizard on every site that restricts content blocks per set —
+     * which Desiderio does — so this is part of every graft, not an extra.
+     */
+    private function registerInSiteSet(SymfonyStyle $io, string $blockName, bool $ownTarget): void
+    {
+        $setConfigPath = ExtensionManagementUtility::extPath('innesto') . 'Configuration/Sets/Innesto/config.yaml';
+        if ($ownTarget && $this->setRegistrar->register($setConfigPath, $blockName)) {
+            $io->text(sprintf('Registered "%s" in the Innesto site set (Configuration/Sets/Innesto/config.yaml).', $blockName));
+            return;
+        }
+
+        $io->warning(sprintf(
+            'Add "%s" to the optionalDependencies of %s, otherwise the element stays hidden in the New Content Element wizard.',
+            $blockName,
+            $ownTarget ? 'Configuration/Sets/Innesto/config.yaml' : 'your own site set',
+        ));
     }
 
     private function runFinishingPass(SymfonyStyle $io, string $elementDir, string $prompt): int
@@ -130,7 +132,7 @@ final class AddRegistryItemCommand extends Command
                 'claude CLI not found in PATH (in ddev it usually lives on the host, not in the container).',
                 'Run the pass manually from the element directory:',
                 '  cd ' . $elementDir,
-                '  claude -p "$(cat AI_PROMPT.md)" --permission-mode acceptEdits',
+                '  claude -p "$(cat ' . ElementScaffolder::PROMPT_FILE . ')" --permission-mode acceptEdits',
             ]);
             return Command::FAILURE;
         }
@@ -148,7 +150,7 @@ final class AddRegistryItemCommand extends Command
         });
 
         if (!$process->isSuccessful()) {
-            $io->error('Finishing pass failed (exit ' . $process->getExitCode() . '). The scaffold is intact; rerun manually with AI_PROMPT.md.');
+            $io->error('Finishing pass failed (exit ' . $process->getExitCode() . '). The scaffold is intact; rerun manually with ' . ElementScaffolder::PROMPT_FILE . '.');
             return Command::FAILURE;
         }
         $io->success('Finishing pass complete. Review the element, then from the project root run vendor/bin/typo3 extension:setup && vendor/bin/typo3 cache:flush.');

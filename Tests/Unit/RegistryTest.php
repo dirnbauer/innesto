@@ -41,6 +41,28 @@ final class RegistryTest extends TestCase
         self::assertTrue($labels->load($this->directory . '/demo/language/labels.xlf'));
     }
 
+    public function testScaffoldedTemplateAlreadySatisfiesTheCompositionContract(): void
+    {
+        (new ElementScaffolder(new CssConverter()))->scaffold(['name' => 'demo'], 'demo', $this->directory);
+        $template = (string)file_get_contents($this->directory . '/demo/templates/frontend.html');
+
+        // Whatever ContentElementConformanceTest demands of a finished element,
+        // the stub a graft starts from has to satisfy already — otherwise every
+        // new graft opens with a red suite.
+        self::assertStringContainsString('<d:layout.section', $template);
+        self::assertStringContainsString('<d:molecule.sectionIntro', $template);
+        foreach (['frame_class', 'space_before_class', 'space_after_class'] as $column) {
+            self::assertStringContainsString('{data.' . $column . '}', $template);
+        }
+        self::assertDoesNotMatchRegularExpression('/<h[1-6]\b/', $template, 'headings come from d:atom.typography');
+        self::assertDoesNotMatchRegularExpression('/<svg\b/', $template, 'icons come from d:atom.icon');
+
+        self::assertFileExists(
+            $this->directory . '/demo/' . ElementScaffolder::PROMPT_FILE,
+            'the finishing prompt is part of the scaffold, not a separate write',
+        );
+    }
+
     #[DataProvider('invalidKeys')]
     public function testScaffoldRejectsInvalidKeysBeforeWriting(string $key): void
     {
