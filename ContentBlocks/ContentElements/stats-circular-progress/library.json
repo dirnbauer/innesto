@@ -1,8 +1,8 @@
 {
     "eyebrow": "Workspace usage",
-    "header": "How much of each workspace resource is in use",
-    "intro": "Camino Freight is on the Team plan at EUR 79 a month, which covers five seats and two million events.",
-    "link_text": "Compare Team and Business",
+    "header": "Seats, events and reports on the Team plan",
+    "intro": "Camino Freight pays EUR 79 a month for the Team plan. It covers five seats and two million events.",
+    "link_text": "Compare plans",
     "stats_circular_progress_items": [
         {
             "percent": 60,

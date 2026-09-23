@@ -1,15 +1,15 @@
 {
     "eyebrow": "Since May",
-    "header": "Month-on-month movement in the core figures",
+    "header": "Month-on-month change in three key figures",
     "stats_trending_items": [
         {
-            "title": "Events ingested",
+            "title": "Events received",
             "value": "4.2 bn",
             "delta": "+9.41%",
             "trend": "up"
         },
         {
-            "title": "Median query response",
+            "title": "Median query time",
             "value": "240 ms",
             "delta": "-11.43%",
             "trend": "down"

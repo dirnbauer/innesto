@@ -1,5 +1,5 @@
 {
-    "header": "Where your event data goes after ingest",
+    "header": "Where your event data goes after it arrives",
     "orbiting_circles_items": [
         {
             "title": "Snowflake"

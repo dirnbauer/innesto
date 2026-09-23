@@ -1,6 +1,6 @@
 {
-    "eyebrow": "Q3 by region",
-    "header": "Regional ingest against this quarter's targets",
+    "eyebrow": "Quarterly goals",
+    "header": "How many Q3 goals each region has met",
     "stats_status_items": [
         {
             "title": "Frankfurt",

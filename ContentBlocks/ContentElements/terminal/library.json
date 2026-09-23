@@ -1,5 +1,5 @@
 {
-    "header": "Sending your first event from a Node project",
+    "header": "Send your first event from a Node project",
     "terminal_title": "zsh — ~/projects/camino-web",
     "terminal_lines": [
         {
@@ -32,7 +32,7 @@
         },
         {
             "kind": "muted",
-            "text": "# It shows up in Live View within about 5 seconds"
+            "text": "# The event appears in Live View within about 5 seconds"
         }
     ],
     "speed": "normal",

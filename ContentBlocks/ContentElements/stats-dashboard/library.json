@@ -1,13 +1,13 @@
 {
     "eyebrow": "Billing period",
-    "header": "Metered resources against the Business plan cap",
+    "header": "Business plan usage with 9 days left",
     "stats_dashboard_metrics": [
         {
             "title": "Events",
             "value": "14.2 M",
             "target": "of 20 M",
             "percent": 71,
-            "subtext": "Around 5.8 million events left with nine days of the billing period to run, which matches last month's pace.",
+            "subtext": "About 5.8 million events are left for the final 9 days. Usage is in line with last month.",
             "tone": "neutral"
         },
         {
@@ -15,7 +15,7 @@
             "value": "2.1 M",
             "target": "Unlimited",
             "percent": 42,
-            "subtext": "Queries are not metered on Business at EUR 249 a month, so this bar tracks load rather than an allowance.",
+            "subtext": "The Business plan (EUR 249 a month) doesn't meter queries. This bar shows load, not an allowance.",
             "tone": "positive"
         },
         {
@@ -23,7 +23,7 @@
             "value": "412 GB",
             "target": "of 500 GB",
             "percent": 82,
-            "subtext": "At the current rate exports reach the cap in eleven days; anything older than 90 days is deleted for you.",
+            "subtext": "At the current rate, exports reach the limit in 11 days. Exports older than 90 days are deleted automatically.",
             "tone": "warning"
         }
     ]

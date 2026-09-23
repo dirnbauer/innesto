@@ -1,15 +1,15 @@
 {
     "eyebrow": "Last 30 days",
-    "header": "Platform load over the past 30 days",
+    "header": "Events, query time and rejected calls",
     "stats_badges_items": [
         {
-            "title": "Events ingested",
+            "title": "Events received",
             "value": "4.2 bn",
             "badge_text": "+9.4%",
             "badge_tone": "up"
         },
         {
-            "title": "Median query response",
+            "title": "Median query time",
             "value": "240 ms",
             "badge_text": "-31 ms",
             "badge_tone": "down"

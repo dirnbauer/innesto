@@ -1,6 +1,6 @@
 {
     "eyebrow": "Invoice preview",
-    "header": "What the Business plan actually costs each month",
+    "header": "What the Business plan costs each month",
     "card_title": "June invoice",
     "badge_text": "+12.5%",
     "badge_tone": "up",
@@ -19,11 +19,11 @@
             "percent": 18.2
         },
         {
-            "title": "Retention beyond 90 days",
+            "title": "Data kept beyond 90 days",
             "value": "EUR 30",
             "percent": 8.8
         }
     ],
-    "footnote": "Set your own caps and alerts in",
+    "footnote": "Set your own limits and alerts in",
     "footnote_link_text": "billing settings."
 }

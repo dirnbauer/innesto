@@ -1,9 +1,9 @@
 {
-    "eyebrow": "Ingest, last 15 days",
-    "header": "Daily ingest volume by region, last 15 days",
+    "eyebrow": "Last 15 days",
+    "header": "Daily event volume in Frankfurt and Dublin",
     "stats": [
         {
-            "title": "Frankfurt ingest",
+            "title": "Frankfurt events",
             "ticker": "FRA",
             "value": "2.71 bn",
             "change": "+184 m",
@@ -25,7 +25,7 @@
             ]
         },
         {
-            "title": "Dublin ingest",
+            "title": "Dublin events",
             "ticker": "DUB",
             "value": "1.49 bn",
             "change": "-62 m",
@@ -47,7 +47,7 @@
             ]
         },
         {
-            "title": "Median query response",
+            "title": "Median query time",
             "ticker": "P50",
             "value": "240 ms",
             "change": "-31 ms",

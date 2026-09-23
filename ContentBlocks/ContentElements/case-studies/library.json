@@ -1,9 +1,9 @@
 {
     "eyebrow": "Customer stories",
-    "header": "Three customers on what the event data changed",
+    "header": "What event data changed for three customers",
     "case_studies_items": [
         {
-            "quote": "We shipped the same onboarding for two years without knowing where it lost people. Step three turned out to be the answer, and fixing it took activation from 34% to 58%.",
+            "quote": "For two years we didn't know where our onboarding lost people. It was step three, and fixing it raised activation from 34% to 58%.",
             "author_name": "Marta Ilves",
             "author_role": "Head of Product, Camino Freight",
             "metrics": [
@@ -15,7 +15,7 @@
                 {
                     "value": "11 days",
                     "title": "Time to first insight",
-                    "description": "Down from six weeks of hand-built CSV exports"
+                    "description": "Down from six weeks of manual CSV exports"
                 },
                 {
                     "value": "3.4x",
@@ -25,7 +25,7 @@
             ]
         },
         {
-            "quote": "Support kept escalating a checkout bug nobody could reproduce. The session trail showed a 14-second wait on card validation, and the ticket queue dropped by a third that week.",
+            "quote": "Support kept reporting a checkout bug nobody could reproduce. Session trails showed a 14-second wait at card validation. Tickets fell by a third that week.",
             "author_name": "Deniz Aygün",
             "author_role": "Engineering Lead, Kestrel Payments",
             "metrics": [
@@ -47,7 +47,7 @@
             ]
         },
         {
-            "quote": "Forty per cent of trials finished and nobody could say why the rest walked away. Two cohort reports later we cut the signup form to four fields and stopped losing them at the door.",
+            "quote": "Only 40% of trials were completed, and nobody knew why the others stopped. After two cohort reports, we cut the signup form to four fields.",
             "author_name": "Sofia Bregenz",
             "author_role": "Growth Manager, Lumen Tutoring",
             "metrics": [

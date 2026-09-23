@@ -1,6 +1,6 @@
 {
-    "eyebrow": "June 2026 vs June 2025",
-    "header": "This month against the same month last year",
+    "eyebrow": "Year on year",
+    "header": "June 2026 compared with June 2025",
     "stats_borders_items": [
         {
             "title": "Product teams",
@@ -17,7 +17,7 @@
             "trend": "up"
         },
         {
-            "title": "Median query response",
+            "title": "Median query time",
             "value": "240 ms",
             "previous": "from 388 ms a year ago",
             "difference": "38.1%",

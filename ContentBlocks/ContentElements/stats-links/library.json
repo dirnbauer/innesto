@@ -1,26 +1,26 @@
 {
-    "header": "Growth numbers with the report behind each one",
+    "header": "Growth figures, each linked to its report",
     "stats_links_items": [
         {
             "title": "Product teams on the platform",
             "value": "890",
             "change": "+31 this month",
             "trend": "positive",
-            "link_text": "Open the accounts report"
+            "link_text": "Open accounts report"
         },
         {
             "title": "Monthly recurring revenue",
             "value": "EUR 214,300",
             "change": "+4.8%",
             "trend": "positive",
-            "link_text": "Revenue breakdown"
+            "link_text": "See revenue breakdown"
         },
         {
             "title": "Workspaces idle for 30 days",
             "value": "64",
             "change": "+9",
             "trend": "negative",
-            "link_text": "Churn watchlist"
+            "link_text": "Open churn watchlist"
         }
     ]
 }
