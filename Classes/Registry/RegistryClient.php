@@ -11,20 +11,20 @@ use TYPO3\CMS\Core\Http\RequestFactory;
  * https://ui.shadcn.com/schema/registry-item.json schema — i.e. every
  * registry cataloged on https://registry.directory/.
  */
-final class RegistryClient
+final readonly class RegistryClient
 {
     /**
      * Shorthand → item URL template. "magicui/marquee" resolves against this
      * map; anything starting with http(s) is used verbatim.
      */
-    private const REGISTRIES = [
+    private const array REGISTRIES = [
         'shadcn' => 'https://ui.shadcn.com/r/styles/new-york-v4/%s.json',
         'magicui' => 'https://magicui.design/r/%s.json',
         'shadcnblocks' => 'https://shadcnblocks.com/r/%s',
         'blocks' => 'https://blocks.so/r/%s.json',
     ];
 
-    public function __construct(private readonly RequestFactory $requestFactory) {}
+    public function __construct(private RequestFactory $requestFactory) {}
 
     /**
      * @return array<string, mixed> the decoded registry item

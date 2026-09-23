@@ -8,10 +8,11 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use Webconsulting\Desiderio\Templates\LintFinding;
 use Webconsulting\Desiderio\Templates\LintOptions;
+use Webconsulting\Desiderio\Templates\LintSeverity;
 use Webconsulting\Desiderio\Templates\TemplateLinter;
 
 /**
- * Desiderio 4.1 ships a Fluid 5 lint gate; Innesto grafts onto Desiderio, so
+ * Desiderio ships a Fluid 5 lint gate (4.3 API); Innesto grafts onto Desiderio, so
  * it is held to the same bar. The linter parses every shipped template with
  * the rendering context TYPO3 uses at runtime and reports what the parser
  * would throw — unknown ViewHelpers, unknown or missing arguments, undeclared
@@ -50,10 +51,10 @@ final class ShippedTemplatesLintTest extends FunctionalTestCase
                 '%s:%s [%s] %s',
                 $finding->file,
                 $finding->line ?? '-',
-                $finding->rule,
+                $finding->rule->value,
                 $finding->message,
             ),
-            $report->getErrors(),
+            $report->findings(LintSeverity::Error),
         ));
     }
 
@@ -64,7 +65,7 @@ final class ShippedTemplatesLintTest extends FunctionalTestCase
 
         self::assertSame([], array_map(
             static fn(LintFinding $finding): string => $finding->file . ': ' . $finding->message,
-            $report->getSkipped(),
+            $report->findings(LintSeverity::Skipped),
         ), 'Innesto templates only use f:, cb: and d: — every namespace is installed, so nothing may be skipped');
     }
 }

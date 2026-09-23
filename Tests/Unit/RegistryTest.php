@@ -27,13 +27,13 @@ final class RegistryTest extends TestCase
 
     protected function tearDown(): void
     {
-        (new Filesystem())->remove($this->directory);
+        new Filesystem()->remove($this->directory);
     }
 
     public function testScaffoldPreservesQuotedAndMultilineRegistryMetadata(): void
     {
         $item = ['name' => 'demo', 'title' => "Editor's \"card\"", 'description' => "First line\nNext: 'quoted' & <safe>"];
-        (new ElementScaffolder(new CssConverter()))->scaffold($item, 'demo', $this->directory);
+        new ElementScaffolder(new CssConverter())->scaffold($item, 'demo', $this->directory);
         $config = Yaml::parseFile($this->directory . '/demo/config.yaml');
         self::assertSame($item['title'], $config['title']);
         self::assertSame($item['description'], $config['description']);
@@ -43,7 +43,7 @@ final class RegistryTest extends TestCase
 
     public function testScaffoldedTemplateAlreadySatisfiesTheCompositionContract(): void
     {
-        (new ElementScaffolder(new CssConverter()))->scaffold(['name' => 'demo'], 'demo', $this->directory);
+        new ElementScaffolder(new CssConverter())->scaffold(['name' => 'demo'], 'demo', $this->directory);
         $template = (string)file_get_contents($this->directory . '/demo/templates/frontend.html');
 
         // Whatever ContentElementConformanceTest demands of a finished element,
@@ -67,7 +67,7 @@ final class RegistryTest extends TestCase
     public function testScaffoldRejectsInvalidKeysBeforeWriting(string $key): void
     {
         try {
-            (new ElementScaffolder(new CssConverter()))->scaffold(['name' => 'demo'], $key, $this->directory . '/target');
+            new ElementScaffolder(new CssConverter())->scaffold(['name' => 'demo'], $key, $this->directory . '/target');
             self::fail('Invalid element key was accepted.');
         } catch (\InvalidArgumentException) {
             self::assertSame([], glob($this->directory . '/*'));
@@ -98,7 +98,7 @@ final class RegistryTest extends TestCase
     public function testScaffoldDoesNotSilentlyOverwriteSourcesWithTheSameBasename(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        (new ElementScaffolder(new CssConverter()))->scaffold([
+        new ElementScaffolder(new CssConverter())->scaffold([
             'name' => 'demo',
             'files' => [
                 ['path' => 'one/card.tsx', 'content' => 'first'],
@@ -110,7 +110,7 @@ final class RegistryTest extends TestCase
     public function testMalformedRegistryCssLeavesNoPartialScaffold(): void
     {
         try {
-            (new ElementScaffolder(new CssConverter()))->scaffold([
+            new ElementScaffolder(new CssConverter())->scaffold([
                 'name' => 'demo',
                 'files' => [['path' => 'demo.tsx', 'content' => 'source']],
                 'cssVars' => ['theme' => 'invalid'],
@@ -175,7 +175,7 @@ final class RegistryTest extends TestCase
 
     public function testCssKeepsTokensDarkModeAndNestedAnimations(): void
     {
-        $css = (new CssConverter())->convert([
+        $css = new CssConverter()->convert([
             'cssVars' => ['theme' => ['animate-spin' => 'spin 1s linear infinite'], 'dark' => ['primary' => 'var(--foreground)']],
             'css' => ['@keyframes spin' => ['to' => ['transform' => 'rotate(360deg)']]],
         ]);
@@ -195,7 +195,7 @@ final class RegistryTest extends TestCase
         $factory = self::createStub(RequestFactory::class);
         $factory->method('request')->willReturn(new JsonResponse($item));
         $this->expectException(\RuntimeException::class);
-        (new RegistryClient($factory))->fetchItem('magicui/demo');
+        new RegistryClient($factory)->fetchItem('magicui/demo');
     }
 
     /**

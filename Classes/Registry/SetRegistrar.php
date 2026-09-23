@@ -16,7 +16,7 @@ use Symfony\Component\Yaml\Yaml;
  * hides every block that is not listed. Appending the block name to the set's
  * optionalDependencies is therefore a mandatory part of every graft.
  */
-final class SetRegistrar
+final readonly class SetRegistrar
 {
     /**
      * @return bool true if the block is (now) registered in the set config
@@ -38,7 +38,7 @@ final class SetRegistrar
             return true;
         }
         $parsed['optionalDependencies'] = [...$dependencies, $blockName];
-        (new Filesystem())->dumpFile($setConfigPath, Yaml::dump($parsed, 4, 2));
+        new Filesystem()->dumpFile($setConfigPath, Yaml::dump($parsed, 4, 2));
         return true;
     }
 }

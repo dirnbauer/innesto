@@ -3,30 +3,56 @@
     "type": "typo3-cms-extension",
     "description": "Innesto — grafts shadcn/ui registry components onto TYPO3 as Desiderio-styled Content Blocks",
     "license": "GPL-2.0-or-later",
+    "keywords": [
+        "typo3",
+        "typo3-cms-extension",
+        "content-blocks",
+        "shadcn",
+        "shadcn-ui",
+        "magic-ui",
+        "desiderio"
+    ],
+    "homepage": "https://github.com/dirnbauer/innesto",
     "authors": [
         {
-            "name": "webconsulting studio"
+            "name": "webconsulting",
+            "email": "office@webconsulting.at",
+            "homepage": "https://www.webconsulting.at",
+            "role": "Developer"
         }
     ],
+    "support": {
+        "issues": "https://github.com/dirnbauer/innesto/issues",
+        "source": "https://github.com/dirnbauer/innesto",
+        "docs": "https://github.com/dirnbauer/innesto/tree/main/Documentation"
+    },
     "require": {
         "php": "^8.4",
-        "friendsoftypo3/content-blocks": "^2.2",
+        "friendsoftypo3/content-blocks": "^2.4",
         "typo3/cms-core": "^14.3.7",
         "typo3/cms-fluid-styled-content": "^14.3.7",
-        "webconsulting/desiderio": "^4.1"
+        "webconsulting/desiderio": "^4.3"
     },
     "repositories": [
-        {"type": "vcs", "url": "https://github.com/dirnbauer/desiderio.git", "no-api": true},
-        {"type": "vcs", "url": "https://github.com/dirnbauer/typo3-visual-editor-enhancements.git", "no-api": true}
+        {
+            "type": "vcs",
+            "url": "https://github.com/dirnbauer/desiderio.git",
+            "no-api": true
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/dirnbauer/typo3-visual-editor-enhancements.git",
+            "no-api": true
+        }
     ],
     "require-dev": {
-        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan": "^2.2",
         "phpstan/phpstan-phpunit": "^2.0",
-        "phpunit/phpunit": "^12.4 || ^13.0",
-        "saschaegerer/phpstan-typo3": "^3.0",
+        "phpunit/phpunit": "^13.3",
+        "saschaegerer/phpstan-typo3": "^3.1",
         "typo3/cms-install": "^14.3.7",
         "typo3/coding-standards": "^0.9",
-        "typo3/testing-framework": "^9.5"
+        "typo3/testing-framework": "^9.7"
     },
     "autoload": {
         "psr-4": {
@@ -39,7 +65,9 @@
         }
     },
     "config": {
-        "github-protocols": ["https"],
+        "github-protocols": [
+            "https"
+        ],
         "allow-plugins": {
             "typo3/class-alias-loader": true,
             "typo3/cms-composer-installers": true
@@ -50,7 +78,7 @@
         "typo3/cms": {
             "web-dir": ".Build/public",
             "extension-key": "innesto",
-            "version": "2.2.0",
+            "version": "2.3.0",
             "Package": {
                 "providesPackages": []
             }

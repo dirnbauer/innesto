@@ -12,7 +12,7 @@ namespace Webconsulting\Innesto\Registry;
  * matching utility class, because the Desiderio Tailwind build does not scan
  * grafted elements.
  */
-final class CssConverter
+final readonly class CssConverter
 {
     /**
      * @param array<string, mixed> $item a decoded registry item
