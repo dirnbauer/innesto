@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en" trgLang="de">
+  <file id="preview">
+    <unit id="eyebrow">
+      <segment>
+        <source>Eyebrow</source>
+        <target>Dachzeile</target>
+      </segment>
+    </unit>
+    <unit id="intro">
+      <segment>
+        <source>Intro</source>
+        <target>Einleitung</target>
+      </segment>
+    </unit>
+    <unit id="summary">
+      <segment>
+        <source>Summary</source>
+        <target>Zusammenfassung</target>
+      </segment>
+    </unit>
+    <unit id="card">
+      <segment>
+        <source>Card title</source>
+        <target>Kartentitel</target>
+      </segment>
+    </unit>
+    <unit id="total">
+      <segment>
+        <source>Total</source>
+        <target>Gesamt</target>
+      </segment>
+    </unit>
+    <unit id="period">
+      <segment>
+        <source>Period</source>
+        <target>Zeitraum</target>
+      </segment>
+    </unit>
+    <unit id="window">
+      <segment>
+        <source>Window title</source>
+        <target>Fenstertitel</target>
+      </segment>
+    </unit>
+    <unit id="speed">
+      <segment>
+        <source>Speed</source>
+        <target>Geschwindigkeit</target>
+      </segment>
+    </unit>
+    <unit id="radius">
+      <segment>
+        <source>Radius</source>
+        <target>Radius</target>
+      </segment>
+    </unit>
+    <unit id="size">
+      <segment>
+        <source>Size</source>
+        <target>Größe</target>
+      </segment>
+    </unit>
+    <unit id="caseStudies">
+      <segment>
+        <source>Case studies</source>
+        <target>Fallstudien</target>
+      </segment>
+    </unit>
+    <unit id="items">
+      <segment>
+        <source>Items</source>
+        <target>Einträge</target>
+      </segment>
+    </unit>
+    <unit id="circles">
+      <segment>
+        <source>Circles</source>
+        <target>Kreise</target>
+      </segment>
+    </unit>
+    <unit id="stats">
+      <segment>
+        <source>Stats</source>
+        <target>Kennzahlen</target>
+      </segment>
+    </unit>
+    <unit id="statCards">
+      <segment>
+        <source>Stat cards</source>
+        <target>Kennzahlkarten</target>
+      </segment>
+    </unit>
+    <unit id="metrics">
+      <segment>
+        <source>Metrics</source>
+        <target>Metriken</target>
+      </segment>
+    </unit>
+    <unit id="segments">
+      <segment>
+        <source>Segments</source>
+        <target>Segmente</target>
+      </segment>
+    </unit>
+    <unit id="breakdown">
+      <segment>
+        <source>Breakdown</source>
+        <target>Aufschlüsselung</target>
+      </segment>
+    </unit>
+    <unit id="usage">
+      <segment>
+        <source>Usage</source>
+        <target>Nutzung</target>
+      </segment>
+    </unit>
+    <unit id="lines">
+      <segment>
+        <source>Lines</source>
+        <target>Zeilen</target>
+      </segment>
+    </unit>
+    <unit id="empty">
+      <segment>
+        <source>No entries yet.</source>
+        <target>Noch keine Einträge.</target>
+      </segment>
+    </unit>
+  </file>
+</xliff>

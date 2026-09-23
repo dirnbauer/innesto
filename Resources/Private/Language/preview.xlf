@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en">
+  <file id="preview">
+    <unit id="eyebrow">
+      <segment>
+        <source>Eyebrow</source>
+      </segment>
+    </unit>
+    <unit id="intro">
+      <segment>
+        <source>Intro</source>
+      </segment>
+    </unit>
+    <unit id="summary">
+      <segment>
+        <source>Summary</source>
+      </segment>
+    </unit>
+    <unit id="card">
+      <segment>
+        <source>Card title</source>
+      </segment>
+    </unit>
+    <unit id="total">
+      <segment>
+        <source>Total</source>
+      </segment>
+    </unit>
+    <unit id="period">
+      <segment>
+        <source>Period</source>
+      </segment>
+    </unit>
+    <unit id="window">
+      <segment>
+        <source>Window title</source>
+      </segment>
+    </unit>
+    <unit id="speed">
+      <segment>
+        <source>Speed</source>
+      </segment>
+    </unit>
+    <unit id="radius">
+      <segment>
+        <source>Radius</source>
+      </segment>
+    </unit>
+    <unit id="size">
+      <segment>
+        <source>Size</source>
+      </segment>
+    </unit>
+    <unit id="caseStudies">
+      <segment>
+        <source>Case studies</source>
+      </segment>
+    </unit>
+    <unit id="items">
+      <segment>
+        <source>Items</source>
+      </segment>
+    </unit>
+    <unit id="circles">
+      <segment>
+        <source>Circles</source>
+      </segment>
+    </unit>
+    <unit id="stats">
+      <segment>
+        <source>Stats</source>
+      </segment>
+    </unit>
+    <unit id="statCards">
+      <segment>
+        <source>Stat cards</source>
+      </segment>
+    </unit>
+    <unit id="metrics">
+      <segment>
+        <source>Metrics</source>
+      </segment>
+    </unit>
+    <unit id="segments">
+      <segment>
+        <source>Segments</source>
+      </segment>
+    </unit>
+    <unit id="breakdown">
+      <segment>
+        <source>Breakdown</source>
+      </segment>
+    </unit>
+    <unit id="usage">
+      <segment>
+        <source>Usage</source>
+      </segment>
+    </unit>
+    <unit id="lines">
+      <segment>
+        <source>Lines</source>
+      </segment>
+    </unit>
+    <unit id="empty">
+      <segment>
+        <source>No entries yet.</source>
+      </segment>
+    </unit>
+  </file>
+</xliff>

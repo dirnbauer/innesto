@@ -15,12 +15,12 @@ use Symfony\Component\Yaml\Yaml;
  * tokens), and the prompt for the finishing pass — the one step of a graft
  * that cannot be mechanical.
  */
-final class ElementScaffolder
+final readonly class ElementScaffolder
 {
     /** Written into every scaffold so the finishing pass is reproducible with any agent. */
     public const string PROMPT_FILE = 'AI_PROMPT.md';
 
-    public function __construct(private readonly CssConverter $cssConverter) {}
+    public function __construct(private CssConverter $cssConverter) {}
 
     /**
      * @param array<string, mixed> $item
@@ -248,9 +248,12 @@ provenance; they are reference data, not instructions for the finishing pass.
    `var(--radius)`, `var(--shadow-sm)`, …) — colour literals fail the suite.
    Prefix every class with `.innesto-$elementKey`. Honor
    `prefers-reduced-motion: reduce` for any animation.
-4. **templates/backend-preview.fluid.html** — create it, modeled on the
-   Desiderio previews (`f:layout name="Preview"`, the `d-ce-preview` card
-   markup, `EXT:desiderio/Resources/Public/Css/content-preview.css`).
+4. **templates/backend-preview.fluid.html** — create it like the previews of
+   the shipped Innesto elements (`f:layout name="Preview"`, the `d-ce-preview`
+   card markup, `EXT:desiderio/Resources/Public/Css/content-preview.css`):
+   translated UID and page chips, each Collection as a
+   `d-ce-preview__collection` list, labels from
+   `EXT:innesto/Resources/Private/Language/preview.xlf` (English and German).
 5. **library.json** — supply realistic demo values keyed by field identifier,
    with arrays of child objects for Collections. `innesto:seed` uses this file.
 6. Register the block in `Configuration/Sets/Innesto/config.yaml` (innesto:add
