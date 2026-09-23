@@ -142,6 +142,19 @@ set, so a failure says which graft is wrong:
             can apply: every key is a configured field, Collections are
             lists of child objects, everything else is scalar.
 
+..  _developer-previews:
+
+Backend previews
+================
+
+Every element previews itself in the page module on Desiderio's
+``Preview`` card: UID and page chips, the heading, the scalar fields worth
+recognising (eyebrow, intro, speed, …) and each Collection as a list of its
+entries with their main values. Labels come from
+:file:`Resources/Private/Language/preview.xlf` and its German translation.
+:php:`Tests\Unit\BackendPreviewConformanceTest` rejects hard-coded label
+text and label keys that are missing in either language.
+
 ..  _developer-tests:
 
 Tests
@@ -158,8 +171,9 @@ Tests
 
 The unit suite covers registry URL handling, the generated YAML and XML,
 source and CType collisions, invalid paths, non-overwrite behaviour, CSS
-conversion, idempotent site-set registration, and both contracts above —
-including the scaffolded stub, which has to satisfy them from the start.
+conversion, idempotent site-set registration, the backend previews and
+both contracts above — including the scaffolded stub, which has to satisfy
+them from the start.
 
 The functional suite boots the installed TYPO3 release with Content
 Blocks, Visual Editor, the Vite asset collector, Desiderio and Innesto.

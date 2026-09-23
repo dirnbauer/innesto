@@ -13,9 +13,9 @@ Requirements
 
 *   TYPO3 14.3 LTS
 *   PHP 8.4 or newer
-*   :composer:`friendsoftypo3/content-blocks` 2.2 or newer
+*   :composer:`friendsoftypo3/content-blocks` 2.4 or newer
 *   `webconsulting/desiderio <https://github.com/dirnbauer/desiderio>`__
-    4.1 or newer — the component collection every graft composes
+    4.3 or newer — the component collection every graft composes
 *   :composer:`typo3/cms-fluid-styled-content` — Desiderio's site set
     depends on it, and the Innesto set depends on Desiderio's
 

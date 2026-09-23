@@ -5,6 +5,24 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0] - 2026-09-23
+
+Built against Desiderio 4.3.0 and Content Blocks 2.4.10.
+
+### Changed
+
+- Backend previews of all nineteen elements rebuilt in Desiderio's current preview vocabulary: translated UID and page chips, the scalar fields worth recognising (eyebrow, intro, speed, radius, window title, …) and every Collection as a `d-ce-preview__collection` list of its entries with their main values (`551 / 890`, `68 %`, portraits as thumbnails) instead of a one-line "N entries" summary. Labels live in the new `Resources/Private/Language/preview.xlf` with a German translation; nothing in a preview is hard-coded English any more. The finishing prompt of `innesto:add` asks for the same.
+- Demo copy in every `library.json` is plainer and shorter (content commit `8f02e64`, from the content session).
+- `ShippedTemplatesLintTest` follows the Desiderio 4.3 linter API (`LintReport::findings(LintSeverity)`, `LintRule` enum).
+- PHP 8.4: the registry classes are readonly, typed class constants, `new Foo()->bar()` without parentheses.
+- Dependencies: `webconsulting/desiderio` ^4.3, `friendsoftypo3/content-blocks` ^2.4; PHPStan ^2.2, PHPUnit ^13.3, testing-framework ^9.7, saschaegerer/phpstan-typo3 ^3.1.
+- CI: `actions/checkout` v7, PHP 8.5 is a required job, functional tests on PHP 8.4 and 8.5 against MariaDB 11.4, XLIFF files are checked for well-formedness.
+- `composer.json` names homepage, support links and keywords; `.gitattributes` keeps development files out of dist archives.
+
+### Added
+
+- `Tests/Unit/BackendPreviewConformanceTest`: previews use the `Preview` layout and Desiderio's preview stylesheet, translate every label, and every label key exists in English and German.
+
 ## [2.2.0] - 2026-09-19
 
 Built against Desiderio 4.1.7.

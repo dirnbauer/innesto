@@ -90,7 +90,10 @@ Five files need real work, and the review afterwards is not optional:
     prefixed with the element name, and a ``prefers-reduced-motion``
     branch for anything that animates.
 #.  :file:`templates/backend-preview.fluid.html` — a preview on the
-    ``Preview`` layout with Desiderio's :file:`content-preview.css`.
+    ``Preview`` layout with Desiderio's :file:`content-preview.css`:
+    translated UID and page chips, every Collection as a
+    ``d-ce-preview__collection`` list, labels from
+    :file:`Resources/Private/Language/preview.xlf` (English and German).
 #.  :file:`library.json` — demo values keyed by field identifier;
     Collections hold arrays of child objects and numeric values stay
     numeric, decimals included.

@@ -16,8 +16,8 @@ Because every graft composes Desiderio components and paints itself only from De
 ## Requirements
 
 - TYPO3 14.3 LTS
-- PHP 8.4+ (8.5 is exercised in CI)
-- Desiderio 4.1+ and Content Blocks 2.2+
+- PHP 8.4+ (CI runs 8.4 and 8.5)
+- Desiderio 4.3+ and Content Blocks 2.4+
 - `typo3/cms-fluid-styled-content` — Desiderio's site set depends on it
 
 ## Install
@@ -28,7 +28,7 @@ Composer does not inherit repositories from dependencies, so register all three 
 composer config repositories.desiderio vcs https://github.com/dirnbauer/desiderio.git
 composer config repositories.visual-editor-enhancements vcs https://github.com/dirnbauer/typo3-visual-editor-enhancements.git
 composer config repositories.innesto vcs https://github.com/dirnbauer/innesto.git
-composer require webconsulting/innesto:^2.2
+composer require webconsulting/innesto:^2.3
 vendor/bin/typo3 extension:setup
 vendor/bin/typo3 cache:flush
 ```
