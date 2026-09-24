@@ -78,7 +78,7 @@
         "typo3/cms": {
             "web-dir": ".Build/public",
             "extension-key": "innesto",
-            "version": "2.3.0",
+            "version": "2.3.1",
             "Package": {
                 "providesPackages": []
             }
