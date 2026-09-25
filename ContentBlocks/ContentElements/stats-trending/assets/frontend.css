@@ -28,8 +28,11 @@
     }
 }
 @media (min-width: 64rem) {
+    /* As many columns as there are stats (upstream fixes four): a fixed
+       four-track grid painted the --border backdrop through every empty
+       track, so three stats rendered with a blank grey fourth cell. */
     .innesto-stats-trending {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
     }
 }
 

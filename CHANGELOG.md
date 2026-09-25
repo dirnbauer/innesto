@@ -5,6 +5,14 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- Stats with Trending paints as many columns as it has stats. The fixed
+  four-track grid at desktop width painted its `--border` backdrop through
+  every empty track, so three stats rendered with a blank grey fourth cell.
+
 ## [2.3.0] - 2026-09-23
 
 Built against Desiderio 4.3.0 and Content Blocks 2.4.10.
