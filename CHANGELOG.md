@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.3] - 2026-09-26
+
+### Fixed
+
+- The 19 innesto elements sit at the same section rhythm as every desiderio
+  element. They passed `spacing="md"` to the Section component and got half
+  the desktop spacing (48px instead of 96px); they now use its default,
+  `--d-section-y`, which also follows the site's density setting. Pairs with
+  desiderio 4.8.0's one vertical rhythm.
+
 ## [2.3.2] - 2026-09-26
 
 ### Fixed
