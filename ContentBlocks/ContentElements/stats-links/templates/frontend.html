@@ -5,7 +5,7 @@
 
 <f:asset.css identifier="innesto-stats-links" href="{cb:assetPath()}/frontend.css"/>
 
-<d:layout.section frame="{data.frame_class}" spaceBefore="{data.space_before_class}" spaceAfter="{data.space_after_class}" spacing="md" class="innesto-stats-links-section">
+<d:layout.section frame="{data.frame_class}" spaceBefore="{data.space_before_class}" spaceAfter="{data.space_after_class}" class="innesto-stats-links-section">
     <d:layout.container>
         <d:molecule.sectionIntro align="start">
             <f:fragment name="heading"><f:if condition="{data.header}">{data -> f:render.text(field: 'header')}</f:if></f:fragment>

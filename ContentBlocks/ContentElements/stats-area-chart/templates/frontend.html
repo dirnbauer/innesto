@@ -6,7 +6,7 @@
 <f:asset.css identifier="innesto-stats-area-chart" href="{cb:assetPath()}/frontend.css"/>
 <f:asset.script identifier="innesto-stats-area-chart" src="{cb:assetPath()}/frontend.js"/>
 
-<d:layout.section frame="{data.frame_class}" spaceBefore="{data.space_before_class}" spaceAfter="{data.space_after_class}" spacing="md" class="innesto-stats-area-chart-section">
+<d:layout.section frame="{data.frame_class}" spaceBefore="{data.space_before_class}" spaceAfter="{data.space_after_class}" class="innesto-stats-area-chart-section">
     <d:layout.container>
         <d:molecule.sectionIntro align="center">
             <f:fragment name="eyebrow"><f:if condition="{data.eyebrow}">{data -> f:render.text(field: 'eyebrow')}</f:if></f:fragment>
