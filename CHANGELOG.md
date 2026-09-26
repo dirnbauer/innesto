@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.2] - 2026-09-26
+
 ### Fixed
 
 - Stats with Trending paints as many columns as it has stats. The fixed
